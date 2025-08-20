@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { CheckCircle, Sunrise, Wind } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface RitualCardProps {
   title: string;
@@ -7,6 +8,7 @@ interface RitualCardProps {
   description: string;
   status: string;
   linkText: string;
+  linkHref?: string;
   variant: 'emerald' | 'cyan' | 'violet';
   videoSrc: string;
   videoPoster: string;
@@ -20,6 +22,7 @@ export function RitualCard({
   description,
   status,
   linkText,
+  linkHref = "#",
   variant,
   videoSrc,
   videoPoster,
@@ -155,12 +158,21 @@ export function RitualCard({
               </span>
               <CheckCircle className={`w-4 h-4 ${classes.text}`} />
             </div>
-            <a 
-              href="#" 
-              className={`${classes.text} text-sm hover:underline transition-colors font-inter font-medium`}
-            >
-              {linkText}
-            </a>
+            {linkHref.startsWith('/') ? (
+              <Link 
+                to={linkHref}
+                className={`${classes.text} text-sm hover:underline transition-colors font-inter font-medium`}
+              >
+                {linkText}
+              </Link>
+            ) : (
+              <a 
+                href={linkHref} 
+                className={`${classes.text} text-sm hover:underline transition-colors font-inter font-medium`}
+              >
+                {linkText}
+              </a>
+            )}
           </div>
         </div>
       </div>
