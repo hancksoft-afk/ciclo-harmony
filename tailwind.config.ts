@@ -61,7 +61,43 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Ciclo Vida brand colors
+				'ciclo-emerald': {
+					DEFAULT: 'hsl(var(--emerald))',
+					foreground: 'hsl(var(--emerald-foreground))',
+					glow: 'hsl(var(--emerald-glow))'
+				},
+				'ciclo-cyan': {
+					DEFAULT: 'hsl(var(--cyan))',
+					foreground: 'hsl(var(--cyan-foreground))',
+					glow: 'hsl(var(--cyan-glow))'
+				},
+				'ciclo-violet': {
+					DEFAULT: 'hsl(var(--violet))',
+					foreground: 'hsl(var(--violet-foreground))',
+					glow: 'hsl(var(--violet-glow))'
 				}
+			},
+			fontFamily: {
+				'inter': ['Inter', 'sans-serif'],
+				'instrument': ['Instrument Serif', 'serif'],
+				'playfair': ['Playfair Display', 'serif'],
+				'geist': ['Geist', 'sans-serif']
+			},
+			backgroundImage: {
+				'gradient-emerald': 'var(--gradient-emerald)',
+				'gradient-cyan': 'var(--gradient-cyan)',
+				'gradient-violet': 'var(--gradient-violet)'
+			},
+			boxShadow: {
+				'elegant': 'var(--shadow-elegant)',
+				'emerald-glow': 'var(--shadow-elegant), var(--shadow-emerald-glow)',
+				'cyan-glow': 'var(--shadow-elegant), var(--shadow-cyan-glow)',
+				'violet-glow': 'var(--shadow-elegant), var(--shadow-violet-glow)'
+			},
+			transitionTimingFunction: {
+				'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
