@@ -22,7 +22,7 @@ interface FormData {
 
 const countries = ['México', 'España', 'Colombia', 'Argentina', 'Perú', 'Chile'];
 
-export function RegistrationForm() {
+export function RegistrationForm150() {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -159,10 +159,10 @@ export function RegistrationForm() {
 
   return (
     <>
-      <div className="rounded-2xl ring-1 ring-white/10 backdrop-blur-sm p-6 md:p-8 bg-gradient-to-b from-[#00075bd9] to-[#2c0097] relative">
+      <div className="rounded-2xl ring-1 ring-white/10 backdrop-blur-sm p-6 md:p-8 bg-gradient-to-b from-[#000000d9] to-[#830000] relative overflow-hidden">
         <div className="absolute inset-0 rounded-2xl">
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-violet-500/10 via-indigo-500/10 to-cyan-500/10 animate-pulse" />
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-violet-500/5 via-transparent to-cyan-500/5 blur-xl" />
+          <div className="absolute -left-2 -top-2 w-[calc(100%+16px)] h-[calc(100%+16px)] rounded-2xl bg-gradient-to-r from-red-500 via-orange-500 via-yellow-500 to-red-500 bg-[length:400%_400%] animate-[gradient_20s_linear_infinite] opacity-75" />
+          <div className="absolute -left-2 -top-2 w-[calc(100%+16px)] h-[calc(100%+16px)] rounded-2xl bg-gradient-to-r from-red-500 via-orange-500 via-yellow-500 to-red-500 bg-[length:400%_400%] animate-[gradient_20s_linear_infinite] blur-[57px] opacity-50" />
         </div>
         
         <div className="relative z-10">
@@ -411,14 +411,15 @@ export function RegistrationForm() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="rounded-xl bg-[#0f1522] ring-1 ring-white/10 p-4 grid place-items-center">
                   <div className="rounded-lg bg-white p-3">
-                    <div className="h-48 w-48 bg-gray-200 rounded flex items-center justify-center">
-                      <span className="text-gray-500 text-sm">QR Code</span>
+                    <div className="h-48 w-48 bg-gray-200 grid place-items-center text-gray-600 text-sm font-inter">
+                      QR Code
                     </div>
                   </div>
                   <p className="text-xs text-muted-foreground mt-3 font-inter">Usa tu app para escanear</p>
                 </div>
 
-                <div className="rounded-xl bg-white/5 ring-1 ring-white/10 p-4 space-y-4">
+                <div className="rounded-xl bg-white/5 ring-1 ring-white/10 p-4 space-y-4 bg-cover bg-center" 
+                     style={{backgroundImage: "url('https://img.freepik.com/fotos-premium/cupula-vidrio-transparente-maqueta-cubierta-domo_46370-3637.jpg?w=2000')"}}>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground font-inter">Codigo ID</span>
                     <div className="flex items-center gap-2">
@@ -427,7 +428,8 @@ export function RegistrationForm() {
                         onClick={() => copyToClipboard(orderId1)}
                         className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
                       >
-                        <Copy className="w-3.5 h-3.5" /> Copiar
+                        <Copy className="w-3.5 h-3.5" />
+                        Copiar
                       </button>
                     </div>
                   </div>
@@ -479,7 +481,7 @@ export function RegistrationForm() {
                   type="button"
                   onClick={handleNext}
                   disabled={!canProceedStep2}
-                  className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-white bg-primary hover:bg-primary/80 ring-1 ring-primary/50 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-white bg-primary hover:bg-primary/80 ring-1 ring-primary/50 disabled:opacity-40 disabled:cursor-not-allowed transition"
                 >
                   Continuar
                   <ArrowRight className="w-4 h-4" />
@@ -507,14 +509,15 @@ export function RegistrationForm() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="rounded-xl bg-[#0f1522] ring-1 ring-white/10 p-4 grid place-items-center">
                   <div className="rounded-lg bg-white p-3">
-                    <div className="h-48 w-48 bg-gray-200 rounded flex items-center justify-center">
-                      <span className="text-gray-500 text-sm">Admin QR</span>
+                    <div className="h-48 w-48 bg-gray-200 grid place-items-center text-gray-600 text-sm font-inter">
+                      QR Code Admin
                     </div>
                   </div>
                   <p className="text-xs text-muted-foreground mt-3 font-inter">Solicita el QR del administrador</p>
                 </div>
 
-                <div className="rounded-xl bg-white/5 ring-1 ring-white/10 p-4 space-y-4">
+                <div className="rounded-xl bg-white/5 ring-1 ring-white/10 p-4 space-y-4 bg-cover bg-center"
+                     style={{backgroundImage: "url('https://img.freepik.com/fotos-premium/fondo-abstracto-simple-minimalista-hexagonal-ilustracion-bola-3d_531600-417.jpg?w=2000')"}}>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground font-inter">Codigo ID</span>
                     <div className="flex items-center gap-2">
@@ -523,7 +526,8 @@ export function RegistrationForm() {
                         onClick={() => copyToClipboard(orderId2)}
                         className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
                       >
-                        <Copy className="w-3.5 h-3.5" /> Copiar
+                        <Copy className="w-3.5 h-3.5" />
+                        Copiar
                       </button>
                     </div>
                   </div>
@@ -575,7 +579,7 @@ export function RegistrationForm() {
                   type="button"
                   onClick={handleNext}
                   disabled={!canProceedStep3}
-                  className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-white bg-primary hover:bg-primary/80 ring-1 ring-primary/50 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-white bg-primary hover:bg-primary/80 ring-1 ring-primary/50 disabled:opacity-40 disabled:cursor-not-allowed transition"
                 >
                   Continuar
                   <ArrowRight className="w-4 h-4" />
@@ -588,7 +592,7 @@ export function RegistrationForm() {
           {currentStep === 4 && (
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <CheckCircle2 className="w-6 h-6 text-blue-400" />
+                <CheckCircle2 className="w-6 h-6 text-green-400" />
                 <h2 className="text-xl font-semibold tracking-tight text-white font-inter">¡Completado! Felicidades</h2>
               </div>
               <p className="text-sm text-muted-foreground -mt-2 font-inter">Tu cuenta está lista. Se abrió el ticket en un modal.</p>
@@ -632,14 +636,13 @@ export function RegistrationForm() {
 
       {/* Ticket Modal */}
       {showTicketModal && (
-        <div className="fixed inset-0 z-50 overflow-auto bg-black/60">
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowTicketModal(false)} />
+        <div className="fixed inset-0 z-50 overflow-auto bg-black/60 backdrop-blur-sm">
           <div className="relative mx-auto w-full max-w-3xl px-4 py-8 min-h-full flex items-center justify-center">
             <div className="w-full rounded-2xl bg-[#0c111b] ring-1 ring-white/10 shadow-2xl overflow-hidden">
               <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
                 <div className="flex items-center gap-2">
                   <div className="h-8 w-8 grid place-items-center rounded-md bg-white/10 ring-1 ring-white/10">
-                    <span className="text-sm font-semibold tracking-tight text-white">GL</span>
+                    <span className="text-sm font-semibold tracking-tight text-white">CV</span>
                   </div>
                   <h3 className="text-lg font-semibold tracking-tight text-white font-inter">Tu ticket</h3>
                 </div>
@@ -658,25 +661,25 @@ export function RegistrationForm() {
                       <TicketCheck className="w-5 h-5 text-rose-300" />
                       Tu Ticket
                     </h3>
-                    <span className="text-xs text-slate-300/80">finalizado</span>
+                    <span className="text-xs text-slate-300/80 font-inter">finalizado</span>
                   </div>
 
-                  <div className="rounded-2xl bg-gradient-to-b from-[#1e06afe6] to-[#00054d] border-white/10 overflow-hidden shadow-2xl">
+                  <div className="rounded-2xl bg-gradient-to-b from-[#c14500] to-[#5b0101] border-white/10 overflow-hidden shadow-2xl">
                     <div className="flex flex-col sm:flex-row">
-                      <div className="sm:w-48 p-5 bg-gradient-to-b from-[#00054d] to-[#1e06afe6] relative">
-                        <div className="flex flex-col h-full justify-between space-y-4">
+                      <div className="sm:w-48 p-5 bg-gradient-to-b from-[#5b0101] to-[#c14500] relative">
+                        <div className="flex flex-col h-full justify-between">
                           <div>
                             <p className="text-xs tracking-wider text-white font-inter"># ADMIT ONE</p>
                             <p className="mt-3 text-xs text-white font-inter">ID</p>
-                            <p className="text-sm font-medium text-slate-200">{Math.random().toString(36).substr(2, 9).toUpperCase()}</p>
+                            <p className="text-sm font-medium text-slate-200 font-mono">{Math.random().toString(36).substr(2, 6).toUpperCase()}</p>
                           </div>
-                          <div>
+                          <div className="space-y-1">
                             <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Orden</p>
-                            <p className="text-sm font-medium text-amber-300">{formData.binanceIdStep2}</p>
+                            <p className="text-sm font-medium text-amber-300 font-mono">{formData.binanceIdStep2}</p>
                           </div>
                           <div>
                             <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Administrador</p>
-                            <p className="text-sm font-medium text-amber-300">{formData.binanceIdStep3}</p>
+                            <p className="text-sm font-medium text-amber-300 font-mono">{formData.binanceIdStep3}</p>
                           </div>
                         </div>
                       </div>
@@ -684,7 +687,7 @@ export function RegistrationForm() {
                       <div className="flex-1 p-6">
                         <div className="flex items-start justify-between">
                           <div>
-                            <h4 className="text-lg sm:text-xl font-semibold tracking-tight text-amber-300 font-inter">
+                            <h4 className="text-lg sm:text-xl font-semibold tracking-tight text-[#f9ff01] font-inter">
                               Detalles del registro
                             </h4>
                           </div>
@@ -731,7 +734,7 @@ export function RegistrationForm() {
                           <div className="h-16 w-full rounded-md bg-[repeating-linear-gradient(90deg,rgba(251,191,36,1)_0_8px,transparent_8px_16px)]" />
                         </div>
 
-                        <div className="mt-3 flex items-center justify-between text-xs text-slate-400">
+                        <div className="mt-3 flex items-center justify-between text-xs text-white">
                           <p className="font-inter">Conserva este ticket para futuras referencias.</p>
                           <div className="flex items-center gap-2">
                             <span className="text-white font-inter">Código</span>

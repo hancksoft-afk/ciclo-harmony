@@ -54,6 +54,7 @@ const Index = () => {
               description="Cursos en línea y mejora tus habilidades desde cualquier lugar del mundo."
               status="Nuevo Registardo"
               linkText="Start ritual"
+              linkHref="/register150"
               variant="cyan"
               videoSrc="https://cdn.pixabay.com/video/2021/02/20/65771-515379416_large.mp4"
               videoPoster="https://cdn.pixabay.com/video/2021/02/20/65771-515379416_tiny.jpg?w=800&q=80"
