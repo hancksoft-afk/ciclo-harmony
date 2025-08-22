@@ -82,9 +82,6 @@ export function RegistrationForm() {
       newErrors.invitee = true;
     }
     
-    if (!formData.email || !formData.email.includes('@')) {
-      newErrors.email = true;
-    }
     
     if (formData.paymentMethod === 'binance_pay' && (!formData.binanceId || !/^\d{9,10}$/.test(formData.binanceId))) {
       newErrors.binanceId = true;
@@ -150,9 +147,9 @@ export function RegistrationForm() {
   };
 
   const canProceedStep1 = formData.name && formData.invitee && formData.country && 
-                         formData.phone && formData.email && formData.hasMoney && 
-                         formData.paymentMethod && 
-                         (formData.paymentMethod !== 'binance_pay' || formData.binanceId);
+                          formData.phone && formData.hasMoney && 
+                          formData.paymentMethod && 
+                          (formData.paymentMethod !== 'binance_pay' || formData.binanceId);
 
   const canProceedStep2 = formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19;
   const canProceedStep3 = formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19;
@@ -274,26 +271,6 @@ export function RegistrationForm() {
                   </div>
                 </div>
 
-                {/* Email */}
-                <div>
-                  <label className="block text-sm text-muted-foreground mb-1.5 font-inter">Correo Electrónico</label>
-                  <div className="relative">
-                    <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                    <input
-                      type="email"
-                      placeholder="tu@correo.com"
-                      value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
-                    />
-                  </div>
-                  {errors.email && (
-                    <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
-                      <AlertTriangle className="w-3.5 h-3.5" />
-                      <span><strong className="font-medium">Correo inválido</strong> — Por favor, ingresa un correo válido.</span>
-                    </div>
-                  )}
-                </div>
 
                 {/* Money */}
                 <div>
@@ -611,12 +588,6 @@ export function RegistrationForm() {
                 >
                   <Ticket className="w-4 h-4" />
                   Mostrar ticket
-                </button>
-                <button
-                  className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
-                >
-                  Ir al panel
-                  <ArrowRight className="w-4 h-4" />
                 </button>
                 <button
                   onClick={openWhatsApp}

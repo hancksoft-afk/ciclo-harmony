@@ -82,9 +82,6 @@ export function RegistrationForm150() {
       newErrors.invitee = true;
     }
     
-    if (!formData.email || !formData.email.includes('@')) {
-      newErrors.email = true;
-    }
     
     if (formData.paymentMethod === 'binance_pay' && (!formData.binanceId || !/^\d{9,10}$/.test(formData.binanceId))) {
       newErrors.binanceId = true;
@@ -123,14 +120,19 @@ export function RegistrationForm150() {
       setCurrentStep(3);
     } else if (currentStep === 3 && validateStep3()) {
       setCurrentStep(4);
-      // Trigger confetti when reaching final step
-      setTimeout(() => {
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 }
-        });
-      }, 500);
+          // Show modal automatically when reaching step 4
+          setTimeout(() => {
+            setShowTicketModal(true);
+            // Trigger confetti when modal opens
+            setTimeout(() => {
+              confetti({
+                particleCount: 150,
+                spread: 100,
+                origin: { y: 0.6 },
+                colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff']
+              });
+            }, 300);
+          }, 500);
     }
   };
 
@@ -150,16 +152,16 @@ export function RegistrationForm150() {
   };
 
   const canProceedStep1 = formData.name && formData.invitee && formData.country && 
-                         formData.phone && formData.email && formData.hasMoney && 
-                         formData.paymentMethod && 
-                         (formData.paymentMethod !== 'binance_pay' || formData.binanceId);
+                          formData.phone && formData.hasMoney && 
+                          formData.paymentMethod && 
+                          (formData.paymentMethod !== 'binance_pay' || formData.binanceId);
 
   const canProceedStep2 = formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19;
   const canProceedStep3 = formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19;
 
   return (
     <>
-      <div className="rounded-2xl ring-1 ring-white/10 backdrop-blur-sm p-6 md:p-8 bg-gradient-to-b from-[#000000d9] to-[#830000] relative overflow-hidden">
+      <div className="rounded-2xl ring-1 ring-white/10 backdrop-blur-sm p-6 md:p-8 bg-gradient-to-b from-slate-900/90 to-indigo-900/80 relative overflow-hidden">
         <div className="absolute inset-0 rounded-2xl">
           <div className="absolute -left-2 -top-2 w-[calc(100%+16px)] h-[calc(100%+16px)] rounded-2xl bg-gradient-to-r from-red-500 via-orange-500 via-yellow-500 to-red-500 bg-[length:400%_400%] animate-[gradient_20s_linear_infinite] opacity-75" />
           <div className="absolute -left-2 -top-2 w-[calc(100%+16px)] h-[calc(100%+16px)] rounded-2xl bg-gradient-to-r from-red-500 via-orange-500 via-yellow-500 to-red-500 bg-[length:400%_400%] animate-[gradient_20s_linear_infinite] blur-[57px] opacity-50" />
@@ -274,26 +276,6 @@ export function RegistrationForm150() {
                   </div>
                 </div>
 
-                {/* Email */}
-                <div>
-                  <label className="block text-sm text-muted-foreground mb-1.5 font-inter">Correo Electrónico</label>
-                  <div className="relative">
-                    <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                    <input
-                      type="email"
-                      placeholder="tu@correo.com"
-                      value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
-                    />
-                  </div>
-                  {errors.email && (
-                    <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
-                      <AlertTriangle className="w-3.5 h-3.5" />
-                      <span><strong className="font-medium">Correo inválido</strong> — Por favor, ingresa un correo válido.</span>
-                    </div>
-                  )}
-                </div>
 
                 {/* Money */}
                 <div>
@@ -615,12 +597,6 @@ export function RegistrationForm150() {
                 >
                   <Ticket className="w-4 h-4" />
                   Mostrar ticket
-                </button>
-                <button
-                  className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
-                >
-                  Ir al panel
-                  <ArrowRight className="w-4 h-4" />
                 </button>
                 <button
                   onClick={openWhatsApp}
