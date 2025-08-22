@@ -163,8 +163,8 @@ export function RegistrationForm150() {
     <>
       <div className="rounded-2xl ring-1 ring-white/10 backdrop-blur-sm p-6 md:p-8 bg-gradient-to-b from-slate-900/90 to-indigo-900/80 relative overflow-hidden">
         <div className="absolute inset-0 rounded-2xl">
-          <div className="absolute -left-2 -top-2 w-[calc(100%+16px)] h-[calc(100%+16px)] rounded-2xl bg-gradient-to-r from-red-500 via-orange-500 via-yellow-500 to-red-500 bg-[length:400%_400%] animate-[gradient_20s_linear_infinite] opacity-75" />
-          <div className="absolute -left-2 -top-2 w-[calc(100%+16px)] h-[calc(100%+16px)] rounded-2xl bg-gradient-to-r from-red-500 via-orange-500 via-yellow-500 to-red-500 bg-[length:400%_400%] animate-[gradient_20s_linear_infinite] blur-[57px] opacity-50" />
+          <div className="absolute -left-2 -top-2 w-[calc(100%+16px)] h-[calc(100%+16px)] rounded-2xl bg-gradient-to-r from-purple-600 via-blue-600 via-indigo-600 to-purple-600 bg-[length:400%_400%] animate-[gradient_20s_linear_infinite] opacity-75" />
+          <div className="absolute -left-2 -top-2 w-[calc(100%+16px)] h-[calc(100%+16px)] rounded-2xl bg-gradient-to-r from-purple-600 via-blue-600 via-indigo-600 to-purple-600 bg-[length:400%_400%] animate-[gradient_20s_linear_infinite] blur-[57px] opacity-50" />
         </div>
         
         <div className="relative z-10">
@@ -699,10 +699,6 @@ export function RegistrationForm150() {
                           <div>
                             <p className="text-xs text-white font-inter">Binance de Pay:</p>
                             <p className="font-medium text-slate-200">{formData.binanceId}</p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-white font-inter">Correo:</p>
-                            <p className="font-medium text-slate-200">{formData.email}</p>
                           </div>
                         </div>
 
