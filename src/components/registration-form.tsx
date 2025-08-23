@@ -6,6 +6,7 @@ import {
   CircleX, Timer, Copy, Hash, CheckCircle2, Ticket,
   TicketCheck, X
 } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 interface FormData {
   name: string;
@@ -123,6 +124,40 @@ export function RegistrationForm() {
     return { codigo, oculto: codigo.slice(0, 4) + 'x'.repeat(codigo.length - 4) };
   };
 
+  const saveToSupabase = async () => {
+    try {
+      const { codigo, oculto } = generarCodigoNumeroYOculto();
+      
+      const { error } = await supabase
+        .from('registrations')
+        .insert({
+          name: formData.name,
+          phone: formData.phone,
+          country: formData.country,
+          invitee: formData.invitee,
+          has_money: formData.hasMoney === 'yes',
+          payment_method: formData.paymentMethod,
+          binance_id: formData.binanceId,
+          binance_id_step2: formData.binanceIdStep2,
+          binance_id_step3: formData.binanceIdStep3,
+          order_id_1: orderId1,
+          order_id_2: orderId2,
+          ticket_id: Math.random().toString(36).substr(2, 9).toUpperCase(),
+          codigo_full: codigo,
+          codigo_masked: oculto,
+          form_type: 'register'
+        });
+
+      if (error) {
+        console.error('Error saving registration:', error);
+      } else {
+        console.log('Registration saved successfully');
+      }
+    } catch (error) {
+      console.error('Error saving to Supabase:', error);
+    }
+  };
+
   const handleNext = () => {
     if (currentStep === 1 && validateStep1()) {
       setCurrentStep(2);
@@ -130,6 +165,8 @@ export function RegistrationForm() {
       setCurrentStep(3);
     } else if (currentStep === 3 && validateStep3()) {
       setCurrentStep(4);
+      // Save to Supabase when process is complete
+      saveToSupabase();
       // Auto show ticket modal when reaching final step
       setTimeout(() => {
         setShowTicketModal(true);
