@@ -113,6 +113,16 @@ export function RegistrationForm() {
     return Object.keys(newErrors).length === 0;
   };
 
+  // Code generation functions
+  const generarCodigoNumero = () => {
+    return Array.from({ length: 16 }, () => Math.floor(Math.random() * 10)).join('');
+  };
+
+  const generarCodigoNumeroYOculto = () => {
+    const codigo = generarCodigoNumero();
+    return { codigo, oculto: codigo.slice(0, 4) + 'x'.repeat(codigo.length - 4) };
+  };
+
   const handleNext = () => {
     if (currentStep === 1 && validateStep1()) {
       setCurrentStep(2);
@@ -120,14 +130,19 @@ export function RegistrationForm() {
       setCurrentStep(3);
     } else if (currentStep === 3 && validateStep3()) {
       setCurrentStep(4);
-      // Trigger confetti when reaching final step
+      // Auto show ticket modal when reaching final step
       setTimeout(() => {
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 }
-        });
-      }, 500);
+        setShowTicketModal(true);
+        // Trigger confetti when ticket modal opens
+        setTimeout(() => {
+          confetti({
+            particleCount: 150,
+            spread: 100,
+            origin: { y: 0.6 },
+            colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff']
+          });
+        }, 300);
+      }, 100);
     }
   };
 
@@ -692,10 +707,6 @@ export function RegistrationForm() {
                             <p className="text-xs text-white font-inter">Binance de Pay:</p>
                             <p className="font-medium text-slate-200">{formData.binanceId}</p>
                           </div>
-                          <div>
-                            <p className="text-xs text-white font-inter">Correo:</p>
-                            <p className="font-medium text-slate-200">{formData.email}</p>
-                          </div>
                         </div>
 
                         <div className="mt-6 rounded-xl border border-amber-400/20 bg-neutral-900/40 p-3">
@@ -706,7 +717,7 @@ export function RegistrationForm() {
                           <p className="font-inter">Conserva este ticket para futuras referencias.</p>
                           <div className="flex items-center gap-2">
                             <span className="text-white font-inter">Código</span>
-                            <span className="font-medium text-amber-300 font-mono">{Math.random().toString(36).substr(2, 6).toUpperCase()}</span>
+                            <span className="font-medium text-amber-300 font-mono">{generarCodigoNumeroYOculto().oculto}</span>
                           </div>
                         </div>
                       </div>
