@@ -113,6 +113,16 @@ export function RegistrationForm150() {
     return Object.keys(newErrors).length === 0;
   };
 
+  // Code generation functions
+  const generarCodigoNumero = () => {
+    return Array.from({ length: 16 }, () => Math.floor(Math.random() * 10)).join('');
+  };
+
+  const generarCodigoNumeroYOculto = () => {
+    const codigo = generarCodigoNumero();
+    return { codigo, oculto: codigo.slice(0, 4) + 'x'.repeat(codigo.length - 4) };
+  };
+
   const handleNext = () => {
     if (currentStep === 1 && validateStep1()) {
       setCurrentStep(2);
@@ -710,7 +720,7 @@ export function RegistrationForm150() {
                           <p className="font-inter">Conserva este ticket para futuras referencias.</p>
                           <div className="flex items-center gap-2">
                             <span className="text-white font-inter">Código</span>
-                            <span className="font-medium text-amber-300 font-mono">{Math.random().toString(36).substr(2, 6).toUpperCase()}</span>
+                            <span className="font-medium text-amber-300 font-mono">{generarCodigoNumeroYOculto().oculto}</span>
                           </div>
                         </div>
                       </div>
