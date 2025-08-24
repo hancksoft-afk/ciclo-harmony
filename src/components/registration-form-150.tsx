@@ -131,7 +131,7 @@ export function RegistrationForm150() {
       const codesData = generatedCodes || generarCodigoNumeroYOculto();
       
       const { error } = await supabase
-        .from('registrations')
+        .from('register150')
         .insert({
           name: formData.name,
           phone: formData.phone,
@@ -147,7 +147,7 @@ export function RegistrationForm150() {
           ticket_id: Math.random().toString(36).substr(2, 6).toUpperCase(),
           codigo_full: codesData.codigo,
           codigo_masked: codesData.oculto,
-          form_type: 'register150'
+          
         });
 
       if (error) {
