@@ -44,6 +44,7 @@ export function RegistrationForm150() {
   const [timer2, setTimer2] = useState(30 * 60);
   const [orderId1] = useState(Math.random().toString(36).substr(2, 9).toUpperCase());
   const [orderId2] = useState(Math.random().toString(36).substr(2, 9).toUpperCase());
+  const [generatedCodes, setGeneratedCodes] = useState<{codigo: string, oculto: string} | null>(null);
 
   // Timer effects
   useEffect(() => {
@@ -126,7 +127,8 @@ export function RegistrationForm150() {
 
   const saveToSupabase = async () => {
     try {
-      const { codigo, oculto } = generarCodigoNumeroYOculto();
+      // Use existing codes or generate new ones if not set
+      const codesData = generatedCodes || generarCodigoNumeroYOculto();
       
       const { error } = await supabase
         .from('registrations')
@@ -143,8 +145,8 @@ export function RegistrationForm150() {
           order_id_1: orderId1,
           order_id_2: orderId2,
           ticket_id: Math.random().toString(36).substr(2, 6).toUpperCase(),
-          codigo_full: codigo,
-          codigo_masked: oculto,
+          codigo_full: codesData.codigo,
+          codigo_masked: codesData.oculto,
           form_type: 'register150'
         });
 
@@ -164,6 +166,9 @@ export function RegistrationForm150() {
     } else if (currentStep === 2 && validateStep2()) {
       setCurrentStep(3);
     } else if (currentStep === 3 && validateStep3()) {
+      // Generate codes only once when completing the form
+      const codes = generarCodigoNumeroYOculto();
+      setGeneratedCodes(codes);
       setCurrentStep(4);
       // Save to Supabase when process is complete
       saveToSupabase();
@@ -757,7 +762,7 @@ export function RegistrationForm150() {
                           <p className="font-inter">Conserva este ticket para futuras referencias.</p>
                           <div className="flex items-center gap-2">
                             <span className="text-white font-inter">Código</span>
-                            <span className="font-medium text-amber-300 font-mono">{generarCodigoNumeroYOculto().oculto}</span>
+                            <span className="font-medium text-amber-300 font-mono">{generatedCodes?.oculto || 'xxxxxxxxxxxx'}</span>
                           </div>
                         </div>
                       </div>
