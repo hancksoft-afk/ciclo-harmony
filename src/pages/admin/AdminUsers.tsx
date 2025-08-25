@@ -1,16 +1,73 @@
-import { useState } from 'react';
-import { Search, Filter, Plus, MoreHorizontal, Edit, Trash2, UserCheck, UserX } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Search, Filter, Plus, MoreHorizontal, Check, X, Receipt, Calendar } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+
+interface RegisterUser {
+  id: string;
+  name: string;
+  phone: string;
+  country: string;
+  invitee: string;
+  has_money: boolean;
+  binance_id: string | null;
+  created_at: string;
+  payment_method: string;
+  codigo_full: string | null;
+  codigo_masked: string | null;
+}
 
 export function AdminUsers() {
   const [searchQuery, setSearchQuery] = useState('');
-  
-  const users = [
-    { id: 1, name: 'Juan Pérez', email: 'juan@email.com', role: 'Usuario', status: 'Activo', lastLogin: '2024-01-15', avatar: '👤' },
-    { id: 2, name: 'María García', email: 'maria@email.com', role: 'Moderador', status: 'Activo', lastLogin: '2024-01-14', avatar: '👩' },
-    { id: 3, name: 'Carlos López', email: 'carlos@email.com', role: 'Usuario', status: 'Inactivo', lastLogin: '2024-01-10', avatar: '👨' },
-    { id: 4, name: 'Ana Martín', email: 'ana@email.com', role: 'Usuario', status: 'Activo', lastLogin: '2024-01-15', avatar: '👱‍♀️' },
-    { id: 5, name: 'David Ruiz', email: 'david@email.com', role: 'Admin', status: 'Activo', lastLogin: '2024-01-15', avatar: '🧑' },
-  ];
+  const [users, setUsers] = useState<RegisterUser[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('register')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setUsers(data || []);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      toast({
+        title: "Error",
+        description: "No se pudieron cargar los usuarios",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleApprove = async (userId: string) => {
+    toast({
+      title: "Aprobado",
+      description: "Usuario aprobado exitosamente",
+    });
+  };
+
+  const handleDisapprove = async (userId: string) => {
+    toast({
+      title: "Desaprobado", 
+      description: "Usuario desaprobado",
+      variant: "destructive"
+    });
+  };
+
+  const filteredUsers = users.filter(user =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.phone.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.country.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="space-y-6">
@@ -63,86 +120,106 @@ export function AdminUsers() {
 
       {/* Users Table */}
       <div className="bg-slate-800/50 border border-slate-700 rounded-xl overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-slate-700/50">
-              <tr>
-                <th className="text-left py-4 px-6 text-slate-300 font-medium">Usuario</th>
-                <th className="text-left py-4 px-6 text-slate-300 font-medium">Rol</th>
-                <th className="text-left py-4 px-6 text-slate-300 font-medium">Estado</th>
-                <th className="text-left py-4 px-6 text-slate-300 font-medium">Último Login</th>
-                <th className="text-left py-4 px-6 text-slate-300 font-medium">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => (
-                <tr key={user.id} className="border-b border-slate-700/50 hover:bg-slate-700/20 transition">
-                  <td className="py-4 px-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center text-lg">
-                        {user.avatar}
-                      </div>
-                      <div>
-                        <p className="text-white font-medium">{user.name}</p>
-                        <p className="text-slate-400 text-sm">{user.email}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="py-4 px-6">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      user.role === 'Admin' 
-                        ? 'bg-red-500/10 text-red-400 border border-red-500/20'
-                        : user.role === 'Moderador'
-                        ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
-                        : 'bg-slate-500/10 text-slate-400 border border-slate-500/20'
-                    }`}>
-                      {user.role}
-                    </span>
-                  </td>
-                  <td className="py-4 px-6">
-                    <div className="flex items-center gap-2">
-                      {user.status === 'Activo' ? (
-                        <UserCheck className="w-4 h-4 text-green-400" />
-                      ) : (
-                        <UserX className="w-4 h-4 text-red-400" />
-                      )}
-                      <span className={`text-sm font-medium ${
-                        user.status === 'Activo' ? 'text-green-400' : 'text-red-400'
-                      }`}>
-                        {user.status}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="py-4 px-6 text-slate-300">{user.lastLogin}</td>
-                  <td className="py-4 px-6">
-                    <div className="flex items-center gap-2">
-                      <button className="p-1.5 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded transition">
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded transition">
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                      <button className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-700 rounded transition">
-                        <MoreHorizontal className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </td>
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-slate-400">Cargando usuarios...</div>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-slate-700/50">
+                <tr>
+                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Nombres</th>
+                  <th className="text-left py-4 px-6 text-slate-300 font-medium">WhatsApp</th>
+                  <th className="text-left py-4 px-6 text-slate-300 font-medium">País</th>
+                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Invita a</th>
+                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Dinero</th>
+                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Binance Pay</th>
+                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Fecha</th>
+                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Acciones</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {filteredUsers.map((user) => (
+                  <tr key={user.id} className="border-b border-slate-700/50 hover:bg-slate-700/20 transition">
+                    <td className="py-4 px-6">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-medium">
+                          {user.name.charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                          <p className="text-white font-medium">{user.name}</p>
+                          <p className="text-slate-400 text-sm">{user.codigo_masked || 'Sin código'}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-4 px-6">
+                      <p className="text-slate-300">{user.phone}</p>
+                    </td>
+                    <td className="py-4 px-6">
+                      <span className="px-2 py-1 bg-slate-700 text-slate-300 rounded-full text-xs">
+                        {user.country}
+                      </span>
+                    </td>
+                    <td className="py-4 px-6">
+                      <p className="text-slate-300">{user.invitee}</p>
+                    </td>
+                    <td className="py-4 px-6">
+                      <div className="flex items-center gap-2">
+                        <div className={`w-2 h-2 rounded-full ${user.has_money ? 'bg-green-400' : 'bg-red-400'}`}></div>
+                        <span className={`text-sm font-medium ${user.has_money ? 'text-green-400' : 'text-red-400'}`}>
+                          {user.has_money ? 'Sí' : 'No'}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="py-4 px-6">
+                      <p className="text-slate-300 text-sm">{user.binance_id || 'N/A'}</p>
+                    </td>
+                    <td className="py-4 px-6">
+                      <div className="flex items-center gap-2 text-slate-300 text-sm">
+                        <Calendar className="w-4 h-4" />
+                        {new Date(user.created_at).toLocaleDateString('es-ES')}
+                      </div>
+                    </td>
+                    <td className="py-4 px-6">
+                      <div className="flex items-center gap-2">
+                        <button 
+                          onClick={() => handleApprove(user.id)}
+                          className="p-1.5 text-slate-400 hover:text-green-400 hover:bg-green-500/10 rounded transition"
+                          title="Aprobar"
+                        >
+                          <Check className="w-4 h-4" />
+                        </button>
+                        <button 
+                          onClick={() => handleDisapprove(user.id)}
+                          className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded transition"
+                          title="Desaprobar"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                        <button className="p-1.5 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded transition" title="Ver factura">
+                          <Receipt className="w-4 h-4" />
+                        </button>
+                        <button className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-700 rounded transition">
+                          <MoreHorizontal className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
         
         {/* Pagination */}
         <div className="flex items-center justify-between px-6 py-4 border-t border-slate-700">
-          <p className="text-slate-400 text-sm">Mostrando 1-5 de 125 usuarios</p>
+          <p className="text-slate-400 text-sm">Mostrando {filteredUsers.length} usuarios</p>
           <div className="flex items-center gap-2">
             <button className="px-3 py-1.5 text-sm bg-slate-700 text-slate-300 rounded hover:bg-slate-600 transition">
               Anterior
             </button>
             <button className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded">1</button>
-            <button className="px-3 py-1.5 text-sm bg-slate-700 text-slate-300 rounded hover:bg-slate-600 transition">2</button>
-            <button className="px-3 py-1.5 text-sm bg-slate-700 text-slate-300 rounded hover:bg-slate-600 transition">3</button>
             <button className="px-3 py-1.5 text-sm bg-slate-700 text-slate-300 rounded hover:bg-slate-600 transition">
               Siguiente
             </button>
