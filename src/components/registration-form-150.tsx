@@ -125,11 +125,8 @@ export function RegistrationForm150() {
     return { codigo, oculto: codigo.slice(0, 4) + 'x'.repeat(codigo.length - 4) };
   };
 
-  const saveToSupabase = async () => {
+  const saveToSupabase = async (codes: { codigo: string; oculto: string }) => {
     try {
-      // Use existing codes or generate new ones if not set
-      const codesData = generatedCodes || generarCodigoNumeroYOculto();
-      
       const { error } = await supabase
         .from('register150')
         .insert({
@@ -145,9 +142,8 @@ export function RegistrationForm150() {
           order_id_1: orderId1,
           order_id_2: orderId2,
           ticket_id: Math.random().toString(36).substr(2, 6).toUpperCase(),
-          codigo_full: codesData.codigo,
-          codigo_masked: codesData.oculto,
-          
+          codigo_full: codes.codigo,
+          codigo_masked: codes.oculto,
         });
 
       if (error) {
@@ -170,8 +166,8 @@ export function RegistrationForm150() {
       const codes = generarCodigoNumeroYOculto();
       setGeneratedCodes(codes);
       setCurrentStep(4);
-      // Save to Supabase when process is complete
-      saveToSupabase();
+      // Save to Supabase with the same codes used in UI
+      saveToSupabase(codes);
       // Show modal automatically when reaching step 4
       setTimeout(() => {
         setShowTicketModal(true);

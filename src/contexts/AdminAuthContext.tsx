@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { supabase } from '../integrations/supabase/client';
 
 interface AdminAuthContextType {
   isAuthenticated: boolean;
@@ -41,12 +42,36 @@ export const AdminAuthProvider = ({ children }: AdminAuthProviderProps) => {
   const login = async (email: string, password: string): Promise<boolean> => {
     setLoading(true);
     
-    // Demo credentials
-    if (email === 'admin@adminhub.com' && password === 'admin123') {
+    try {
+      // Query admin_users table
+      const { data: adminUser, error } = await supabase
+        .from('admin_users')
+        .select('*')
+        .eq('email', email)
+        .single();
+
+      if (error || !adminUser) {
+        setLoading(false);
+        return false;
+      }
+
+      // Check password (basic verification - in production use proper hashing)
+      const storedPassword = atob(adminUser.password_hash);
+      if (storedPassword !== password) {
+        setLoading(false);
+        return false;
+      }
+
+      // Update last login
+      await supabase
+        .from('admin_users')
+        .update({ last_login: new Date().toISOString() })
+        .eq('id', adminUser.id);
+
       const userData = {
-        id: 1,
-        email: 'admin@adminhub.com',
-        name: 'Administrador',
+        id: adminUser.id,
+        email: adminUser.email,
+        name: adminUser.name,
         role: 'admin'
       };
       
@@ -55,10 +80,11 @@ export const AdminAuthProvider = ({ children }: AdminAuthProviderProps) => {
       localStorage.setItem('adminAuth', JSON.stringify({ user: userData }));
       setLoading(false);
       return true;
+    } catch (error) {
+      console.error('Login error:', error);
+      setLoading(false);
+      return false;
     }
-    
-    setLoading(false);
-    return false;
   };
 
   const logout = () => {

@@ -112,7 +112,7 @@ export function AdminLogin() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="admin@adminhub.com"
+                    placeholder="tu@email.com"
                     className="w-full pl-12 pr-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
                     required
                   />
@@ -212,7 +212,7 @@ export function AdminLogin() {
                     type="email"
                     value={registerData.email}
                     onChange={(e) => setRegisterData(prev => ({ ...prev, email: e.target.value }))}
-                    placeholder="admin@adminhub.com"
+                    placeholder="tu@email.com"
                     className="w-full pl-12 pr-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
                     required
                   />
@@ -288,14 +288,6 @@ export function AdminLogin() {
             </p>
           </div>
 
-          {/* Demo Credentials */}
-          {!isRegistering && (
-            <div className="mt-8 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-              <h3 className="text-sm font-medium text-blue-300 mb-2">Credenciales de Demo:</h3>
-              <p className="text-xs text-blue-200">Email: admin@adminhub.com</p>
-              <p className="text-xs text-blue-200">Contraseña: admin123</p>
-            </div>
-          )}
         </div>
       </div>
 
