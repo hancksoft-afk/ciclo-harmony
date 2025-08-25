@@ -18,6 +18,7 @@ interface RegisterUser {
 }
 
 export function AdminUsers() {
+  console.log('AdminUsers component loaded - new version');
   const [searchQuery, setSearchQuery] = useState('');
   const [users, setUsers] = useState<RegisterUser[]>([]);
   const [loading, setLoading] = useState(true);
