@@ -13,7 +13,10 @@ interface Register150User {
   codigo_masked: string | null;
   has_money: boolean;
   binance_id: string | null;
+  binance_id_step2: string | null;
+  binance_id_step3: string | null;
   order_id_1: string | null;
+  order_id_2: string | null;
   ticket_id: string | null;
   created_at: string;
   updated_at: string;
@@ -349,11 +352,11 @@ export function AdminUsers2() {
                     </div>
                     <div className="space-y-1">
                       <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Orden</p>
-                      <p className="text-sm font-medium text-amber-300 font-mono">{selectedUser.order_id_1 || 'N/A'}</p>
+                      <p className="text-sm font-medium text-amber-300 font-mono">{selectedUser.binance_id_step2 || 'N/A'}</p>
                     </div>
                     <div>
                       <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Administrador</p>
-                      <p className="text-sm font-medium text-amber-300 font-mono">{selectedUser.ticket_id || 'N/A'}</p>
+                      <p className="text-sm font-medium text-amber-300 font-mono">{selectedUser.binance_id_step3 || 'N/A'}</p>
                     </div>
                   </div>
                 </div>

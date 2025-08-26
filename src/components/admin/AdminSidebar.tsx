@@ -25,7 +25,6 @@ export function AdminSidebar({ collapsed, setCollapsed }: SidebarProps) {
     { name: 'Reportes', href: '/adminhub/reports', icon: FileText },
     { name: 'Notificaciones', href: '/adminhub/notifications', icon: Bell },
     { name: 'Configuración', href: '/adminhub/settings', icon: Settings },
-    { name: 'Flotante', href: '/', icon: TrendingUp },
   ];
 
   const handleLogout = () => {

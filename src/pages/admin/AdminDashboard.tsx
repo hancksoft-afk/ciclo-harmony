@@ -107,89 +107,49 @@ export function AdminDashboard() {
         </div>
       </div>
 
-      {/* Stats Cards */}
+      {/* Ciclo de Vida Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-              <Users className="w-6 h-6 text-white" />
+        {Object.entries(settings).map(([key, value]) => (
+          <div key={key} className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                  value ? 'bg-gradient-to-br from-green-500 to-emerald-600' : 'bg-gradient-to-br from-red-500 to-red-600'
+                }`}>
+                  {value ? (
+                    <Eye className="w-6 h-6 text-white" />
+                  ) : (
+                    <EyeOff className="w-6 h-6 text-white" />
+                  )}
+                </div>
+                <div>
+                  <p className="text-white font-semibold">{getSettingLabel(key)}</p>
+                  <p className="text-slate-400 text-sm">{getSettingDescription(key)}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => toggleSetting(key)}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 ${
+                  value ? 'bg-green-600' : 'bg-red-600'
+                }`}
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                    value ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
             </div>
-            <div>
-              <p className="text-slate-400 text-sm">Total Usuarios</p>
-              <p className="text-2xl font-bold text-white">1,234</p>
+            <div className="flex items-center gap-2">
+              <div className={`w-2 h-2 rounded-full ${value ? 'bg-green-400' : 'bg-red-400'}`}></div>
+              <span className={`text-sm font-medium ${value ? 'text-green-400' : 'text-red-400'}`}>
+                {value ? 'Activo' : 'Cerrado'}
+              </span>
             </div>
           </div>
-        </div>
-        
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center">
-              <TrendingUp className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <p className="text-slate-400 text-sm">Registros Hoy</p>
-              <p className="text-2xl font-bold text-white">56</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center">
-              <BarChart3 className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <p className="text-slate-400 text-sm">Ingresos Mes</p>
-              <p className="text-2xl font-bold text-white">$12,450</p>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
 
-      {/* System Controls */}
-      <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
-        <div className="flex items-center gap-3 mb-6">
-          <Settings className="w-5 h-5 text-blue-400" />
-          <h2 className="text-xl font-semibold text-white">Controles del Sistema</h2>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {Object.entries(settings).map(([key, value]) => (
-            <div key={key} className="bg-slate-700/30 border border-slate-600 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-medium text-white">{getSettingLabel(key)}</h3>
-                <button
-                  onClick={() => toggleSetting(key)}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 ${
-                    value ? 'bg-blue-600' : 'bg-slate-600'
-                  }`}
-                >
-                  <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                      value ? 'translate-x-6' : 'translate-x-1'
-                    }`}
-                  />
-                </button>
-              </div>
-              
-              <p className="text-sm text-slate-400 mb-3">
-                {getSettingDescription(key)}
-              </p>
-              
-              <div className="flex items-center gap-2">
-                {value ? (
-                  <Eye className="w-4 h-4 text-green-400" />
-                ) : (
-                  <EyeOff className="w-4 h-4 text-red-400" />
-                )}
-                <span className={`text-sm font-medium ${value ? 'text-green-400' : 'text-red-400'}`}>
-                  {value ? 'Activo' : 'Cerrado'}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
 
       {/* Recent Activity */}
       <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
