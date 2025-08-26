@@ -141,6 +141,8 @@ export function AdminUsers() {
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">País</th>
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">Invita a</th>
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">Código</th>
+                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Dinero</th>
+                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Binance de Pay</th>
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">ID Orden</th>
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">ID Admin</th>
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">Fecha</th>
@@ -174,6 +176,14 @@ export function AdminUsers() {
                     </td>
                     <td className="py-4 px-6">
                       <p className="text-slate-300 text-sm font-mono">{user.codigo_full || 'N/A'}</p>
+                    </td>
+                    <td className="py-4 px-6">
+                      <span className={`px-2 py-1 rounded-full text-xs ${user.has_money ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+                        {user.has_money ? 'Sí' : 'No'}
+                      </span>
+                    </td>
+                    <td className="py-4 px-6">
+                      <p className="text-slate-300 text-sm">{user.payment_method}</p>
                     </td>
                     <td className="py-4 px-6">
                       <p className="text-slate-300 text-sm">{user.binance_id_step2 || 'N/A'}</p>
@@ -319,12 +329,14 @@ export function AdminUsers() {
                               <p className="font-medium text-slate-200">{selectedUser.invitee}</p>
                             </div>
                             <div>
-                              <p className="text-xs text-white font-inter">Código Completo:</p>
-                              <p className="font-medium text-slate-200 font-mono">{selectedUser.codigo_full || 'N/A'}</p>
+                              <p className="text-xs text-white font-inter">Dinero:</p>
+                              <p className={`font-medium ${selectedUser.has_money ? 'text-green-400' : 'text-red-400'}`}>
+                                {selectedUser.has_money ? 'Sí' : 'No'}
+                              </p>
                             </div>
                             <div>
-                              <p className="text-xs text-white font-inter">Ticket ID:</p>
-                              <p className="font-medium text-slate-200 font-mono">{selectedUser.ticket_id || 'N/A'}</p>
+                              <p className="text-xs text-white font-inter">Binance de Pay:</p>
+                              <p className="font-medium text-slate-200">{selectedUser.payment_method}</p>
                             </div>
                           </div>
 
