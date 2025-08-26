@@ -44,6 +44,69 @@ export type Database = {
         }
         Relationships: []
       }
+      notifications: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          is_published: boolean
+          title: string
+          updated_at: string
+          video_url: string | null
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          is_published?: boolean
+          title: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          is_published?: boolean
+          title?: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Relationships: []
+      }
+      qr_settings: {
+        Row: {
+          code_id: string
+          created_at: string
+          id: string
+          is_active: boolean
+          qr_image_url: string | null
+          remaining_time: number
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          code_id: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          qr_image_url?: string | null
+          remaining_time: number
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          code_id?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          qr_image_url?: string | null
+          remaining_time?: number
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       register: {
         Row: {
           binance_id: string | null
@@ -164,65 +227,26 @@ export type Database = {
         }
         Relationships: []
       }
-      registrations: {
+      system_settings: {
         Row: {
-          binance_id: string | null
-          binance_id_step2: string | null
-          binance_id_step3: string | null
-          codigo_full: string | null
-          codigo_masked: string | null
-          country: string
           created_at: string
-          form_type: string
-          has_money: boolean
           id: string
-          invitee: string
-          name: string
-          order_id_1: string | null
-          order_id_2: string | null
-          payment_method: string
-          phone: string
-          ticket_id: string | null
+          setting_key: string
+          setting_value: boolean
           updated_at: string
         }
         Insert: {
-          binance_id?: string | null
-          binance_id_step2?: string | null
-          binance_id_step3?: string | null
-          codigo_full?: string | null
-          codigo_masked?: string | null
-          country: string
           created_at?: string
-          form_type: string
-          has_money: boolean
           id?: string
-          invitee: string
-          name: string
-          order_id_1?: string | null
-          order_id_2?: string | null
-          payment_method: string
-          phone: string
-          ticket_id?: string | null
+          setting_key: string
+          setting_value?: boolean
           updated_at?: string
         }
         Update: {
-          binance_id?: string | null
-          binance_id_step2?: string | null
-          binance_id_step3?: string | null
-          codigo_full?: string | null
-          codigo_masked?: string | null
-          country?: string
           created_at?: string
-          form_type?: string
-          has_money?: boolean
           id?: string
-          invitee?: string
-          name?: string
-          order_id_1?: string | null
-          order_id_2?: string | null
-          payment_method?: string
-          phone?: string
-          ticket_id?: string | null
+          setting_key?: string
+          setting_value?: boolean
           updated_at?: string
         }
         Relationships: []

@@ -1,0 +1,217 @@
+import { useState, useEffect } from 'react';
+import { BarChart3, Users, TrendingUp, Settings, Eye, EyeOff } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+
+interface SystemSetting {
+  id: string;
+  setting_key: string;
+  setting_value: boolean;
+}
+
+export function AdminDashboard() {
+  const [settings, setSettings] = useState<Record<string, boolean>>({});
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('*');
+
+      if (error) throw error;
+
+      const settingsMap: Record<string, boolean> = {};
+      data?.forEach((setting: SystemSetting) => {
+        settingsMap[setting.setting_key] = setting.setting_value;
+      });
+      
+      setSettings(settingsMap);
+    } catch (error) {
+      console.error('Error fetching settings:', error);
+      toast({
+        title: "Error",
+        description: "No se pudieron cargar las configuraciones",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const toggleSetting = async (key: string) => {
+    try {
+      const newValue = !settings[key];
+      
+      const { error } = await supabase
+        .from('system_settings')
+        .update({ setting_value: newValue })
+        .eq('setting_key', key);
+
+      if (error) throw error;
+
+      setSettings(prev => ({ ...prev, [key]: newValue }));
+      
+      toast({
+        title: "Configuración actualizada",
+        description: `${getSettingLabel(key)} ${newValue ? 'activado' : 'desactivado'}`,
+      });
+    } catch (error) {
+      console.error('Error updating setting:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo actualizar la configuración",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const getSettingLabel = (key: string) => {
+    switch (key) {
+      case 'register_25usd_enabled': return 'Registro 25 USD';
+      case 'register_150usd_enabled': return 'Registro 150 USD';
+      case 'eduplatform_enabled': return 'Eduplatform';
+      default: return key;
+    }
+  };
+
+  const getSettingDescription = (key: string) => {
+    switch (key) {
+      case 'register_25usd_enabled': return 'Permite el registro con plan de 25 USD';
+      case 'register_150usd_enabled': return 'Permite el registro con plan de 150 USD';
+      case 'eduplatform_enabled': return 'Activa la plataforma educativa';
+      default: return 'Configuración del sistema';
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="text-slate-400">Cargando dashboard...</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-white">Dashboard</h1>
+          <p className="text-slate-400">Panel de control y configuraciones del sistema</p>
+        </div>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+              <Users className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <p className="text-slate-400 text-sm">Total Usuarios</p>
+              <p className="text-2xl font-bold text-white">1,234</p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center">
+              <TrendingUp className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <p className="text-slate-400 text-sm">Registros Hoy</p>
+              <p className="text-2xl font-bold text-white">56</p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center">
+              <BarChart3 className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <p className="text-slate-400 text-sm">Ingresos Mes</p>
+              <p className="text-2xl font-bold text-white">$12,450</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* System Controls */}
+      <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+        <div className="flex items-center gap-3 mb-6">
+          <Settings className="w-5 h-5 text-blue-400" />
+          <h2 className="text-xl font-semibold text-white">Controles del Sistema</h2>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {Object.entries(settings).map(([key, value]) => (
+            <div key={key} className="bg-slate-700/30 border border-slate-600 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-medium text-white">{getSettingLabel(key)}</h3>
+                <button
+                  onClick={() => toggleSetting(key)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 ${
+                    value ? 'bg-blue-600' : 'bg-slate-600'
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                      value ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                  />
+                </button>
+              </div>
+              
+              <p className="text-sm text-slate-400 mb-3">
+                {getSettingDescription(key)}
+              </p>
+              
+              <div className="flex items-center gap-2">
+                {value ? (
+                  <Eye className="w-4 h-4 text-green-400" />
+                ) : (
+                  <EyeOff className="w-4 h-4 text-red-400" />
+                )}
+                <span className={`text-sm font-medium ${value ? 'text-green-400' : 'text-red-400'}`}>
+                  {value ? 'Activo' : 'Cerrado'}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Recent Activity */}
+      <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+        <h2 className="text-xl font-semibold text-white mb-4">Actividad Reciente</h2>
+        <div className="space-y-3">
+          <div className="flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg">
+            <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+            <span className="text-slate-300 text-sm">Nuevo usuario registrado - Juan Pérez</span>
+            <span className="text-slate-500 text-xs ml-auto">Hace 5 min</span>
+          </div>
+          <div className="flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg">
+            <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+            <span className="text-slate-300 text-sm">Configuración actualizada - Registro 25 USD</span>
+            <span className="text-slate-500 text-xs ml-auto">Hace 15 min</span>
+          </div>
+          <div className="flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg">
+            <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+            <span className="text-slate-300 text-sm">Notificación publicada - Bienvenida</span>
+            <span className="text-slate-500 text-xs ml-auto">Hace 1 hora</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

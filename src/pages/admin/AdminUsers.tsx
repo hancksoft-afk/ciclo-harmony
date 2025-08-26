@@ -183,7 +183,7 @@ export function AdminUsers() {
                       </span>
                     </td>
                     <td className="py-4 px-6">
-                      <p className="text-slate-300 text-sm">{user.payment_method}</p>
+                      <p className="text-slate-300 text-sm">{user.binance_id || 'N/A'}</p>
                     </td>
                     <td className="py-4 px-6">
                       <p className="text-slate-300 text-sm">{user.binance_id_step2 || 'N/A'}</p>
@@ -283,7 +283,7 @@ export function AdminUsers() {
                             <div>
                               <p className="text-xs tracking-wider text-white font-inter"># ADMIT ONE</p>
                               <p className="mt-3 text-xs text-white font-inter">ID</p>
-                              <p className="text-sm font-medium text-slate-200">{selectedUser.id.substr(0, 8).toUpperCase()}</p>
+                              <p className="text-sm font-medium text-slate-200">{selectedUser.ticket_id || 'N/A'}</p>
                             </div>
                             <div>
                               <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Orden</p>
@@ -336,7 +336,7 @@ export function AdminUsers() {
                             </div>
                             <div>
                               <p className="text-xs text-white font-inter">Binance de Pay:</p>
-                              <p className="font-medium text-slate-200">{selectedUser.payment_method}</p>
+                              <p className="font-medium text-slate-200">{selectedUser.binance_id || 'N/A'}</p>
                             </div>
                           </div>
 
