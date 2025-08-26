@@ -20,6 +20,7 @@ export function AdminSidebar({ collapsed, setCollapsed }: SidebarProps) {
   const navigation = [
     { name: 'Dashboard', href: '/adminhub/dashboard', icon: LayoutDashboard },
     { name: 'Usuarios', href: '/adminhub/users', icon: Users },
+    { name: 'Usuarios2', href: '/adminhub/users2', icon: UserCheck },
     { name: 'Analytics', href: '/adminhub/analytics', icon: BarChart3 },
     { name: 'Reportes', href: '/adminhub/reports', icon: FileText },
     { name: 'Notificaciones', href: '/adminhub/notifications', icon: Bell },
@@ -89,15 +90,15 @@ export function AdminSidebar({ collapsed, setCollapsed }: SidebarProps) {
           })}
         </nav>
 
-        {/* Floating Home Button */}
+        {/* Floating Zoom Button */}
         <div className="px-4 mb-4">
           <a
             href="/"
-            className="group flex items-center justify-center w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 animate-pulse"
-            title="Ir al inicio"
+            className="group flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full shadow-lg hover:shadow-xl hover:scale-125 transition-all duration-500 animate-bounce"
+            title="Zoom al inicio"
           >
             <svg
-              className="w-6 h-6 text-white group-hover:scale-110 transition-transform duration-200"
+              className="w-6 h-6 text-white group-hover:scale-125 transition-transform duration-300"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

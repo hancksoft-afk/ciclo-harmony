@@ -12,6 +12,7 @@ import { AdminLogin } from "./components/admin/AdminLogin";
 import { AdminLayout } from "./components/admin/AdminLayout";
 import { AdminDashboard } from "./components/admin/AdminDashboard";
 import { AdminUsers } from "./pages/admin/AdminUsers";
+import { AdminUsers2 } from "./pages/admin/AdminUsers2";
 import { AdminAnalytics } from "./pages/admin/AdminAnalytics";
 import { AdminReports } from "./pages/admin/AdminReports";
 import { AdminNotifications } from "./pages/admin/AdminNotifications";
@@ -42,6 +43,7 @@ const App = () => (
               <Route index element={<AdminDashboard />} />
               <Route path="dashboard" element={<AdminDashboard />} />
               <Route path="users" element={<AdminUsers />} />
+              <Route path="users2" element={<AdminUsers2 />} />
               <Route path="analytics" element={<AdminAnalytics />} />
               <Route path="reports" element={<AdminReports />} />
               <Route path="notifications" element={<AdminNotifications />} />

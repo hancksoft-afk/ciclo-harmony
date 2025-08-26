@@ -1,8 +1,39 @@
+import { useState, useEffect } from "react";
 import { RitualCard } from "@/components/ritual-card";
+import { NotificationModal } from "@/components/NotificationModal";
 import { Sunrise, Wind } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import cicloLogo from "@/assets/ciclo-logo.png";
 
 const Index = () => {
+  const [systemSettings, setSystemSettings] = useState<any>({});
+
+  useEffect(() => {
+    fetchSystemSettings();
+  }, []);
+
+  const fetchSystemSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('*');
+
+      if (error) throw error;
+
+      const settingsMap: any = {};
+      data?.forEach((setting) => {
+        settingsMap[setting.setting_key] = setting.setting_value;
+      });
+      setSystemSettings(settingsMap);
+    } catch (error) {
+      console.error('Error fetching system settings:', error);
+    }
+  };
+
+  const isCardVisible = (cardType: string) => {
+    return systemSettings[cardType] !== false;
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground antialiased selection:bg-ciclo-emerald/20 selection:text-ciclo-emerald-foreground">
       {/* Background Image */}
@@ -34,45 +65,51 @@ const Index = () => {
 
           {/* Cards Grid */}
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 my-12">
-            <RitualCard
-              title="Registardo 25 USD"
-              subtitle="Bienvenido"
-              description="Whisk, breathe, and be present. Today's ritual celebrated calm, bright energy."
-              status="Nuevo Registardo"
-              linkText="Continue ritual"
-              linkHref="/register"
-              variant="emerald"
-              videoSrc="https://cdn.pixabay.com/video/2021/02/17/65494-514501826_large.mp4"
-              videoPoster="https://cdn.pixabay.com/video/2021/02/17/65494-514501826_tiny.jpg?w=800&q=80"
-              icon={<Sunrise className="w-full h-full" strokeWidth={1.5} />}
-              delay={0}
-            />
+            {isCardVisible('register_25_visible') && (
+              <RitualCard
+                title="Registardo 25 USD"
+                subtitle="Bienvenido"
+                description="Whisk, breathe, and be present. Today's ritual celebrated calm, bright energy."
+                status="Nuevo Registardo"
+                linkText="Continue ritual"
+                linkHref="/register"
+                variant="emerald"
+                videoSrc="https://cdn.pixabay.com/video/2021/02/17/65494-514501826_large.mp4"
+                videoPoster="https://cdn.pixabay.com/video/2021/02/17/65494-514501826_tiny.jpg?w=800&q=80"
+                icon={<Sunrise className="w-full h-full" strokeWidth={1.5} />}
+                delay={0}
+              />
+            )}
             
-            <RitualCard
-              title="Registardo 150 USD"
-              subtitle="Bienvenido"
-              description="Cursos en línea y mejora tus habilidades desde cualquier lugar del mundo."
-              status="Nuevo Registardo"
-              linkText="Start ritual"
-              linkHref="/register150"
-              variant="cyan"
-              videoSrc="https://cdn.pixabay.com/video/2021/02/20/65771-515379416_large.mp4"
-              videoPoster="https://cdn.pixabay.com/video/2021/02/20/65771-515379416_tiny.jpg?w=800&q=80"
-              icon={<Wind className="w-full h-full" strokeWidth={1.5} />}
-              delay={100}
-            />
+            {isCardVisible('register_150_visible') && (
+              <RitualCard
+                title="Registardo 150 USD"
+                subtitle="Bienvenido"
+                description="Cursos en línea y mejora tus habilidades desde cualquier lugar del mundo."
+                status="Nuevo Registardo"
+                linkText="Start ritual"
+                linkHref="/register150"
+                variant="cyan"
+                videoSrc="https://cdn.pixabay.com/video/2021/02/20/65771-515379416_large.mp4"
+                videoPoster="https://cdn.pixabay.com/video/2021/02/20/65771-515379416_tiny.jpg?w=800&q=80"
+                icon={<Wind className="w-full h-full" strokeWidth={1.5} />}
+                delay={100}
+              />
+            )}
             
-            <RitualCard
-              title="EduPlatform"
-              subtitle=""
-              description="A curated tea-ritual library with guided ceremonies for every mood and moment."
-              status="Virutal Binance"
-              linkText="Explore rituals"
-              variant="violet"
-              videoSrc="https://cdn.pixabay.com/video/2021/02/20/65772-515379427_large.mp4"
-              videoPoster="https://cdn.pixabay.com/video/2021/02/20/65772-515379427_tiny.jpg?w=800&q=80"
-              delay={200}
-            />
+            {isCardVisible('eduplatform_visible') && (
+              <RitualCard
+                title="EduPlatform"
+                subtitle=""
+                description="A curated tea-ritual library with guided ceremonies for every mood and moment."
+                status="Virutal Binance"
+                linkText="Explore rituals"
+                variant="violet"
+                videoSrc="https://cdn.pixabay.com/video/2021/02/20/65772-515379427_large.mp4"
+                videoPoster="https://cdn.pixabay.com/video/2021/02/20/65772-515379427_tiny.jpg?w=800&q=80"
+                delay={200}
+              />
+            )}
           </div>
 
           {/* Footer */}
@@ -92,6 +129,8 @@ const Index = () => {
           </footer>
         </div>
       </main>
+      
+      <NotificationModal />
     </div>
   );
 };

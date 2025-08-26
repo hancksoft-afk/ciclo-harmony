@@ -46,6 +46,32 @@ export function RegistrationForm() {
   const [orderId2] = useState(Math.random().toString(36).substr(2, 9).toUpperCase());
   const [ticketId] = useState(Math.random().toString(36).substr(2, 9).toUpperCase());
   const [generatedCodes, setGeneratedCodes] = useState<{codigo: string, oculto: string} | null>(null);
+  const [qrSettings, setQrSettings] = useState<any>(null);
+
+  // Load QR settings on mount
+  useEffect(() => {
+    fetchQrSettings();
+  }, []);
+
+  const fetchQrSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('qr_settings')
+        .select('*')
+        .eq('type', 'register')
+        .eq('is_active', true)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Error fetching QR settings:', error);
+        return;
+      }
+
+      setQrSettings(data);
+    } catch (error) {
+      console.error('Error fetching QR settings:', error);
+    }
+  };
 
   // Timer effects
   useEffect(() => {
@@ -442,9 +468,17 @@ export function RegistrationForm() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="rounded-xl bg-[#0f1522] ring-1 ring-white/10 p-4 grid place-items-center">
                   <div className="rounded-lg bg-white p-3">
-                    <div className="h-48 w-48 bg-gray-200 rounded flex items-center justify-center">
-                      <span className="text-gray-500 text-sm">QR Code</span>
-                    </div>
+                    {qrSettings?.qr_image_url ? (
+                      <img 
+                        src={qrSettings.qr_image_url} 
+                        alt="QR Code" 
+                        className="h-48 w-48 object-contain rounded"
+                      />
+                    ) : (
+                      <div className="h-48 w-48 bg-gray-200 rounded flex items-center justify-center">
+                        <span className="text-gray-500 text-sm">QR Code</span>
+                      </div>
+                    )}
                   </div>
                   <p className="text-xs text-muted-foreground mt-3 font-inter">Usa tu app para escanear</p>
                 </div>
