@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Bell, Video, FileText, Send, Eye, EyeOff, Calendar, Upload, X } from 'lucide-react';
+import { Plus, Bell, Video, FileText, Send, Eye, EyeOff, Calendar, Upload, X, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -113,6 +113,33 @@ export function AdminNotifications() {
     }
   };
 
+  const deleteNotification = async (id: string) => {
+    if (!confirm('¿Estás seguro de que quieres eliminar esta notificación?')) return;
+
+    try {
+      const { error } = await supabase
+        .from('notifications')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Notificación eliminada",
+        description: "La notificación se ha eliminado exitosamente",
+      });
+
+      fetchNotifications();
+    } catch (error) {
+      console.error('Error deleting notification:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo eliminar la notificación",
+        variant: "destructive"
+      });
+    }
+  };
+
   const togglePublish = async (id: string, currentStatus: boolean) => {
     try {
       const { error } = await supabase
@@ -172,7 +199,7 @@ export function AdminNotifications() {
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                     <Bell className="w-6 h-6 text-white" />
                   </div>
-                  <div>
+                  <div className="flex-1">
                     <h3 className="font-medium text-white">{notification.title}</h3>
                     <p className="text-sm text-slate-400">{notification.description}</p>
                     <div className="flex items-center gap-2 mt-2">
@@ -187,6 +214,15 @@ export function AdminNotifications() {
                         </>
                       )}
                     </div>
+                    {notification.video_url && (
+                      <div className="mt-3">
+                        <video
+                          src={notification.video_url}
+                          className="w-32 h-20 object-cover rounded border border-slate-600"
+                          controls
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
                 
@@ -210,6 +246,13 @@ export function AdminNotifications() {
                         Borrador
                       </>
                     )}
+                  </button>
+                  <button
+                    onClick={() => deleteNotification(notification.id)}
+                    className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition"
+                    title="Eliminar notificación"
+                  >
+                    <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
               </div>

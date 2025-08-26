@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { UserCheck, Download, Search, Calendar, DollarSign, CreditCard, FileText, Smartphone, MapPin, User, Code, CheckCircle, XCircle } from 'lucide-react';
+import { UserCheck, Download, Search, Calendar, DollarSign, CreditCard, FileText, Smartphone, MapPin, User, Code, CheckCircle, XCircle, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -319,54 +319,115 @@ export function AdminUsers2() {
       {/* Invoice Modal */}
       {showInvoiceModal && selectedUser && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 w-full max-w-md">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold text-white">Factura</h3>
+          <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-4xl p-8">
+            <div className="flex items-start justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <FileText className="w-8 h-8 text-rose-300" />
+                <div>
+                  <h3 className="text-2xl font-bold text-rose-300 font-inter">
+                    Tu Ticket
+                  </h3>
+                  <span className="text-xs text-slate-300/80 font-inter">finalizado</span>
+                </div>
+              </div>
               <button
                 onClick={() => setShowInvoiceModal(false)}
-                className="text-slate-400 hover:text-white transition"
+                className="p-2 text-slate-400 hover:text-white transition rounded-lg hover:bg-slate-700"
               >
-                <XCircle className="w-5 h-5" />
+                <X className="w-6 h-6" />
               </button>
             </div>
             
-            <div className="space-y-3 text-sm">
-              <div className="flex justify-between">
-                <span className="text-slate-400">Usuario:</span>
-                <span className="text-white">{selectedUser.name}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-400">WhatsApp:</span>
-                <span className="text-white">{selectedUser.phone}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-400">País:</span>
-                <span className="text-white">{selectedUser.country}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-400">Método de Pago:</span>
-                <span className="text-white">{selectedUser.payment_method}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-400">ID Admin:</span>
-                <span className="text-white">{selectedUser.ticket_id || 'N/A'}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-400">Fecha:</span>
-                <span className="text-white">{new Date(selectedUser.created_at).toLocaleDateString()}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-400">Estado:</span>
-                <span className={selectedUser.has_money ? 'text-green-400' : 'text-red-400'}>
-                  {selectedUser.has_money ? 'Aprobado' : 'Pendiente'}
-                </span>
-              </div>
-              <div className="border-t border-slate-600 pt-3 mt-3">
-                <div className="flex justify-between font-bold">
-                  <span className="text-slate-300">Total:</span>
-                  <span className="text-white">$150.00 USD</span>
+            <div className="rounded-2xl bg-gradient-to-b from-[#c14500] to-[#5b0101] border-white/10 overflow-hidden shadow-2xl">
+              <div className="flex flex-col sm:flex-row">
+                <div className="sm:w-48 p-5 bg-gradient-to-b from-[#5b0101] to-[#c14500] relative">
+                  <div className="flex flex-col h-full justify-between">
+                    <div>
+                      <p className="text-xs tracking-wider text-white font-inter"># ADMIT ONE</p>
+                      <p className="mt-3 text-xs text-white font-inter">ID</p>
+                      <p className="text-sm font-medium text-slate-200 font-mono">{selectedUser.ticket_id || Math.random().toString(36).substr(2, 6).toUpperCase()}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Orden</p>
+                      <p className="text-sm font-medium text-amber-300 font-mono">{selectedUser.order_id_1 || 'N/A'}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Administrador</p>
+                      <p className="text-sm font-medium text-amber-300 font-mono">{selectedUser.ticket_id || 'N/A'}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex-1 p-6">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h4 className="text-lg sm:text-xl font-semibold tracking-tight text-[#f9ff01] font-inter">
+                        Detalles del registro
+                      </h4>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs uppercase tracking-wider text-white font-inter">Titular</p>
+                      <p className="text-sm font-medium text-slate-200">{selectedUser.name}</p>
+                    </div>
+                  </div>
+
+                  <div className="h-px bg-white/10 my-4" />
+
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
+                    <div>
+                      <p className="text-xs text-white font-inter">Nombres:</p>
+                      <p className="font-medium text-slate-200">{selectedUser.name}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-white font-inter">WhatsApp:</p>
+                      <p className="font-medium text-slate-200">{selectedUser.phone}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-white font-inter">País:</p>
+                      <p className="font-medium text-slate-200">{selectedUser.country}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-white font-inter">Invita a:</p>
+                      <p className="font-medium text-slate-200">{selectedUser.invitee}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-white font-inter">Dinero:</p>
+                      <p className="font-medium text-slate-200">{selectedUser.has_money ? 'Sí' : 'No'}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-white font-inter">Binance de Pay:</p>
+                      <p className="font-medium text-slate-200">{selectedUser.binance_id || 'N/A'}</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 p-4 bg-black/20 rounded-lg">
+                    <div className="grid grid-cols-8 gap-1">
+                      {Array.from({ length: 64 }, (_, i) => (
+                        <div
+                          key={i}
+                          className={`h-2 ${i % 2 === 0 ? 'bg-[#f9ff01]' : 'bg-black'}`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-4 text-center">
+                    <p className="text-xs text-white font-inter">Conserva este ticket para futuras referencias.</p>
+                    <p className="text-xs text-amber-300 font-mono mt-1">
+                      Código: {selectedUser.codigo_masked || `${Math.random().toString(36).substr(2, 4).toUpperCase()}xxxxxxxxxxxx`}
+                    </p>
+                  </div>
                 </div>
               </div>
+            </div>
+
+            <div className="mt-6 text-center">
+              <button
+                onClick={() => setShowInvoiceModal(false)}
+                className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl font-semibold transition-all duration-300 shadow-lg"
+              >
+                Confirmar
+              </button>
             </div>
           </div>
         </div>
