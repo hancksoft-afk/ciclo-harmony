@@ -44,6 +44,7 @@ export function RegistrationForm() {
   const [timer2, setTimer2] = useState(30 * 60);
   const [orderId1] = useState(Math.random().toString(36).substr(2, 9).toUpperCase());
   const [orderId2] = useState(Math.random().toString(36).substr(2, 9).toUpperCase());
+  const [ticketId] = useState(Math.random().toString(36).substr(2, 9).toUpperCase());
   const [generatedCodes, setGeneratedCodes] = useState<{codigo: string, oculto: string} | null>(null);
 
   // Timer effects
@@ -141,7 +142,7 @@ export function RegistrationForm() {
           binance_id_step3: formData.binanceIdStep3,
           order_id_1: orderId1,
           order_id_2: orderId2,
-          ticket_id: Math.random().toString(36).substr(2, 9).toUpperCase(),
+          ticket_id: ticketId,
           codigo_full: codes.codigo,
           codigo_masked: codes.oculto,
         });
@@ -692,7 +693,7 @@ export function RegistrationForm() {
                           <div>
                             <p className="text-xs tracking-wider text-white font-inter"># ADMIT ONE</p>
                             <p className="mt-3 text-xs text-white font-inter">ID</p>
-                            <p className="text-sm font-medium text-slate-200">{Math.random().toString(36).substr(2, 9).toUpperCase()}</p>
+                            <p className="text-sm font-medium text-slate-200">{ticketId}</p>
                           </div>
                           <div>
                             <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Orden</p>

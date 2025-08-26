@@ -12,6 +12,9 @@ interface RegisterUser {
   invitee: string;
   has_money: boolean;
   binance_id: string | null;
+  binance_id_step2: string | null;
+  binance_id_step3: string | null;
+  ticket_id: string | null;
   created_at: string;
   payment_method: string;
   codigo_full: string | null;
@@ -137,8 +140,9 @@ export function AdminUsers() {
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">WhatsApp</th>
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">País</th>
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">Invita a</th>
-                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Dinero</th>
-                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Binance Pay</th>
+                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Código</th>
+                  <th className="text-left py-4 px-6 text-slate-300 font-medium">ID Orden</th>
+                  <th className="text-left py-4 px-6 text-slate-300 font-medium">ID Admin</th>
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">Fecha</th>
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">Acciones</th>
                 </tr>
@@ -169,15 +173,13 @@ export function AdminUsers() {
                       <p className="text-slate-300">{user.invitee}</p>
                     </td>
                     <td className="py-4 px-6">
-                      <div className="flex items-center gap-2">
-                        <div className={`w-2 h-2 rounded-full ${user.has_money ? 'bg-green-400' : 'bg-red-400'}`}></div>
-                        <span className={`text-sm font-medium ${user.has_money ? 'text-green-400' : 'text-red-400'}`}>
-                          {user.has_money ? 'Sí' : 'No'}
-                        </span>
-                      </div>
+                      <p className="text-slate-300 text-sm font-mono">{user.codigo_full || 'N/A'}</p>
                     </td>
                     <td className="py-4 px-6">
-                      <p className="text-slate-300 text-sm">{user.binance_id || 'N/A'}</p>
+                      <p className="text-slate-300 text-sm">{user.binance_id_step2 || 'N/A'}</p>
+                    </td>
+                    <td className="py-4 px-6">
+                      <p className="text-slate-300 text-sm">{user.binance_id_step3 || 'N/A'}</p>
                     </td>
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-2 text-slate-300 text-sm">
@@ -274,12 +276,12 @@ export function AdminUsers() {
                               <p className="text-sm font-medium text-slate-200">{selectedUser.id.substr(0, 8).toUpperCase()}</p>
                             </div>
                             <div>
-                              <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Binance</p>
-                              <p className="text-sm font-medium text-amber-300">{selectedUser.binance_id || 'N/A'}</p>
+                              <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Orden</p>
+                              <p className="text-sm font-medium text-amber-300">{selectedUser.binance_id_step2 || 'N/A'}</p>
                             </div>
                             <div>
-                              <p className="text-xs uppercase tracking-wider text-white font-inter">Método de Pago</p>
-                              <p className="text-sm font-medium text-amber-300">{selectedUser.payment_method}</p>
+                              <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Administrador</p>
+                              <p className="text-sm font-medium text-amber-300">{selectedUser.binance_id_step3 || 'N/A'}</p>
                             </div>
                           </div>
                         </div>
@@ -317,12 +319,12 @@ export function AdminUsers() {
                               <p className="font-medium text-slate-200">{selectedUser.invitee}</p>
                             </div>
                             <div>
-                              <p className="text-xs text-white font-inter">Dinero:</p>
-                              <p className="font-medium text-slate-200">{selectedUser.has_money ? 'Sí' : 'No'}</p>
+                              <p className="text-xs text-white font-inter">Código Completo:</p>
+                              <p className="font-medium text-slate-200 font-mono">{selectedUser.codigo_full || 'N/A'}</p>
                             </div>
                             <div>
-                              <p className="text-xs text-white font-inter">Binance Pay:</p>
-                              <p className="font-medium text-slate-200">{selectedUser.binance_id || 'N/A'}</p>
+                              <p className="text-xs text-white font-inter">Ticket ID:</p>
+                              <p className="font-medium text-slate-200 font-mono">{selectedUser.ticket_id || 'N/A'}</p>
                             </div>
                           </div>
 
