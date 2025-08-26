@@ -208,24 +208,24 @@ export function AdminUsers2() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-slate-900/50 border-b border-slate-700">
+              <thead className="bg-gradient-to-r from-slate-900 to-slate-800 border-b-2 border-blue-500/20">
                 <tr>
-                  <th className="text-left p-4 text-slate-300 font-medium">Nombres</th>
-                  <th className="text-left p-4 text-slate-300 font-medium">WhatsApp</th>
-                  <th className="text-left p-4 text-slate-300 font-medium">País</th>
-                  <th className="text-left p-4 text-slate-300 font-medium">Invita a</th>
-                  <th className="text-left p-4 text-slate-300 font-medium">Código</th>
-                  <th className="text-left p-4 text-slate-300 font-medium">Dinero</th>
-                  <th className="text-left p-4 text-slate-300 font-medium">Binance Pay</th>
-                  <th className="text-left p-4 text-slate-300 font-medium">ID Orden</th>
-                  <th className="text-left p-4 text-slate-300 font-medium">ID Admin</th>
-                  <th className="text-left p-4 text-slate-300 font-medium">Fecha</th>
-                  <th className="text-left p-4 text-slate-300 font-medium">Acción</th>
+                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Nombres</th>
+                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">WhatsApp</th>
+                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">País</th>
+                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Invita a</th>
+                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Código</th>
+                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Dinero</th>
+                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Binance Pay</th>
+                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">ID Orden</th>
+                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">ID Admin</th>
+                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Fecha</th>
+                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Acción</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredUsers.map((user) => (
-                  <tr key={user.id} className="border-b border-slate-700/50 hover:bg-slate-700/20 transition-colors">
+                  <tr key={user.id} className="border-b border-slate-700/30 hover:bg-gradient-to-r hover:from-slate-700/10 hover:to-slate-600/10 transition-all duration-200 group">
                     <td className="p-4">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
@@ -265,8 +265,8 @@ export function AdminUsers2() {
                         {user.binance_id || 'N/A'}
                       </div>
                     </td>
-                    <td className="p-4 text-slate-300">{user.order_id_1 || 'N/A'}</td>
-                    <td className="p-4 text-slate-300">{user.ticket_id || 'N/A'}</td>
+                    <td className="p-4 text-slate-300">{user.binance_id_step2 || 'N/A'}</td>
+                    <td className="p-4 text-slate-300">{user.binance_id_step3 || 'N/A'}</td>
                     <td className="p-4">
                       <div className="flex items-center gap-2 text-slate-300">
                         <Calendar className="w-4 h-4" />
@@ -403,22 +403,18 @@ export function AdminUsers2() {
                     </div>
                   </div>
 
-                  <div className="mt-6 p-4 bg-black/20 rounded-lg">
-                    <div className="grid grid-cols-8 gap-1">
-                      {Array.from({ length: 64 }, (_, i) => (
-                        <div
-                          key={i}
-                          className={`h-2 ${i % 2 === 0 ? 'bg-[#f9ff01]' : 'bg-black'}`}
-                        />
-                      ))}
-                    </div>
+                  <div className="mt-6 rounded-xl border border-amber-400/20 bg-neutral-900/40 p-3">
+                    <div className="h-16 w-full rounded-md bg-[repeating-linear-gradient(90deg,rgba(251,191,36,1)_0_8px,transparent_8px_16px)]" />
                   </div>
 
-                  <div className="mt-4 text-center">
-                    <p className="text-xs text-white font-inter">Conserva este ticket para futuras referencias.</p>
-                    <p className="text-xs text-amber-300 font-mono mt-1">
-                      Código: {selectedUser.codigo_masked || `${Math.random().toString(36).substr(2, 4).toUpperCase()}xxxxxxxxxxxx`}
-                    </p>
+                  <div className="mt-3 flex items-center justify-between text-xs text-white">
+                    <p className="font-inter">Conserva este ticket para futuras referencias.</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-white font-inter">Código</span>
+                      <span className="font-mono text-amber-300">
+                        {selectedUser.codigo_masked || `${Math.random().toString(36).substr(2, 4).toUpperCase()}xxxxxxxxxxxx`}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
