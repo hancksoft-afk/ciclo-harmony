@@ -290,6 +290,42 @@ export type Database = {
         }
         Relationships: []
       }
+      user_actions_history2: {
+        Row: {
+          action_type: string
+          admin_action_by: string | null
+          created_at: string
+          id: string
+          updated_at: string
+          user_country: string
+          user_id: string
+          user_name: string
+          user_phone: string
+        }
+        Insert: {
+          action_type: string
+          admin_action_by?: string | null
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_country: string
+          user_id: string
+          user_name: string
+          user_phone: string
+        }
+        Update: {
+          action_type?: string
+          admin_action_by?: string | null
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_country?: string
+          user_id?: string
+          user_name?: string
+          user_phone?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

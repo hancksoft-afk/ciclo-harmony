@@ -48,7 +48,7 @@ export function AdminReports2() {
   const fetchActions = async () => {
     try {
       const { data, error } = await supabase
-        .from('user_actions_history')
+        .from('user_actions_history2')
         .select('*')
         .order('created_at', { ascending: false });
 

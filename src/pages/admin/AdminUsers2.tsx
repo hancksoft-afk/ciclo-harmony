@@ -52,7 +52,7 @@ export function AdminUsers2() {
 
       // Fetch processed user IDs from history
       const { data: historyData, error: historyError } = await supabase
-        .from('user_actions_history')
+        .from('user_actions_history2')
         .select('user_id');
 
       if (historyError) throw historyError;
@@ -99,7 +99,7 @@ export function AdminUsers2() {
 
       // Save to history
       const { error: historyError } = await supabase
-        .from('user_actions_history')
+        .from('user_actions_history2')
         .insert({
           user_id: userId,
           user_name: user.name,
