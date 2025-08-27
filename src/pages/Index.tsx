@@ -31,7 +31,7 @@ const Index = () => {
   };
 
   const isCardVisible = (cardType: string) => {
-    return systemSettings[cardType] !== false;
+    return systemSettings[cardType] === true;
   };
 
   return (
