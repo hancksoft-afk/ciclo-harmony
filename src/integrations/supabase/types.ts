@@ -256,7 +256,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_active_qr_setting: {
+        Args: { qr_type: string }
+        Returns: {
+          code_id: string
+          qr_image_url: string
+          remaining_time: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
