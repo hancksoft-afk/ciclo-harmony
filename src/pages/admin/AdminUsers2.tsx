@@ -158,7 +158,7 @@ export function AdminUsers2() {
       });
 
       // Navigate to Reports2 page
-      navigate('/adminhub/reportes2');
+      navigate('/admin/reportes2');
     } catch (error) {
       console.error('Error updating user status:', error);
       toast({

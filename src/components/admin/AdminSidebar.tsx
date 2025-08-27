@@ -18,14 +18,14 @@ export function AdminSidebar({ collapsed, setCollapsed }: SidebarProps) {
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   const navigation = [
-    { name: 'Dashboard', href: '/adminhub/dashboard', icon: LayoutDashboard },
-    { name: 'Usuarios', href: '/adminhub/users', icon: Users },
-    { name: 'Usuarios2', href: '/adminhub/users2', icon: UserCheck },
-    { name: 'Analytics', href: '/adminhub/analytics', icon: BarChart3 },
-    { name: 'Reportes', href: '/adminhub/reportes', icon: FileText },
-    { name: 'Reportes2', href: '/adminhub/reportes2', icon: FileText },
-    { name: 'Notificaciones', href: '/adminhub/notifications', icon: Bell },
-    { name: 'Configuración', href: '/adminhub/settings', icon: Settings },
+    { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+    { name: 'Usuarios', href: '/admin/users', icon: Users },
+    { name: 'Usuarios2', href: '/admin/users2', icon: UserCheck },
+    { name: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
+    { name: 'Reportes', href: '/admin/reportes', icon: FileText },
+    { name: 'Reportes2', href: '/admin/reportes2', icon: FileText },
+    { name: 'Notificaciones', href: '/admin/notifications', icon: Bell },
+    { name: 'Configuración', href: '/admin/settings', icon: Settings },
   ];
 
   const handleLogout = () => {
@@ -56,7 +56,7 @@ export function AdminSidebar({ collapsed, setCollapsed }: SidebarProps) {
             </div>
             {!collapsed && (
               <div>
-                <h1 className="text-white font-bold text-lg">AdminHub</h1>
+                <h1 className="text-white font-bold text-lg">Panel Admin</h1>
                 <p className="text-slate-400 text-xs">Panel de Control</p>
               </div>
             )}

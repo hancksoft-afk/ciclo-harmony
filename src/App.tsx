@@ -35,8 +35,8 @@ const App = () => (
             <Route path="/register150" element={<Register150 />} />
             
             {/* Admin Routes */}
-            <Route path="/adminhub/login" element={<AdminLogin />} />
-            <Route path="/adminhub" element={
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={
               <ProtectedRoute>
                 <AdminLayout />
               </ProtectedRoute>

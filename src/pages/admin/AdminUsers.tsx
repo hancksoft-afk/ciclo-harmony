@@ -107,7 +107,7 @@ export function AdminUsers() {
       });
       
       // Navigate to reports page
-      navigate('/adminhub/reports');
+      navigate('/admin/reportes');
     } catch (error) {
       toast({
         title: "Error",

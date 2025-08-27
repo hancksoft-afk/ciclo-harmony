@@ -30,7 +30,7 @@ export function AdminLogin() {
     const success = await login(email, password);
     
     if (success) {
-      navigate('/adminhub/dashboard');
+      navigate('/admin/dashboard');
     } else {
       setError('Credenciales inválidas');
     }
@@ -66,7 +66,7 @@ export function AdminLogin() {
       // Now login the user
       const success = await login(registerData.email, registerData.password);
       if (success) {
-        navigate('/adminhub/dashboard');
+        navigate('/admin/dashboard');
       } else {
         setError('Error al iniciar sesión después del registro');
       }
@@ -95,7 +95,7 @@ export function AdminLogin() {
             <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-4">
               <Shield className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-white mb-2">Bienvenido a AdminHub</h1>
+            <h1 className="text-2xl font-bold text-white mb-2">Bienvenido al Panel Admin</h1>
             <p className="text-slate-400">Accede a tu panel de administración</p>
           </div>
 
