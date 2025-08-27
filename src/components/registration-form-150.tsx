@@ -46,10 +46,12 @@ export function RegistrationForm150() {
   const [orderId2] = useState(Math.random().toString(36).substr(2, 9).toUpperCase());
   const [generatedCodes, setGeneratedCodes] = useState<{codigo: string, oculto: string, ticketId: string} | null>(null);
   const [qrSettings, setQrSettings] = useState<any>(null);
+  const [adminQrSettings, setAdminQrSettings] = useState<any>(null);
 
   // Load QR settings on mount
   useEffect(() => {
     fetchQrSettings();
+    fetchAdminQrSettings();
   }, []);
 
   const fetchQrSettings = async () => {
@@ -67,6 +69,24 @@ export function RegistrationForm150() {
       }
     } catch (error) {
       console.error('Error fetching QR settings:', error);
+    }
+  };
+
+  const fetchAdminQrSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .rpc('get_active_qr_setting', { qr_type: 'register150_admin' });
+
+      if (error) {
+        console.error('Error fetching admin QR settings:', error);
+        return;
+      }
+
+      if (data && data.length > 0) {
+        setAdminQrSettings(data[0]);
+      }
+    } catch (error) {
+      console.error('Error fetching admin QR settings:', error);
     }
   };
 
@@ -577,9 +597,9 @@ export function RegistrationForm150() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="rounded-xl bg-[#0f1522] ring-1 ring-white/10 p-4 grid place-items-center">
                   <div className="rounded-lg bg-white p-3">
-                    {qrSettings?.qr_image_url ? (
+                    {adminQrSettings?.qr_image_url ? (
                       <img 
-                        src={qrSettings.qr_image_url} 
+                        src={adminQrSettings.qr_image_url} 
                         alt="QR Code Admin" 
                         className="h-48 w-48 object-contain rounded"
                       />
