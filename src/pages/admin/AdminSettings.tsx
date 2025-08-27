@@ -9,6 +9,7 @@ interface QrSetting {
   code_id: string;
   remaining_time: number;
   qr_image_url: string | null;
+  qr_image_url2: string | null;
   is_active: boolean;
 }
 

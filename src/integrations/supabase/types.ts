@@ -81,6 +81,7 @@ export type Database = {
           id: string
           is_active: boolean
           qr_image_url: string | null
+          qr_image_url2: string | null
           remaining_time: number
           type: string
           updated_at: string
@@ -91,6 +92,7 @@ export type Database = {
           id?: string
           is_active?: boolean
           qr_image_url?: string | null
+          qr_image_url2?: string | null
           remaining_time: number
           type: string
           updated_at?: string
@@ -101,6 +103,7 @@ export type Database = {
           id?: string
           is_active?: boolean
           qr_image_url?: string | null
+          qr_image_url2?: string | null
           remaining_time?: number
           type?: string
           updated_at?: string
