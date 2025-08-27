@@ -194,7 +194,7 @@ export function AdminNotifications() {
         ) : (
           <div className="space-y-4">
             {notifications.map((notification) => (
-              <div key={notification.id} className="flex items-center justify-between p-4 bg-slate-700/30 border border-slate-600 rounded-lg">
+              <div key={notification.id} className="bg-gradient-to-r from-slate-800/50 to-slate-700/30 border border-slate-600/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-purple-500/30">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                     <Bell className="w-6 h-6 text-white" />

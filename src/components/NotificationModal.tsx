@@ -83,7 +83,6 @@ export function NotificationModal() {
                 controls
                 autoPlay
                 muted
-                onEnded={nextNotification}
               />
               {!isPlaying && (
                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
@@ -107,7 +106,7 @@ export function NotificationModal() {
             </div>
 
             {/* Navigation */}
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 {notifications.map((_, index) => (
                   <div
@@ -123,12 +122,14 @@ export function NotificationModal() {
                 <span className="text-slate-400 text-sm">
                   {currentIndex + 1} de {notifications.length}
                 </span>
-                <button
-                  onClick={nextNotification}
-                  className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
-                >
-                  Siguiente
-                </button>
+                {currentIndex < notifications.length - 1 && (
+                  <button
+                    onClick={nextNotification}
+                    className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
+                  >
+                    Siguiente
+                  </button>
+                )}
               </div>
             </div>
           </div>

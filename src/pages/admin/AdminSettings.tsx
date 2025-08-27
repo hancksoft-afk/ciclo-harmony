@@ -261,8 +261,8 @@ export function AdminSettings() {
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <QrForm type="register" title="Pago por QR Ciclo vida" />
-            <QrForm type="register150" title="Pago de QR (Admin)" />
+            <QrForm type="register" title="Pago por QR - 25 USD (Ciclo de vida)" />
+            <QrForm type="register150" title="Pago por QR - 150 USD (Admin)" />
           </div>
         )}
       </div>
