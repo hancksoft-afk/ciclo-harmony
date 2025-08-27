@@ -430,11 +430,12 @@ export function AdminUsers2() {
                   </div>
 
                   <div className="mt-6 rounded-xl border border-amber-400/20 bg-neutral-900/40 p-3">
-                    <div className="h-16 w-full rounded-md" style={{background: 'repeating-linear-gradient(90deg, rgba(251,191,36,1) 0 8px, transparent 8px 16px)'}} />
+                    <div className="h-16 w-full rounded-md bg-gradient-to-r from-amber-400 via-transparent to-amber-400" 
+                         style={{backgroundImage: 'repeating-linear-gradient(90deg, #fbbf24 0px, #fbbf24 8px, transparent 8px, transparent 16px)'}} />
                   </div>
 
                   <div className="mt-3 flex items-center justify-between text-xs text-white">
-                    <p className="font-inter">Conserva este ticket para futuras referencias.</p>
+                    <p className="text-white">Conserva este ticket para futuras referencias.</p>
                     <div className="flex items-center gap-2">
                       <span className="text-white font-inter">Código</span>
                       <span className="font-mono text-amber-300">

@@ -314,22 +314,18 @@ export function AdminReports2() {
 
                   <div className="h-px bg-white/10 my-4" />
 
-                  <div className="flex justify-between items-end">
-                    <div>
-                      <p className="text-xs text-white font-inter">Fecha de registro:</p>
-                      <p className="text-sm font-medium text-slate-200">
-                        {new Date(selectedUser.created_at).toLocaleDateString('es-ES', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-xs text-white font-inter">Estado:</p>
-                      <p className={`text-sm font-medium ${selectedUser.has_money ? 'text-green-400' : 'text-red-400'}`}>
-                        {selectedUser.has_money ? 'Aprobado' : 'Pendiente'}
-                      </p>
+                  <div className="mt-6 rounded-xl border border-amber-400/20 bg-neutral-900/40 p-3">
+                    <div className="h-16 w-full rounded-md bg-gradient-to-r from-amber-400 via-transparent to-amber-400" 
+                         style={{backgroundImage: 'repeating-linear-gradient(90deg, #fbbf24 0px, #fbbf24 8px, transparent 8px, transparent 16px)'}} />
+                  </div>
+
+                  <div className="mt-3 flex items-center justify-between text-xs text-white">
+                    <p className="text-white">Conserva este ticket para futuras referencias.</p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-white">Código</span>
+                      <span className="font-mono text-amber-300">
+                        {selectedUser.codigo_masked || `${Math.random().toString(36).substr(2, 4).toUpperCase()}xxxxxxxxxxxx`}
+                      </span>
                     </div>
                   </div>
                 </div>
