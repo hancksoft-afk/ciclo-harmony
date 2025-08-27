@@ -69,11 +69,10 @@ const Register150 = () => {
               content: '';
               position: absolute;
               border-radius: 20px;
-              left: -2px;
-              top: -2px;
-              background: linear-gradient(45deg, #fb0094, #ff9900, #ff0000, #ffff00, #ff7b00, #f7fb00,
-                        #ff000d, #ff7300, #ffff00, #ff0000);
-              background-size: 400%;
+              left: -3px;
+              top: -3px;
+              background: linear-gradient(45deg, #fb0094, #ff9900, #ff0000, #ffff00, #ff7b00, #f7fb00, #ff000d, #ff7300, #ffff00, #ff0000);
+              background-size: 400% 400%;
               width: calc(100% + 6px);
               height: calc(100% + 6px);
               z-index: -1;
@@ -82,15 +81,13 @@ const Register150 = () => {
 
             @keyframes steam150 {
               0% {
-                background-position: 0 0;
+                background-position: 0% 50%;
               }
-
               50% {
-                background-position: 400% 0;
+                background-position: 100% 50%;
               }
-
               100% {
-                background-position: 0 0;
+                background-position: 0% 50%;
               }
             }
 
