@@ -109,83 +109,66 @@ export function AdminDashboard() {
 
       {/* Metrics Cards */}
       {cardsVisible && (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {metrics.map((metric) => {
-          const Icon = metric.icon;
-          return (
-            <div
-              key={metric.title}
-              className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 hover:bg-slate-800/80 transition-colors"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div className={`p-2 rounded-lg border ${getColorClasses(metric.color)}`}>
-                  <Icon className="w-5 h-5" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {metrics.map((metric) => {
+            const Icon = metric.icon;
+            return (
+              <div
+                key={metric.title}
+                className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 hover:bg-slate-800/80 transition-colors"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className={`p-2 rounded-lg border ${getColorClasses(metric.color)}`}>
+                    <Icon className="w-5 h-5" />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <h3 className="text-slate-400 text-sm font-medium">{metric.title}</h3>
+                  <p className="text-2xl font-bold text-white">{metric.value}</p>
+                  <div className="flex items-center gap-1">
+                    {metric.trend === 'up' ? (
+                      <ArrowUpRight className="w-4 h-4 text-green-400" />
+                    ) : (
+                      <ArrowDownRight className="w-4 h-4 text-red-400" />
+                    )}
+                    <span className={`text-sm font-medium ${
+                      metric.trend === 'up' ? 'text-green-400' : 'text-red-400'
+                    }`}>
+                      {metric.change}
+                    </span>
+                    <span className="text-slate-400 text-sm">vs último mes</span>
+                  </div>
                 </div>
               </div>
-              
-              <div className="space-y-2">
-                <h3 className="text-slate-400 text-sm font-medium">{metric.title}</h3>
-                <p className="text-2xl font-bold text-white">{metric.value}</p>
-                <div className="flex items-center gap-1">
-                  {metric.trend === 'up' ? (
-                    <ArrowUpRight className="w-4 h-4 text-green-400" />
-                  ) : (
-                    <ArrowDownRight className="w-4 h-4 text-red-400" />
-                  )}
-                  <span className={`text-sm font-medium ${
-                    metric.trend === 'up' ? 'text-green-400' : 'text-red-400'
-                  }`}>
-                    {metric.change}
-                  </span>
-                  <span className="text-slate-400 text-sm">vs último mes</span>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Chart Placeholder */}
-        <div className="lg:col-span-2 bg-slate-800/50 border border-slate-700 rounded-xl p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold text-white">Análisis de Ingresos</h3>
-          </div>
-          
-          <div className="h-64 bg-slate-900/50 rounded-lg flex items-center justify-center border border-slate-700">
-            <div className="text-center">
-              <Activity className="w-12 h-12 text-slate-600 mx-auto mb-3" />
-              <p className="text-slate-400">Gráfico de ingresos aquí</p>
-              <p className="text-xs text-slate-500 mt-1">Integra tu librería de gráficos favorita</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Recent Activity */}
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
-          <h3 className="text-lg font-semibold text-white mb-6">Actividad Reciente</h3>
-          
-          <div className="space-y-4">
-            {recentActivity.map((activity) => (
-              <div key={activity.id} className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-slate-700 rounded-full flex items-center justify-center text-sm">
-                  {activity.avatar}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm text-white">
-                    <span className="font-medium">{activity.user}</span> {activity.action}
-                  </p>
-                  <p className="text-xs text-slate-400 mt-1">{activity.time}</p>
-                </div>
+      {/* Recent Activity */}
+      <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+        <h3 className="text-lg font-semibold text-white mb-6">Actividad Reciente</h3>
+        
+        <div className="space-y-4">
+          {recentActivity.map((activity) => (
+            <div key={activity.id} className="flex items-start gap-3">
+              <div className="w-8 h-8 bg-slate-700 rounded-full flex items-center justify-center text-sm">
+                {activity.avatar}
               </div>
-            ))}
-          </div>
-          
-          <button className="w-full mt-4 py-2 text-center text-blue-400 hover:text-blue-300 text-sm font-medium transition">
-            Ver toda la actividad
-          </button>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-white">
+                  <span className="font-medium">{activity.user}</span> {activity.action}
+                </p>
+                <p className="text-xs text-slate-400 mt-1">{activity.time}</p>
+              </div>
+            </div>
+          ))}
         </div>
+        
+        <button className="w-full mt-4 py-2 text-center text-blue-400 hover:text-blue-300 text-sm font-medium transition">
+          Ver toda la actividad
+        </button>
       </div>
 
       {/* Top Products */}

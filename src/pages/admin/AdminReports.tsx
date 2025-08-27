@@ -159,7 +159,7 @@ export function AdminReports() {
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">Admin</th>
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">Fecha</th>
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">Factura</th>
-                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Acciones</th>
+                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Código</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-700">
@@ -208,14 +208,20 @@ export function AdminReports() {
                         >
                           <FileText className="w-4 h-4" />
                         </button>
+                      </div>
+                    </td>
+                    <td className="py-4 px-6">
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-1 bg-slate-700 text-slate-300 rounded text-xs font-mono">
+                          {action.id.slice(0, 8).toUpperCase()}
+                        </span>
                         <button
                           onClick={() => {
                             if (confirm('¿Estás seguro de que quieres eliminar este registro?')) {
-                              // Add delete logic here
                               console.log('Eliminar acción:', action.id);
                             }
                           }}
-                          className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition"
+                          className="p-1 text-red-400 hover:text-red-300 transition"
                           title="Eliminar"
                         >
                           <Trash2 className="w-4 h-4" />
