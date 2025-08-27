@@ -178,7 +178,6 @@ export function AdminReports2() {
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Acción</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Admin</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Fecha</th>
-                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Ver Factura</th>
                 </tr>
               </thead>
               <tbody>
@@ -209,16 +208,6 @@ export function AdminReports2() {
                     <td className="p-4 text-slate-300">{action.admin_action_by}</td>
                     <td className="p-4 text-slate-300">
                       {new Date(action.created_at).toLocaleDateString()}
-                    </td>
-                    <td className="p-4">
-                      <button
-                        onClick={() => viewUserInvoice(action.user_id)}
-                        className="flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-xs rounded-lg transition"
-                        title="Ver Factura"
-                      >
-                        <Eye className="w-4 h-4" />
-                        Ver Factura
-                      </button>
                     </td>
                   </tr>
                 ))}
