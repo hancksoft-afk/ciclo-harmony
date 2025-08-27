@@ -81,7 +81,7 @@ export function NotificationModal() {
                 src={currentNotification.video_url}
                 className="w-full h-full object-cover"
                 controls
-                loop
+                controlsList="nodownload"
                 muted
                 preload="metadata"
               />

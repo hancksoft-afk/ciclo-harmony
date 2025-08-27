@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Settings, QrCode, Clock, Image, Upload, Save, X } from 'lucide-react';
+import { Settings, QrCode, Clock, Image, Upload, Save, X, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -249,6 +249,31 @@ export function AdminSettings() {
     }
   };
 
+  const handleDelete = async (id: string, type: string) => {
+    try {
+      const { error } = await supabase
+        .from('qr_settings')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Configuración eliminada",
+        description: `QR ${type} eliminado exitosamente`,
+      });
+
+      fetchQrSettings();
+    } catch (error) {
+      console.error('Error deleting QR setting:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo eliminar la configuración",
+        variant: "destructive"
+      });
+    }
+  };
+
   const QrForm = ({ title, description, type, setting, onSave, loading, isUploading, imageFiles, imagePreviews, onImageChange }: QrFormProps) => {
     const imagePreview = imagePreviews[type] || setting?.qr_image_url;
 
@@ -258,10 +283,20 @@ export function AdminSettings() {
           <div className="p-2 bg-blue-500/20 rounded-lg">
             <QrCode className="w-5 h-5 text-blue-400" />
           </div>
-          <div>
+          <div className="flex-1">
             <h3 className="text-lg font-semibold text-white mb-1">{title}</h3>
             <p className="text-sm text-slate-400">{description}</p>
           </div>
+          {setting && (
+            <button
+              type="button"
+              onClick={() => handleDelete(setting.id, setting.type)}
+              className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/20 rounded-lg transition-colors"
+              title="Eliminar configuración"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
         <form id={`form-${type}`} className="space-y-6">
@@ -364,10 +399,20 @@ export function AdminSettings() {
                   <div className="p-2 bg-blue-500/20 rounded-lg">
                     <QrCode className="w-5 h-5 text-blue-400" />
                   </div>
-                  <div>
+                  <div className="flex-1">
                     <h3 className="text-lg font-semibold text-white mb-1">{config.title}</h3>
                     <p className="text-sm text-slate-400">{config.description}</p>
                   </div>
+                  {setting && (
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(setting.id, setting.type)}
+                      className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/20 rounded-lg transition-colors"
+                      title="Eliminar configuración"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
                 </div>
 
                 <form id={`form-${config.type}`} className="space-y-6">

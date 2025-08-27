@@ -76,7 +76,8 @@ export function RitualCard({
       badge: 'bg-ciclo-emerald/20 text-ciclo-emerald-foreground',
       border: 'border-ciclo-emerald/50',
       text: 'text-ciclo-emerald-foreground',
-      icon: 'text-ciclo-emerald-foreground'
+      icon: 'text-ciclo-emerald-foreground',
+      bg: 'bg-ciclo-emerald/20'
     },
     cyan: {
       ring: 'ring-ciclo-cyan/10',
@@ -84,7 +85,8 @@ export function RitualCard({
       badge: 'bg-ciclo-cyan/20 text-ciclo-cyan-foreground',
       border: 'border-ciclo-cyan/50',
       text: 'text-ciclo-cyan-foreground',
-      icon: 'text-ciclo-cyan-foreground'
+      icon: 'text-ciclo-cyan-foreground',
+      bg: 'bg-ciclo-cyan/20'
     },
     violet: {
       ring: 'ring-ciclo-violet/10',
@@ -92,7 +94,8 @@ export function RitualCard({
       badge: 'bg-ciclo-violet/20 text-ciclo-violet-foreground',
       border: 'border-ciclo-violet/50',
       text: 'text-ciclo-violet-foreground',
-      icon: 'text-ciclo-violet-foreground'
+      icon: 'text-ciclo-violet-foreground',
+      bg: 'bg-ciclo-violet/20'
     }
   };
 
@@ -161,16 +164,22 @@ export function RitualCard({
             {linkHref.startsWith('/') ? (
               <Link 
                 to={linkHref}
-                className={`${classes.text} text-sm hover:underline transition-colors font-inter font-medium`}
+                className={`inline-flex items-center gap-2 px-4 py-2 ${classes.bg} ${classes.text} text-sm font-medium rounded-xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl backdrop-blur-sm border border-white/10`}
               >
                 {linkText}
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
               </Link>
             ) : (
               <a 
                 href={linkHref} 
-                className={`${classes.text} text-sm hover:underline transition-colors font-inter font-medium`}
+                className={`inline-flex items-center gap-2 px-4 py-2 ${classes.bg} ${classes.text} text-sm font-medium rounded-xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl backdrop-blur-sm border border-white/10`}
               >
                 {linkText}
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
               </a>
             )}
           </div>
