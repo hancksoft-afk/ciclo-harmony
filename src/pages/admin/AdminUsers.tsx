@@ -31,6 +31,7 @@ export function AdminUsers() {
   const [loading, setLoading] = useState(true);
   const [showInvoiceModal, setShowInvoiceModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<RegisterUser | null>(null);
+  const [processedUserIds, setProcessedUserIds] = useState<string[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -39,13 +40,27 @@ export function AdminUsers() {
 
   const fetchUsers = async () => {
     try {
-      const { data, error } = await supabase
+      // Fetch all users
+      const { data: usersData, error: usersError } = await supabase
         .from('register')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      setUsers(data || []);
+      if (usersError) throw usersError;
+
+      // Fetch processed user IDs from history
+      const { data: historyData, error: historyError } = await supabase
+        .from('user_actions_history')
+        .select('user_id');
+
+      if (historyError) throw historyError;
+
+      const processedIds = historyData?.map(h => h.user_id) || [];
+      setProcessedUserIds(processedIds);
+      
+      // Filter out users that have already been processed
+      const pendingUsers = usersData?.filter(user => !processedIds.includes(user.id)) || [];
+      setUsers(pendingUsers);
     } catch (error) {
       console.error('Error fetching users:', error);
       toast({
@@ -83,6 +98,9 @@ export function AdminUsers() {
         return;
       }
 
+      // Remove user from local state
+      setUsers(prevUsers => prevUsers.filter(u => u.id !== userId));
+      
       toast({
         title: "Aprobado",
         description: "Usuario aprobado exitosamente",
@@ -124,6 +142,9 @@ export function AdminUsers() {
         return;
       }
 
+      // Remove user from local state
+      setUsers(prevUsers => prevUsers.filter(u => u.id !== userId));
+      
       toast({
         title: "Desaprobado", 
         description: "Usuario desaprobado",
