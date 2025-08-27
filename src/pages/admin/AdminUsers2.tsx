@@ -351,7 +351,7 @@ export function AdminUsers2() {
                     <div>
                       <p className="text-xs tracking-wider text-white font-inter"># ADMIT ONE</p>
                       <p className="mt-3 text-xs text-white font-inter">ID</p>
-                      <p className="text-sm font-medium text-slate-200 font-mono">{selectedUser.ticket_id || Math.random().toString(36).substr(2, 6).toUpperCase()}</p>
+                      <p className="text-sm font-medium text-slate-200 font-mono">{selectedUser.ticket_id || 'N/A'}</p>
                     </div>
                     <div className="space-y-1">
                       <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Orden</p>

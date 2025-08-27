@@ -44,7 +44,7 @@ export function RegistrationForm150() {
   const [timer2, setTimer2] = useState(30 * 60);
   const [orderId1] = useState(Math.random().toString(36).substr(2, 9).toUpperCase());
   const [orderId2] = useState(Math.random().toString(36).substr(2, 9).toUpperCase());
-  const [generatedCodes, setGeneratedCodes] = useState<{codigo: string, oculto: string} | null>(null);
+  const [generatedCodes, setGeneratedCodes] = useState<{codigo: string, oculto: string, ticketId: string} | null>(null);
 
   // Timer effects
   useEffect(() => {
@@ -122,10 +122,11 @@ export function RegistrationForm150() {
 
   const generarCodigoNumeroYOculto = () => {
     const codigo = generarCodigoNumero();
-    return { codigo, oculto: codigo.slice(0, 4) + 'x'.repeat(codigo.length - 4) };
+    const oculto = codigo.slice(0, 4) + 'x'.repeat(codigo.length - 4);
+    return { codigo, oculto, ticketId: oculto };
   };
 
-  const saveToSupabase = async (codes: { codigo: string; oculto: string }) => {
+  const saveToSupabase = async (codes: { codigo: string; oculto: string; ticketId: string }) => {
     try {
       const { error } = await supabase
         .from('register150')
@@ -141,7 +142,7 @@ export function RegistrationForm150() {
           binance_id_step3: formData.binanceIdStep3,
           order_id_1: orderId1,
           order_id_2: orderId2,
-          ticket_id: codes.oculto,
+          ticket_id: codes.ticketId,
           codigo_full: codes.codigo,
           codigo_masked: codes.oculto,
         });
@@ -695,7 +696,7 @@ export function RegistrationForm150() {
                           <div>
                             <p className="text-xs tracking-wider text-white font-inter"># ADMIT ONE</p>
                             <p className="mt-3 text-xs text-white font-inter">ID</p>
-                            <p className="text-sm font-medium text-slate-200 font-mono">{generatedCodes?.oculto || 'xxxxxxxxxxxx'}</p>
+                            <p className="text-sm font-medium text-slate-200 font-mono">{generatedCodes?.ticketId || 'xxxxxxxxxxxx'}</p>
                           </div>
                           <div className="space-y-1">
                             <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Orden</p>
