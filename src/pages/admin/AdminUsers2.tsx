@@ -450,7 +450,7 @@ export function AdminUsers2() {
             <div className="mt-6 text-center">
               <button
                 onClick={() => setShowInvoiceModal(false)}
-                className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl font-semibold transition-all duration-300 shadow-lg"
+                className="px-6 py-3 bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-white rounded-xl font-semibold transition-all duration-300 shadow-lg"
               >
                 Confirmar
               </button>

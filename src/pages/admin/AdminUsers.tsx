@@ -431,7 +431,7 @@ export function AdminUsers() {
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => setShowInvoiceModal(false)}
-                          className="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 bg-gradient-to-r from-cyan-500/20 to-violet-500/20 hover:from-cyan-500/30 hover:to-violet-500/30 border border-white/10 text-slate-100 transition"
+                          className="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 bg-gradient-to-r from-primary/20 to-secondary/20 hover:from-primary/30 hover:to-secondary/30 border border-white/10 text-white transition"
                         >
                           <CheckCircle2 className="w-4 h-4" />
                           Cerrar
