@@ -102,14 +102,6 @@ export function RitualCard({
   const classes = variantClasses[variant];
 
   return (
-    <div
-      ref={cardRef}
-      className={`transition-all duration-700 ease-out will-change-transform ${
-        isVisible 
-          ? 'opacity-100 translate-y-0 blur-0' 
-          : 'opacity-0 translate-y-8 blur-sm'
-      }`}
-    >
       <div
         className={`flex flex-col w-full aspect-[3/5] hover:scale-[1.03] transition-all duration-300 group sm:p-10 ring-1 ${classes.ring} bg-center relative overflow-hidden text-foreground bg-cover rounded-3xl pt-8 pr-8 pb-8 pl-8 justify-between ${classes.shadow}`}
         style={{ backgroundImage: `url(${videoPoster})` }}
@@ -185,6 +177,5 @@ export function RitualCard({
           </div>
         </div>
       </div>
-    </div>
   );
 }

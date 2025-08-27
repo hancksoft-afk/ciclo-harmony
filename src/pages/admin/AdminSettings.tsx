@@ -33,7 +33,7 @@ interface QrFormGroupProps {
     description: string;
     type: string;
   }>;
-  onSave: () => void;
+  onSave: (type: string) => void;
   loading: boolean;
   isUploading: boolean;
   imageFiles: Record<string, File>;
@@ -502,25 +502,28 @@ export function AdminSettings() {
         </div>
 
         <div className="pt-4 border-t border-slate-700/50 space-y-3">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <button
-              type="button"
-              onClick={onSave}
-              disabled={isUploading}
-              className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg text-sm"
-            >
-              <Save className="w-4 h-4" />
-              {isUploading ? 'Guardando...' : 'QR $25 USD'}
-            </button>
-            <button
-              type="button"
-              onClick={onSave}
-              disabled={isUploading}
-              className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg text-sm"
-            >
-              <Save className="w-4 h-4" />
-              {isUploading ? 'Guardando...' : 'QR $150 USD'}
-            </button>
+          <div className="grid grid-cols-2 gap-3">
+            {qrSettingsConfig.map((config, index) => (
+              <button
+                key={config.type}
+                type="button"
+                onClick={() => handleSave(config.type)}
+                disabled={isUploading}
+                className={`flex items-center justify-center gap-2 px-4 py-3 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg text-sm ${
+                  index === 0 
+                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800'
+                    : 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800'
+                }`}
+              >
+                <Save className="w-4 h-4" />
+                {isUploading ? 'Guardando...' : (
+                  config.type === 'register' ? 'Ciclo de vida' :
+                  config.type === 'register_admin' ? 'Admin $25' :
+                  config.type === 'register150' ? 'Ciclo de vida' :
+                  'Admin $150'
+                )}
+              </button>
+            ))}
           </div>
         </div>
       </div>
@@ -557,7 +560,7 @@ export function AdminSettings() {
               type: "register_admin"
             }
           ]}
-          onSave={() => handleSaveGroup(['register', 'register_admin'])}
+          onSave={handleSave}
           loading={loading}
           isUploading={isUploading}
           imageFiles={imageFiles}
@@ -588,7 +591,7 @@ export function AdminSettings() {
               type: "register150_admin"
             }
           ]}
-          onSave={() => handleSaveGroup(['register150', 'register150_admin'])}
+          onSave={handleSave}
           loading={loading}
           isUploading={isUploading}
           imageFiles={imageFiles}
