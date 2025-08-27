@@ -68,9 +68,8 @@ export function AdminSidebar({ collapsed, setCollapsed }: SidebarProps) {
           {navigation.map((item) => {
             const isActive = location.pathname === item.href;
             return (
-              <NavLink
+              <div
                 key={item.name}
-                to={item.href}
                 className={`
                   flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors
                   ${isActive 
@@ -86,7 +85,7 @@ export function AdminSidebar({ collapsed, setCollapsed }: SidebarProps) {
                 {!collapsed && isActive && (
                   <div className="ml-auto w-2 h-2 bg-white rounded-full" />
                 )}
-              </NavLink>
+              </div>
             );
           })}
         </nav>

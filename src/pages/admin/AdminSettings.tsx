@@ -501,16 +501,27 @@ export function AdminSettings() {
           })}
         </div>
 
-        <div className="pt-4 border-t border-slate-700/50">
-          <button
-            type="button"
-            onClick={onSave}
-            disabled={isUploading}
-            className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
-          >
-            <Save className="w-4 h-4" />
-            {isUploading ? 'Guardando...' : 'Guardar Configuración'}
-          </button>
+        <div className="pt-4 border-t border-slate-700/50 space-y-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button
+              type="button"
+              onClick={onSave}
+              disabled={isUploading}
+              className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg text-sm"
+            >
+              <Save className="w-4 h-4" />
+              {isUploading ? 'Guardando...' : 'QR $25 USD'}
+            </button>
+            <button
+              type="button"
+              onClick={onSave}
+              disabled={isUploading}
+              className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg text-sm"
+            >
+              <Save className="w-4 h-4" />
+              {isUploading ? 'Guardando...' : 'QR $150 USD'}
+            </button>
+          </div>
         </div>
       </div>
     );

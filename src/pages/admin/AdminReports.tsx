@@ -163,7 +163,7 @@ export function AdminReports() {
                   <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">👨‍💼 Admin</th>
                   <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">📅 Fecha</th>
                   <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">📄 Factura</th>
-                  <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">🔢 Código</th>
+                  
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-700/30">
@@ -216,7 +216,7 @@ export function AdminReports() {
                     </td>
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-2">
-                        <p className="text-slate-300 text-sm font-mono">{action.id.slice(0, 8).toUpperCase()}</p>
+                        
                         <button
                           onClick={() => {
                             if (confirm('¿Estás seguro de que quieres eliminar este registro?')) {

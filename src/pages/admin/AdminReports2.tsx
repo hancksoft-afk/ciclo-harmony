@@ -252,7 +252,7 @@ export function AdminReports2() {
                     </td>
                     <td className="p-4 text-slate-300">{action.user_phone}</td>
                     <td className="p-4 text-slate-300">{action.user_country}</td>
-                    <td className="p-4 text-slate-300 font-mono">{action.user_code}</td>
+                    <td className="p-4 text-slate-300 font-mono">{action.user_code || 'N/A'}</td>
                     <td className="p-4">
                       <div className={`flex items-center gap-2 ${
                         action.action_type === 'approved' ? 'text-green-400' : 'text-red-400'
