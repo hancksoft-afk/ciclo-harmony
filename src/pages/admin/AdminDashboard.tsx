@@ -22,9 +22,13 @@ export function AdminDashboard() {
 
   const fetchSettings = async () => {
     try {
+      console.log('Fetching system settings...');
       const { data, error } = await supabase
         .from('system_settings')
         .select('*');
+
+      console.log('Settings data:', data);
+      console.log('Settings error:', error);
 
       if (error) throw error;
 
@@ -33,6 +37,7 @@ export function AdminDashboard() {
         settingsMap[setting.setting_key] = setting.setting_value;
       });
       
+      console.log('Settings map:', settingsMap);
       setSettings(settingsMap);
     } catch (error) {
       console.error('Error fetching settings:', error);
