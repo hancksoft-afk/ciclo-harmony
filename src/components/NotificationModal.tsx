@@ -81,25 +81,10 @@ export function NotificationModal() {
                 src={currentNotification.video_url}
                 className="w-full h-full object-cover"
                 controls
-                autoPlay
                 loop
                 muted
                 preload="metadata"
               />
-              
-              {/* Video Controls Overlay */}
-              <div className="absolute bottom-4 right-4 flex gap-2">
-                <button
-                  onClick={togglePlay}
-                  className="w-10 h-10 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center text-white transition-all duration-300 backdrop-blur-sm"
-                >
-                  {isPlaying ? (
-                    <Pause className="w-5 h-5" />
-                  ) : (
-                    <Play className="w-5 h-5 ml-0.5" />
-                  )}
-                </button>
-              </div>
             </div>
           )}
 
