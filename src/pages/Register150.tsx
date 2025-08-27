@@ -49,10 +49,54 @@ const Register150 = () => {
         <main className="relative mx-auto max-w-6xl px-4 pb-20 pt-8">
           <div className="grid grid-cols-1 gap-6">
             <section className="relative">
-              <RegistrationForm150 />
+              <div className="animated-border-register150">
+                <RegistrationForm150 />
+              </div>
             </section>
           </div>
         </main>
+        
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            .animated-border-register150 {
+              position: relative;
+              border-radius: 20px;
+            }
+            .animated-border-register150:before,
+            .animated-border-register150:after {
+              content: '';
+              position: absolute;
+              border-radius: 20px;
+              left: -2px;
+              top: -2px;
+              background: linear-gradient(45deg, #fb0094, #ff9900, #ff0000, #ffff00, #ff7b00, #f7fb00,
+                        #ff000d, #ff7300, #ffff00, #ff0000);
+              background-size: 400%;
+              width: calc(100% + 6px);
+              height: calc(100% + 6px);
+              z-index: -1;
+              animation: steam150 20s linear infinite;
+            }
+
+            @keyframes steam150 {
+              0% {
+                background-position: 0 0;
+              }
+
+              50% {
+                background-position: 400% 0;
+              }
+
+              100% {
+                background-position: 0 0;
+              }
+            }
+
+            .animated-border-register150:after {
+              filter: blur(57px);
+            }
+          `
+        }} />
       </div>
     </div>
   );

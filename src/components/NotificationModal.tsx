@@ -81,7 +81,6 @@ export function NotificationModal() {
                 src={currentNotification.video_url}
                 className="w-full h-full object-cover"
                 controls
-                autoPlay
                 muted
               />
               
