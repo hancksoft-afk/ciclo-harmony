@@ -22,7 +22,8 @@ export function AdminSidebar({ collapsed, setCollapsed }: SidebarProps) {
     { name: 'Usuarios', href: '/adminhub/users', icon: Users },
     { name: 'Usuarios2', href: '/adminhub/users2', icon: UserCheck },
     { name: 'Analytics', href: '/adminhub/analytics', icon: BarChart3 },
-    { name: 'Reportes', href: '/adminhub/reports', icon: FileText },
+    { name: 'Reportes', href: '/adminhub/reportes', icon: FileText },
+    { name: 'Reportes2', href: '/adminhub/reportes2', icon: FileText },
     { name: 'Notificaciones', href: '/adminhub/notifications', icon: Bell },
     { name: 'Configuración', href: '/adminhub/settings', icon: Settings },
   ];

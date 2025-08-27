@@ -15,6 +15,7 @@ import { AdminUsers } from "./pages/admin/AdminUsers";
 import { AdminUsers2 } from "./pages/admin/AdminUsers2";
 import { AdminAnalytics } from "./pages/admin/AdminAnalytics";
 import { AdminReports } from "./pages/admin/AdminReports";
+import { AdminReports2 } from "./pages/admin/AdminReports2";
 import { AdminNotifications } from "./pages/admin/AdminNotifications";
 import { AdminSettings } from "./pages/admin/AdminSettings";
 import { ProtectedRoute } from "./components/admin/ProtectedRoute";
@@ -45,7 +46,8 @@ const App = () => (
               <Route path="users" element={<AdminUsers />} />
               <Route path="users2" element={<AdminUsers2 />} />
               <Route path="analytics" element={<AdminAnalytics />} />
-              <Route path="reports" element={<AdminReports />} />
+              <Route path="reportes" element={<AdminReports />} />
+              <Route path="reportes2" element={<AdminReports2 />} />
               <Route path="notifications" element={<AdminNotifications />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>

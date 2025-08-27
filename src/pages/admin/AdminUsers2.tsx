@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { UserCheck, Download, Search, Calendar, DollarSign, CreditCard, FileText, Smartphone, MapPin, User, Code, CheckCircle, XCircle, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 interface Register150User {
   id: string;
@@ -31,7 +32,9 @@ export function AdminUsers2() {
   const [selectedUser, setSelectedUser] = useState<Register150User | null>(null);
   const [showInvoiceModal, setShowInvoiceModal] = useState(false);
   const [updating, setUpdating] = useState(false);
+  const [processedUserIds, setProcessedUserIds] = useState<string[]>([]);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUsers();
@@ -39,13 +42,27 @@ export function AdminUsers2() {
 
   const fetchUsers = async () => {
     try {
-      const { data, error } = await supabase
+      // Fetch all users
+      const { data: usersData, error: usersError } = await supabase
         .from('register150')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      setUsers(data || []);
+      if (usersError) throw usersError;
+
+      // Fetch processed user IDs from history
+      const { data: historyData, error: historyError } = await supabase
+        .from('user_actions_history')
+        .select('user_id');
+
+      if (historyError) throw historyError;
+
+      const processedIds = historyData?.map(h => h.user_id) || [];
+      setProcessedUserIds(processedIds);
+      
+      // Filter out users that have already been processed
+      const pendingUsers = usersData?.filter(user => !processedIds.includes(user.id)) || [];
+      setUsers(pendingUsers);
     } catch (error) {
       console.error('Error fetching users:', error);
       toast({
@@ -61,6 +78,7 @@ export function AdminUsers2() {
   const handleApproval = async (userId: string, approved: boolean) => {
     setUpdating(true);
     try {
+      // Update user status
       const { error } = await supabase
         .from('register150')
         .update({ has_money: approved })
@@ -68,14 +86,49 @@ export function AdminUsers2() {
 
       if (error) throw error;
 
-      setUsers(prev => prev.map(user => 
-        user.id === userId ? { ...user, has_money: approved } : user
-      ));
+      // Get user data for history
+      const user = users.find(u => u.id === userId);
+      if (!user) {
+        toast({
+          title: "Error",
+          description: "Usuario no encontrado",
+          variant: "destructive"
+        });
+        return;
+      }
 
+      // Save to history
+      const { error: historyError } = await supabase
+        .from('user_actions_history')
+        .insert({
+          user_id: userId,
+          user_name: user.name,
+          user_phone: user.phone,
+          user_country: user.country,
+          action_type: approved ? 'approved' : 'disapproved',
+          admin_action_by: 'admin'
+        });
+
+      if (historyError) {
+        console.error('Error saving to history:', historyError);
+        toast({
+          title: "Advertencia",
+          description: "Usuario actualizado pero no se pudo guardar en el historial",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // Remove user from local state
+      setUsers(prevUsers => prevUsers.filter(u => u.id !== userId));
+      
       toast({
-        title: approved ? "Usuario aprobado" : "Usuario desaprobado",
-        description: `El estado del usuario ha sido actualizado`,
+        title: approved ? "Aprobado" : "Desaprobado",
+        description: approved ? "Usuario aprobado exitosamente" : "Usuario desaprobado",
       });
+
+      // Navigate to Reports2 page
+      navigate('/adminhub/reportes2');
     } catch (error) {
       console.error('Error updating user status:', error);
       toast({
