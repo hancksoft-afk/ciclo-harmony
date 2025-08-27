@@ -2,8 +2,81 @@ import { Link } from 'react-router-dom';
 import { CircleX } from 'lucide-react';
 import { RegistrationForm } from '@/components/registration-form';
 import cicloLogo from '@/assets/ciclo-logo.png';
+import { useEffect, useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 const Register = () => {
+  const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkRegistrationStatus = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('system_settings')
+          .select('setting_value')
+          .eq('setting_key', 'registro_25')
+          .single();
+        
+        if (error) {
+          console.error('Error fetching registration status:', error);
+          setIsRegistrationOpen(false);
+        } else {
+          setIsRegistrationOpen(data?.setting_value || false);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        setIsRegistrationOpen(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkRegistrationStatus();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="relative bg-background text-foreground antialiased min-h-screen selection:bg-slate-200 selection:text-slate-900 font-inter flex items-center justify-center">
+        <div className="text-white">Cargando...</div>
+      </div>
+    );
+  }
+
+  if (!isRegistrationOpen) {
+    return (
+      <div className="relative bg-background text-foreground antialiased min-h-screen selection:bg-slate-200 selection:text-slate-900 font-inter">
+        {/* Background Video */}
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          className="fixed top-0 left-0 w-full h-full object-cover -z-10"
+        >
+          <source src="https://videos.pexels.com/video-files/18458403/18458403-hd_1920_1080_24fps.mp4" type="video/mp4" />
+        </video>
+
+        <div className="relative min-h-screen flex flex-col items-center justify-center text-center px-4">
+          <div className="mb-8">
+            <img src={cicloLogo} alt="Logo" className="h-20 w-auto mx-auto mb-4" />
+          </div>
+          <div className="bg-red-500/20 backdrop-blur-sm border border-red-500/30 rounded-lg p-8 max-w-md">
+            <h1 className="text-2xl font-bold text-white mb-4">Registro Cerrado</h1>
+            <p className="text-white/80 mb-6">El registro de 25 USD está cerrado temporalmente.</p>
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-6 py-2 rounded-md transition"
+            >
+              <CircleX className="w-4 h-4" />
+              Volver al inicio
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative bg-background text-foreground antialiased min-h-screen selection:bg-slate-200 selection:text-slate-900 font-inter">
       <style>{`
