@@ -75,18 +75,18 @@ export function AdminDashboard() {
 
   const getSettingLabel = (key: string) => {
     switch (key) {
-      case 'register_25usd_enabled': return 'Registro 25 USD';
-      case 'register_150usd_enabled': return 'Registro 150 USD';
-      case 'eduplatform_enabled': return 'Eduplatform';
+      case 'register_25_visible': return 'Registro 25 USD';
+      case 'register_150_visible': return 'Registro 150 USD';
+      case 'eduplatform_visible': return 'Eduplatform';
       default: return key;
     }
   };
 
   const getSettingDescription = (key: string) => {
     switch (key) {
-      case 'register_25usd_enabled': return 'Permite el registro con plan de 25 USD';
-      case 'register_150usd_enabled': return 'Permite el registro con plan de 150 USD';
-      case 'eduplatform_enabled': return 'Activa la plataforma educativa';
+      case 'register_25_visible': return 'Permite el registro con plan de 25 USD';
+      case 'register_150_visible': return 'Permite el registro con plan de 150 USD';
+      case 'eduplatform_visible': return 'Activa la plataforma educativa';
       default: return 'Configuración del sistema';
     }
   };
