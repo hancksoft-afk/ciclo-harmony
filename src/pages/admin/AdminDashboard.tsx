@@ -144,47 +144,124 @@ export function AdminDashboard() {
         </div>
       </div>
 
-      {/* Ciclo de Vida Cards */}
+      {/* Ciclo de Vida Toggle Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {Object.entries(settings).map(([key, value]) => (
-          <div key={key} className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                  value ? 'bg-gradient-to-br from-green-500 to-emerald-600' : 'bg-gradient-to-br from-red-500 to-red-600'
-                }`}>
-                  {value ? (
-                    <Eye className="w-6 h-6 text-white" />
-                  ) : (
-                    <EyeOff className="w-6 h-6 text-white" />
-                  )}
-                </div>
-                <div>
-                  <p className="text-white font-semibold">{getSettingLabel(key)}</p>
-                  <p className="text-slate-400 text-sm">{getSettingDescription(key)}</p>
-                </div>
+        {/* Registro 25 USD */}
+        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                settings['register_25_visible'] ? 'bg-gradient-to-br from-green-500 to-emerald-600' : 'bg-gradient-to-br from-red-500 to-red-600'
+              }`}>
+                {settings['register_25_visible'] ? (
+                  <Eye className="w-6 h-6 text-white" />
+                ) : (
+                  <EyeOff className="w-6 h-6 text-white" />
+                )}
               </div>
-              <button
-                onClick={() => toggleSetting(key)}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 ${
-                  value ? 'bg-green-600' : 'bg-red-600'
+              <div>
+                <p className="text-white font-semibold">Registro 25 USD</p>
+                <p className="text-slate-400 text-sm">Permite el registro con plan de 25 USD</p>
+              </div>
+            </div>
+            <button
+              onClick={() => toggleSetting('register_25_visible')}
+              className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 ${
+                settings['register_25_visible'] ? 'bg-green-600' : 'bg-red-600'
+              }`}
+            >
+              <span
+                className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform shadow-lg ${
+                  settings['register_25_visible'] ? 'translate-x-7' : 'translate-x-1'
                 }`}
-              >
-                <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                    value ? 'translate-x-6' : 'translate-x-1'
-                  }`}
-                />
-              </button>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className={`w-2 h-2 rounded-full ${value ? 'bg-green-400' : 'bg-red-400'}`}></div>
-              <span className={`text-sm font-medium ${value ? 'text-green-400' : 'text-red-400'}`}>
-                {value ? 'Activo' : 'Cerrado'}
-              </span>
-            </div>
+              />
+            </button>
           </div>
-        ))}
+          <div className="flex items-center gap-2">
+            <div className={`w-2 h-2 rounded-full ${settings['register_25_visible'] ? 'bg-green-400' : 'bg-red-400'}`}></div>
+            <span className={`text-sm font-medium ${settings['register_25_visible'] ? 'text-green-400' : 'text-red-400'}`}>
+              {settings['register_25_visible'] ? 'Abierto' : 'Cerrado'}
+            </span>
+          </div>
+        </div>
+
+        {/* Registro 150 USD */}
+        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                settings['register_150_visible'] ? 'bg-gradient-to-br from-green-500 to-emerald-600' : 'bg-gradient-to-br from-red-500 to-red-600'
+              }`}>
+                {settings['register_150_visible'] ? (
+                  <Eye className="w-6 h-6 text-white" />
+                ) : (
+                  <EyeOff className="w-6 h-6 text-white" />
+                )}
+              </div>
+              <div>
+                <p className="text-white font-semibold">Registro 150 USD</p>
+                <p className="text-slate-400 text-sm">Permite el registro con plan de 150 USD</p>
+              </div>
+            </div>
+            <button
+              onClick={() => toggleSetting('register_150_visible')}
+              className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 ${
+                settings['register_150_visible'] ? 'bg-green-600' : 'bg-red-600'
+              }`}
+            >
+              <span
+                className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform shadow-lg ${
+                  settings['register_150_visible'] ? 'translate-x-7' : 'translate-x-1'
+                }`}
+              />
+            </button>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className={`w-2 h-2 rounded-full ${settings['register_150_visible'] ? 'bg-green-400' : 'bg-red-400'}`}></div>
+            <span className={`text-sm font-medium ${settings['register_150_visible'] ? 'text-green-400' : 'text-red-400'}`}>
+              {settings['register_150_visible'] ? 'Abierto' : 'Cerrado'}
+            </span>
+          </div>
+        </div>
+
+        {/* EduPlatform */}
+        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                settings['eduplatform_visible'] ? 'bg-gradient-to-br from-green-500 to-emerald-600' : 'bg-gradient-to-br from-red-500 to-red-600'
+              }`}>
+                {settings['eduplatform_visible'] ? (
+                  <Eye className="w-6 h-6 text-white" />
+                ) : (
+                  <EyeOff className="w-6 h-6 text-white" />
+                )}
+              </div>
+              <div>
+                <p className="text-white font-semibold">EduPlatform</p>
+                <p className="text-slate-400 text-sm">Activa la plataforma educativa</p>
+              </div>
+            </div>
+            <button
+              onClick={() => toggleSetting('eduplatform_visible')}
+              className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 ${
+                settings['eduplatform_visible'] ? 'bg-green-600' : 'bg-red-600'
+              }`}
+            >
+              <span
+                className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform shadow-lg ${
+                  settings['eduplatform_visible'] ? 'translate-x-7' : 'translate-x-1'
+                }`}
+              />
+            </button>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className={`w-2 h-2 rounded-full ${settings['eduplatform_visible'] ? 'bg-green-400' : 'bg-red-400'}`}></div>
+            <span className={`text-sm font-medium ${settings['eduplatform_visible'] ? 'text-green-400' : 'text-red-400'}`}>
+              {settings['eduplatform_visible'] ? 'Abierto' : 'Cerrado'}
+            </span>
+          </div>
+        </div>
       </div>
 
 
