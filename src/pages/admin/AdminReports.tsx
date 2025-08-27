@@ -212,9 +212,7 @@ export function AdminReports() {
                     </td>
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-2">
-                        <span className="px-2 py-1 bg-slate-700 text-slate-300 rounded text-xs font-mono">
-                          {action.id.slice(0, 8).toUpperCase()}
-                        </span>
+                        <p className="text-slate-300 text-sm font-mono">{action.id.slice(0, 8).toUpperCase()}</p>
                         <button
                           onClick={() => {
                             if (confirm('¿Estás seguro de que quieres eliminar este registro?')) {
