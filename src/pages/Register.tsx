@@ -6,6 +6,42 @@ import cicloLogo from '@/assets/ciclo-logo.png';
 const Register = () => {
   return (
     <div className="relative bg-background text-foreground antialiased min-h-screen selection:bg-slate-200 selection:text-slate-900 font-inter">
+      <style>{`
+        .animated-border {
+          position: relative;
+          border-radius: 20px;
+        }
+        .animated-border:before,
+        .animated-border:after {
+          content: '';
+          position: absolute;
+          border-radius: 20px;
+          left: -2px;
+          top: -2px;
+          background: linear-gradient(21deg, #9f00fb, #090081, #8c00ff, #4500b3, #000399, #4000a7, #ef00ff, #5900ff, #0011ff, #3700ff);
+          background-size: 400%;
+          width: calc(100% + 6px);
+          height: calc(100% + 6px);
+          z-index: -1;
+          animation: steam 20s linear infinite;
+        }
+
+        @keyframes steam {
+          0% {
+            background-position: 0 0;
+          }
+          50% {
+            background-position: 400% 0;
+          }
+          100% {
+            background-position: 0 0;
+          }
+        }
+
+        .animated-border:after {
+          filter: blur(57px);
+        }
+      `}</style>
       {/* Background Video */}
       <video 
         autoPlay 
@@ -48,11 +84,7 @@ const Register = () => {
         {/* Main */}
         <main className="relative mx-auto max-w-6xl px-4 pb-20 pt-8">
           <div className="grid grid-cols-1 gap-6">
-            <section className="relative">
-              <div className="absolute inset-0 rounded-2xl">
-                <div className="absolute -left-2 -top-2 w-[calc(100%+16px)] h-[calc(100%+16px)] rounded-2xl bg-gradient-to-r from-violet-500 via-indigo-500 via-cyan-500 to-violet-500 bg-[length:400%_400%] animate-[gradient_20s_linear_infinite] opacity-75" />
-                <div className="absolute -left-2 -top-2 w-[calc(100%+16px)] h-[calc(100%+16px)] rounded-2xl bg-gradient-to-r from-violet-500 via-indigo-500 via-cyan-500 to-violet-500 bg-[length:400%_400%] animate-[gradient_20s_linear_infinite] blur-[57px] opacity-50" />
-              </div>
+            <section className="animated-border">
               <div className="relative z-10">
                 <RegistrationForm />
               </div>

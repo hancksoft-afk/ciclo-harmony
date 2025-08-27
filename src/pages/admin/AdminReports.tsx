@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Calendar, Check, X, Users, FileText } from 'lucide-react';
+import { Calendar, Check, X, Users, FileText, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface UserAction {
@@ -159,6 +159,7 @@ export function AdminReports() {
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">Admin</th>
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">Fecha</th>
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">Factura</th>
+                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Acciones</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-700">
@@ -199,13 +200,27 @@ export function AdminReports() {
                       </div>
                     </td>
                     <td className="py-4 px-6">
-                      <button
-                        onClick={() => fetchUserData(action.user_id)}
-                        className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
-                        title="Ver Factura"
-                      >
-                        <FileText className="w-4 h-4" />
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => fetchUserData(action.user_id)}
+                          className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition"
+                          title="Ver Factura"
+                        >
+                          <FileText className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (confirm('¿Estás seguro de que quieres eliminar este registro?')) {
+                              // Add delete logic here
+                              console.log('Eliminar acción:', action.id);
+                            }
+                          }}
+                          className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition"
+                          title="Eliminar"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

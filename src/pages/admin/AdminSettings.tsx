@@ -310,25 +310,14 @@ export function AdminSettings() {
                       className="w-32 h-32 object-cover rounded-xl shadow-lg border border-slate-600"
                     />
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setImageFiles(prev => {
-                        const newFiles = { ...prev };
-                        delete newFiles[type];
-                        return newFiles;
-                      });
-                      setImagePreviews(prev => {
-                        const newPreviews = { ...prev };
-                        delete newPreviews[type];
-                        return newPreviews;
-                      });
-                    }}
-                    className="text-red-400 hover:text-red-300 text-sm flex items-center gap-2 mx-auto transition"
-                  >
-                    <X className="w-4 h-4" />
-                    Remover imagen
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => handleImageRemove(type)}
+                      className="text-red-400 hover:text-red-300 text-sm flex items-center gap-2 mx-auto transition"
+                    >
+                      <X className="w-4 h-4" />
+                      Remover imagen
+                    </button>
                 </div>
               ) : (
                 <div>

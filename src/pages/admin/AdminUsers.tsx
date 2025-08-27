@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Filter, Plus, MoreHorizontal, Check, X, Receipt, Calendar, TicketCheck, CheckCircle2 } from 'lucide-react';
+import { Search, Filter, Plus, MoreHorizontal, Check, X, Receipt, Calendar, TicketCheck, CheckCircle2, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { toast } from 'sonner';
@@ -311,6 +311,18 @@ export function AdminUsers() {
                           title="Ver factura"
                         >
                           <Receipt className="w-4 h-4" />
+                        </button>
+                        <button 
+                          onClick={() => {
+                            if (confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
+                              // Add delete logic here
+                              console.log('Eliminar usuario:', user.id);
+                            }
+                          }}
+                          className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded transition"
+                          title="Eliminar"
+                        >
+                          <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
                     </td>
