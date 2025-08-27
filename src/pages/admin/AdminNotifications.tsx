@@ -56,7 +56,10 @@ export function AdminNotifications() {
     const fileName = `${Date.now()}-${videoFile.name}`;
     const { data, error } = await supabase.storage
       .from('notification-videos')
-      .upload(fileName, videoFile);
+      .upload(fileName, videoFile, {
+        cacheControl: '3600',
+        upsert: false
+      });
 
     if (error) throw error;
 

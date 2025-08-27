@@ -12,7 +12,7 @@ export function AdminLayout() {
       <div className={`transition-all duration-300 ${
         sidebarCollapsed ? 'lg:ml-16' : 'lg:ml-64'
       }`}>
-        <main className="p-6 lg:p-8">
+        <main className="min-h-screen p-6 lg:p-8">
           <Outlet />
         </main>
       </div>

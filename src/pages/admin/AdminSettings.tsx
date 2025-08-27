@@ -5,19 +5,32 @@ import { useToast } from '@/hooks/use-toast';
 
 interface QrSetting {
   id: string;
-  type: 'register' | 'register150';
+  type: string;
   code_id: string;
   remaining_time: number;
   qr_image_url: string | null;
   is_active: boolean;
 }
 
+interface QrFormProps {
+  title: string;
+  description: string;
+  type: string;
+  setting: QrSetting | undefined;
+  onSave: (type: string) => void;
+  loading: boolean;
+  isUploading: boolean;
+  imageFiles: Record<string, File>;
+  imagePreviews: Record<string, string>;
+  onImageChange: (type: string, file: File) => void;
+}
+
 export function AdminSettings() {
-  const [qrSettings, setQrSettings] = useState<Record<string, QrSetting>>({});
+  const [qrSettings, setQrSettings] = useState<QrSetting[]>([]);
   const [loading, setLoading] = useState(true);
   const [imageFiles, setImageFiles] = useState<Record<string, File>>({});
   const [imagePreviews, setImagePreviews] = useState<Record<string, string>>({});
-  const [uploading, setUploading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -29,18 +42,10 @@ export function AdminSettings() {
       const { data, error } = await supabase
         .from('qr_settings')
         .select('*')
-        .in('type', ['register', 'register150']);
+        .in('type', ['register', 'register150', 'register_admin', 'register150_admin']);
 
       if (error) throw error;
-
-      const settingsMap: Record<string, QrSetting> = {};
-      data?.forEach((setting: any) => {
-        if (setting.type === 'register' || setting.type === 'register150') {
-          settingsMap[setting.type] = setting as QrSetting;
-        }
-      });
-
-      setQrSettings(settingsMap);
+      setQrSettings(data || []);
     } catch (error) {
       console.error('Error fetching QR settings:', error);
     } finally {
@@ -61,7 +66,10 @@ export function AdminSettings() {
     const fileName = `qr-${type}-${Date.now()}.${file.name.split('.').pop()}`;
     const { data, error } = await supabase.storage
       .from('qr-codes')
-      .upload(fileName, file);
+      .upload(fileName, file, {
+        cacheControl: '3600',
+        upsert: false
+      });
 
     if (error) throw error;
 
@@ -72,14 +80,16 @@ export function AdminSettings() {
     return publicUrl;
   };
 
-  const handleSave = async (type: 'register' | 'register150') => {
-    setUploading(true);
+  const handleSave = async (type: string) => {
+    setIsUploading(true);
     try {
       const formData = new FormData(document.getElementById(`form-${type}`) as HTMLFormElement);
       const codeId = formData.get('code_id') as string;
       const remainingTime = parseInt(formData.get('remaining_time') as string);
 
-      let qrImageUrl = qrSettings[type]?.qr_image_url || null;
+      const existingSetting = qrSettings.find(setting => setting.type === type);
+      let qrImageUrl = existingSetting?.qr_image_url || null;
+      
       if (imageFiles[type]) {
         qrImageUrl = await uploadImage(type);
       }
@@ -92,12 +102,12 @@ export function AdminSettings() {
         is_active: true
       };
 
-      if (qrSettings[type]) {
+      if (existingSetting) {
         // Update existing
         const { error } = await supabase
           .from('qr_settings')
           .update(settingData)
-          .eq('id', qrSettings[type].id);
+          .eq('id', existingSetting.id);
         if (error) throw error;
       } else {
         // Insert new
@@ -109,7 +119,7 @@ export function AdminSettings() {
 
       toast({
         title: "Configuración guardada",
-        description: `QR ${type === 'register' ? '25 USD' : '150 USD'} actualizado exitosamente`,
+        description: `QR ${type} actualizado exitosamente`,
       });
 
       fetchQrSettings();
@@ -131,58 +141,71 @@ export function AdminSettings() {
         variant: "destructive"
       });
     } finally {
-      setUploading(false);
+      setIsUploading(false);
     }
   };
 
-  const QrForm = ({ type, title }: { type: 'register' | 'register150'; title: string }) => {
-    const setting = qrSettings[type];
+  const QrForm = ({ title, description, type, setting, onSave, loading, isUploading, imageFiles, imagePreviews, onImageChange }: QrFormProps) => {
     const imagePreview = imagePreviews[type] || setting?.qr_image_url;
 
     return (
-      <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
-        <div className="flex items-center gap-3 mb-6">
-          <QrCode className={`w-5 h-5 ${type === 'register' ? 'text-blue-400' : 'text-green-400'}`} />
-          <h2 className="text-xl font-semibold text-white">{title}</h2>
+      <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700/50 rounded-xl p-6 backdrop-blur-sm">
+        <div className="flex items-start gap-3 mb-6">
+          <div className="p-2 bg-blue-500/20 rounded-lg">
+            <QrCode className="w-5 h-5 text-blue-400" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-white mb-1">{title}</h3>
+            <p className="text-sm text-slate-400">{description}</p>
+          </div>
         </div>
 
-        <form id={`form-${type}`} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              Código ID
-            </label>
-            <input
-              name="code_id"
-              type="text"
-              defaultValue={setting?.code_id || ''}
-              className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
-            />
+        <form id={`form-${type}`} className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2 flex items-center gap-2">
+                <Settings className="w-4 h-4" />
+                Código ID
+              </label>
+              <input
+                name="code_id"
+                type="text"
+                defaultValue={setting?.code_id || ''}
+                className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
+                placeholder="Ingrese código ID"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2 flex items-center gap-2">
+                <Clock className="w-4 h-4" />
+                Tiempo restante (minutos)
+              </label>
+              <input
+                name="remaining_time"
+                type="number"
+                defaultValue={setting?.remaining_time || 1440}
+                className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
+                placeholder="1440"
+              />
+            </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              Tiempo restante (minutos)
-            </label>
-            <input
-              name="remaining_time"
-              type="number"
-              defaultValue={setting?.remaining_time || 1440}
-              className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label className="block text-sm font-medium text-slate-300 mb-3 flex items-center gap-2">
+              <Image className="w-4 h-4" />
               Código QR imagen
             </label>
-            <div className="border-2 border-dashed border-slate-600 rounded-lg p-4 text-center">
+            <div className="border-2 border-dashed border-slate-600/50 rounded-xl p-6 text-center bg-slate-800/30">
               {imagePreview ? (
-                <div className="space-y-2">
-                  <img
-                    src={imagePreview}
-                    alt="QR Code Preview"
-                    className="w-32 h-32 object-cover rounded-lg mx-auto"
-                  />
+                <div className="space-y-4">
+                  <div className="relative inline-block">
+                    <img
+                      src={imagePreview}
+                      alt="QR Code Preview"
+                      className="w-32 h-32 object-cover rounded-xl shadow-lg border border-slate-600"
+                    />
+                  </div>
                   <button
                     type="button"
                     onClick={() => {
@@ -197,29 +220,31 @@ export function AdminSettings() {
                         return newPreviews;
                       });
                     }}
-                    className="text-red-400 hover:text-red-300 text-sm"
+                    className="text-red-400 hover:text-red-300 text-sm flex items-center gap-2 mx-auto transition"
                   >
+                    <X className="w-4 h-4" />
                     Remover imagen
                   </button>
                 </div>
               ) : (
                 <div>
-                  <Upload className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-                  <p className="text-slate-400 text-sm mb-2">Arrastra una imagen aquí o haz clic para seleccionar</p>
+                  <Upload className="w-10 h-10 text-slate-400 mx-auto mb-3" />
+                  <p className="text-slate-400 text-sm mb-4">Arrastra una imagen aquí o haz clic para seleccionar</p>
                   <input
                     type="file"
                     accept="image/*"
                     onChange={(e) => {
                       const file = e.target.files?.[0];
-                      if (file) handleImageChange(type, file);
+                      if (file) onImageChange(type, file);
                     }}
                     className="hidden"
                     id={`image-upload-${type}`}
                   />
                   <label
                     htmlFor={`image-upload-${type}`}
-                    className="cursor-pointer bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg transition"
+                    className="cursor-pointer inline-flex items-center gap-2 bg-slate-700/50 hover:bg-slate-600/50 text-white px-6 py-3 rounded-lg transition border border-slate-600/50"
                   >
+                    <Upload className="w-4 h-4" />
                     Seleccionar archivo
                   </label>
                 </div>
@@ -229,16 +254,12 @@ export function AdminSettings() {
 
           <button
             type="button"
-            onClick={() => handleSave(type)}
-            disabled={uploading}
-            className={`w-full flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r ${
-              type === 'register' 
-                ? 'from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
-                : 'from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700'
-            } text-white rounded-lg transition disabled:opacity-50`}
+            onClick={() => onSave(type)}
+            disabled={isUploading}
+            className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
           >
             <Save className="w-4 h-4" />
-            {uploading ? 'Guardando...' : 'Guardar Configuración'}
+            {isUploading ? 'Guardando...' : 'Guardar Configuración'}
           </button>
         </form>
       </div>
@@ -246,26 +267,91 @@ export function AdminSettings() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-white">Configuración</h1>
-        <p className="text-slate-400">Gestiona los códigos QR de pago</p>
+    <div className="space-y-8">
+      <div className="flex items-center gap-4 mb-6">
+        <h1 className="text-3xl font-bold">Configuración del Sistema</h1>
+      </div>
+      <p className="text-muted-foreground mb-8">
+        Administra la configuración de códigos QR para los procesos de registro.
+      </p>
+
+      {/* Group 1: Register $25 */}
+      <div className="mb-12">
+        <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg p-6 mb-6">
+          <h2 className="text-2xl font-semibold text-blue-400 mb-2">Registro $25 USD</h2>
+          <p className="text-muted-foreground">Configuración para el proceso de registro de $25 USD</p>
+        </div>
+        
+        <div className="grid md:grid-cols-2 gap-8">
+          <QrForm
+            title="Pago por QR - 25 USD (Ciclo de vida)"
+            description="Configuración del código QR principal para registros de $25"
+            type="register"
+            setting={qrSettings.find(setting => setting.type === 'register')}
+            onSave={handleSave}
+            loading={loading}
+            isUploading={isUploading}
+            imageFiles={imageFiles}
+            imagePreviews={imagePreviews}
+            onImageChange={handleImageChange}
+          />
+          
+          <QrForm
+            title="Pago por QR (Admin)"
+            description="Configuración del código QR administrativo para registros de $25"
+            type="register_admin"
+            setting={qrSettings.find(setting => setting.type === 'register_admin')}
+            onSave={handleSave}
+            loading={loading}
+            isUploading={isUploading}
+            imageFiles={imageFiles}
+            imagePreviews={imagePreviews}
+            onImageChange={handleImageChange}
+          />
+        </div>
       </div>
 
-      {/* QR Settings */}
-      <div className="space-y-6">
-        {loading ? (
-          <div className="flex items-center justify-center py-12">
-            <div className="text-slate-400">Cargando configuraciones...</div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <QrForm type="register" title="Pago por QR - 25 USD (Ciclo de vida)" />
-            <QrForm type="register150" title="Pago por QR - 150 USD (Admin)" />
-          </div>
-        )}
+      {/* Group 2: Register $150 */}
+      <div className="mb-8">
+        <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-lg p-6 mb-6">
+          <h2 className="text-2xl font-semibold text-green-400 mb-2">Registro $150 USD</h2>
+          <p className="text-muted-foreground">Configuración para el proceso de registro de $150 USD</p>
+        </div>
+        
+        <div className="grid md:grid-cols-2 gap-8">
+          <QrForm
+            title="Pago por QR - 150 USD (Ciclo de vida)"
+            description="Configuración del código QR principal para registros de $150"
+            type="register150"
+            setting={qrSettings.find(setting => setting.type === 'register150')}
+            onSave={handleSave}
+            loading={loading}
+            isUploading={isUploading}
+            imageFiles={imageFiles}
+            imagePreviews={imagePreviews}
+            onImageChange={handleImageChange}
+          />
+          
+          <QrForm
+            title="Pago por QR (Admin)"
+            description="Configuración del código QR administrativo para registros de $150"
+            type="register150_admin"
+            setting={qrSettings.find(setting => setting.type === 'register150_admin')}
+            onSave={handleSave}
+            loading={loading}
+            isUploading={isUploading}
+            imageFiles={imageFiles}
+            imagePreviews={imagePreviews}
+            onImageChange={handleImageChange}
+          />
+        </div>
       </div>
+
+      {loading ? (
+        <div className="flex items-center justify-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+      ) : null}
     </div>
   );
 }

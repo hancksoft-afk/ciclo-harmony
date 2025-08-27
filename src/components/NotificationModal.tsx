@@ -96,7 +96,7 @@ export function NotificationModal() {
             </div>
 
             {/* Navigation */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-center">
               <div className="flex items-center gap-2">
                 {notifications.map((_, index) => (
                   <div
