@@ -303,10 +303,10 @@ export function AdminUsers2() {
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => handleApproval(user.id, true)}
-                          disabled={updating || user.has_money}
+                          disabled={updating}
                           className={`p-2 rounded-lg transition ${
                             user.has_money 
-                              ? 'bg-green-600/20 text-green-400 cursor-not-allowed' 
+                              ? 'bg-green-600/20 text-green-400' 
                               : 'bg-green-600 hover:bg-green-700 text-white'
                           }`}
                           title="Aprobar"
@@ -315,10 +315,10 @@ export function AdminUsers2() {
                         </button>
                         <button
                           onClick={() => handleApproval(user.id, false)}
-                          disabled={updating || !user.has_money}
+                          disabled={updating}
                           className={`p-2 rounded-lg transition ${
                             !user.has_money 
-                              ? 'bg-red-600/20 text-red-400 cursor-not-allowed' 
+                              ? 'bg-red-600/20 text-red-400' 
                               : 'bg-red-600 hover:bg-red-700 text-white'
                           }`}
                           title="Desaprobar"
