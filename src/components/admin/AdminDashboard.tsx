@@ -80,18 +80,18 @@ export function AdminDashboard() {
 
   const getSettingLabel = (key: string) => {
     switch (key) {
-      case 'register_25_visible': return 'Registro 25 USD';
-      case 'register_150_visible': return 'Registro 150 USD';
-      case 'eduplatform_visible': return 'Eduplatform';
+      case 'registro_25': return 'Registro 25 USD';
+      case 'registro_150': return 'Registro 150 USD';
+      case 'eduplatform': return 'EduPlatform';
       default: return key;
     }
   };
 
   const getSettingDescription = (key: string) => {
     switch (key) {
-      case 'register_25_visible': return 'Permite el registro con plan de 25 USD';
-      case 'register_150_visible': return 'Permite el registro con plan de 150 USD';
-      case 'eduplatform_visible': return 'Activa la plataforma educativa';
+      case 'registro_25': return 'Permite el registro con plan de 25 USD';
+      case 'registro_150': return 'Permite el registro con plan de 150 USD';
+      case 'eduplatform': return 'Activa la plataforma educativa';
       default: return 'Configuración del sistema';
     }
   };
@@ -157,34 +157,34 @@ export function AdminDashboard() {
         <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
           <div className="flex flex-col items-center text-center space-y-4">
             <div className={`w-16 h-16 rounded-xl flex items-center justify-center ${
-              settings['register_25_visible'] ? 'bg-gradient-to-br from-green-500 to-emerald-600' : 'bg-gradient-to-br from-red-500 to-red-600'
+              settings['registro_25'] ? 'bg-gradient-to-br from-green-500 to-emerald-600' : 'bg-gradient-to-br from-red-500 to-red-600'
             }`}>
-              {settings['register_25_visible'] ? (
+              {settings['registro_25'] ? (
                 <Eye className="w-8 h-8 text-white" />
               ) : (
                 <EyeOff className="w-8 h-8 text-white" />
               )}
             </div>
             <div>
-              <h3 className="text-white font-semibold text-lg">Registrado 25 USD</h3>
+              <h3 className="text-white font-semibold text-lg">Registro 25 USD</h3>
               <p className="text-slate-400 text-sm mt-1">Control de visibilidad</p>
             </div>
             <button
-              onClick={() => toggleSetting('register_25_visible')}
+              onClick={() => toggleSetting('registro_25')}
               className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 ${
-                settings['register_25_visible'] ? 'bg-green-600' : 'bg-red-600'
+                settings['registro_25'] ? 'bg-green-600' : 'bg-red-600'
               }`}
             >
               <span
                 className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform shadow-lg ${
-                  settings['register_25_visible'] ? 'translate-x-7' : 'translate-x-1'
+                  settings['registro_25'] ? 'translate-x-7' : 'translate-x-1'
                 }`}
               />
             </button>
             <div className="flex items-center gap-2">
-              <div className={`w-2 h-2 rounded-full ${settings['register_25_visible'] ? 'bg-green-400' : 'bg-red-400'}`}></div>
-              <span className={`text-sm font-medium ${settings['register_25_visible'] ? 'text-green-400' : 'text-red-400'}`}>
-                {settings['register_25_visible'] ? 'Abierto' : 'Cerrado'}
+              <div className={`w-2 h-2 rounded-full ${settings['registro_25'] ? 'bg-green-400' : 'bg-red-400'}`}></div>
+              <span className={`text-sm font-medium ${settings['registro_25'] ? 'text-green-400' : 'text-red-400'}`}>
+                {settings['registro_25'] ? 'Abierto' : 'Cerrado'}
               </span>
             </div>
           </div>
@@ -194,34 +194,34 @@ export function AdminDashboard() {
         <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
           <div className="flex flex-col items-center text-center space-y-4">
             <div className={`w-16 h-16 rounded-xl flex items-center justify-center ${
-              settings['register_150_visible'] ? 'bg-gradient-to-br from-green-500 to-emerald-600' : 'bg-gradient-to-br from-red-500 to-red-600'
+              settings['registro_150'] ? 'bg-gradient-to-br from-green-500 to-emerald-600' : 'bg-gradient-to-br from-red-500 to-red-600'
             }`}>
-              {settings['register_150_visible'] ? (
+              {settings['registro_150'] ? (
                 <Eye className="w-8 h-8 text-white" />
               ) : (
                 <EyeOff className="w-8 h-8 text-white" />
               )}
             </div>
             <div>
-              <h3 className="text-white font-semibold text-lg">Registrado 150 USD</h3>
+              <h3 className="text-white font-semibold text-lg">Registro 150 USD</h3>
               <p className="text-slate-400 text-sm mt-1">Control de visibilidad</p>
             </div>
             <button
-              onClick={() => toggleSetting('register_150_visible')}
+              onClick={() => toggleSetting('registro_150')}
               className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 ${
-                settings['register_150_visible'] ? 'bg-green-600' : 'bg-red-600'
+                settings['registro_150'] ? 'bg-green-600' : 'bg-red-600'
               }`}
             >
               <span
                 className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform shadow-lg ${
-                  settings['register_150_visible'] ? 'translate-x-7' : 'translate-x-1'
+                  settings['registro_150'] ? 'translate-x-7' : 'translate-x-1'
                 }`}
               />
             </button>
             <div className="flex items-center gap-2">
-              <div className={`w-2 h-2 rounded-full ${settings['register_150_visible'] ? 'bg-green-400' : 'bg-red-400'}`}></div>
-              <span className={`text-sm font-medium ${settings['register_150_visible'] ? 'text-green-400' : 'text-red-400'}`}>
-                {settings['register_150_visible'] ? 'Abierto' : 'Cerrado'}
+              <div className={`w-2 h-2 rounded-full ${settings['registro_150'] ? 'bg-green-400' : 'bg-red-400'}`}></div>
+              <span className={`text-sm font-medium ${settings['registro_150'] ? 'text-green-400' : 'text-red-400'}`}>
+                {settings['registro_150'] ? 'Abierto' : 'Cerrado'}
               </span>
             </div>
           </div>
@@ -231,9 +231,9 @@ export function AdminDashboard() {
         <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
           <div className="flex flex-col items-center text-center space-y-4">
             <div className={`w-16 h-16 rounded-xl flex items-center justify-center ${
-              settings['eduplatform_visible'] ? 'bg-gradient-to-br from-green-500 to-emerald-600' : 'bg-gradient-to-br from-red-500 to-red-600'
+              settings['eduplatform'] ? 'bg-gradient-to-br from-green-500 to-emerald-600' : 'bg-gradient-to-br from-red-500 to-red-600'
             }`}>
-              {settings['eduplatform_visible'] ? (
+              {settings['eduplatform'] ? (
                 <Eye className="w-8 h-8 text-white" />
               ) : (
                 <EyeOff className="w-8 h-8 text-white" />
@@ -244,21 +244,21 @@ export function AdminDashboard() {
               <p className="text-slate-400 text-sm mt-1">Control de visibilidad</p>
             </div>
             <button
-              onClick={() => toggleSetting('eduplatform_visible')}
+              onClick={() => toggleSetting('eduplatform')}
               className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 ${
-                settings['eduplatform_visible'] ? 'bg-green-600' : 'bg-red-600'
+                settings['eduplatform'] ? 'bg-green-600' : 'bg-red-600'
               }`}
             >
               <span
                 className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform shadow-lg ${
-                  settings['eduplatform_visible'] ? 'translate-x-7' : 'translate-x-1'
+                  settings['eduplatform'] ? 'translate-x-7' : 'translate-x-1'
                 }`}
               />
             </button>
             <div className="flex items-center gap-2">
-              <div className={`w-2 h-2 rounded-full ${settings['eduplatform_visible'] ? 'bg-green-400' : 'bg-red-400'}`}></div>
-              <span className={`text-sm font-medium ${settings['eduplatform_visible'] ? 'text-green-400' : 'text-red-400'}`}>
-                {settings['eduplatform_visible'] ? 'Abierto' : 'Cerrado'}
+              <div className={`w-2 h-2 rounded-full ${settings['eduplatform'] ? 'bg-green-400' : 'bg-red-400'}`}></div>
+              <span className={`text-sm font-medium ${settings['eduplatform'] ? 'text-green-400' : 'text-red-400'}`}>
+                {settings['eduplatform'] ? 'Abierto' : 'Cerrado'}
               </span>
             </div>
           </div>
