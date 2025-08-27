@@ -430,7 +430,7 @@ export function AdminUsers2() {
                   </div>
 
                   <div className="mt-6 rounded-xl border border-amber-400/20 bg-neutral-900/40 p-3">
-                    <div className="h-16 w-full rounded-md bg-[repeating-linear-gradient(90deg,rgba(251,191,36,1)_0_8px,transparent_8px_16px)]" />
+                    <div className="h-16 w-full rounded-md bg-gradient-to-r from-amber-400 via-amber-500 to-amber-400 opacity-80" />
                   </div>
 
                   <div className="mt-3 flex items-center justify-between text-xs text-white">
