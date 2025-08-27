@@ -80,8 +80,9 @@ export function NotificationModal() {
               <video
                 src={currentNotification.video_url}
                 className="w-full h-full object-cover"
-                controls={isPlaying}
-                autoPlay={isPlaying}
+                controls
+                autoPlay
+                muted
                 onEnded={nextNotification}
               />
               {!isPlaying && (
@@ -95,37 +96,13 @@ export function NotificationModal() {
                 </div>
               )}
               
-              {/* Video Controls Overlay */}
-              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-center text-white text-sm">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-white rounded-full"></div>
-                  <span>0:00 / 0:04</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <button className="w-8 h-8 hover:bg-white/20 rounded-full flex items-center justify-center transition">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
-                    </svg>
-                  </button>
-                  <button className="w-8 h-8 hover:bg-white/20 rounded-full flex items-center justify-center transition">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
-                    </svg>
-                  </button>
-                  <button className="w-8 h-8 hover:bg-white/20 rounded-full flex items-center justify-center transition">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                    </svg>
-                  </button>
-                </div>
-              </div>
             </div>
           )}
 
           {/* Content Section */}
           <div className="p-8 bg-gradient-to-br from-purple-900/20 to-blue-900/20">
             <div className="text-center mb-6">
-              <h2 className="text-3xl font-bold text-purple-400 mb-2">¡Bienvenido a EduPlatform!</h2>
+              <h2 className="text-3xl font-bold text-purple-400 mb-2">{currentNotification.title}</h2>
               <p className="text-slate-300 text-lg">{currentNotification.description}</p>
             </div>
 
