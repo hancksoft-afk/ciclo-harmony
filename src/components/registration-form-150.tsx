@@ -123,7 +123,12 @@ export function RegistrationForm150() {
   const generarCodigoNumeroYOculto = () => {
     const codigo = generarCodigoNumero();
     const oculto = codigo.slice(0, 4) + 'x'.repeat(codigo.length - 4);
-    return { codigo, oculto, ticketId: oculto };
+    // Generate alphanumeric ticket ID like KBY0Z40CN
+    const ticketId = Array.from({ length: 9 }, () => {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      return chars.charAt(Math.floor(Math.random() * chars.length));
+    }).join('');
+    return { codigo, oculto, ticketId };
   };
 
   const saveToSupabase = async (codes: { codigo: string; oculto: string; ticketId: string }) => {
