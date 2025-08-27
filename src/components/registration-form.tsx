@@ -56,18 +56,16 @@ export function RegistrationForm() {
   const fetchQrSettings = async () => {
     try {
       const { data, error } = await supabase
-        .from('qr_settings')
-        .select('*')
-        .eq('type', 'register')
-        .eq('is_active', true)
-        .maybeSingle();
+        .rpc('get_active_qr_setting', { qr_type: 'register' });
 
       if (error) {
         console.error('Error fetching QR settings:', error);
         return;
       }
 
-      setQrSettings(data);
+      if (data && data.length > 0) {
+        setQrSettings(data[0]);
+      }
     } catch (error) {
       console.error('Error fetching QR settings:', error);
     }
@@ -572,9 +570,17 @@ export function RegistrationForm() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="rounded-xl bg-[#0f1522] ring-1 ring-white/10 p-4 grid place-items-center">
                   <div className="rounded-lg bg-white p-3">
-                    <div className="h-48 w-48 bg-gray-200 rounded flex items-center justify-center">
-                      <span className="text-gray-500 text-sm">Admin QR</span>
-                    </div>
+                    {qrSettings?.qr_image_url ? (
+                      <img 
+                        src={qrSettings.qr_image_url} 
+                        alt="QR Code Admin" 
+                        className="h-48 w-48 object-contain rounded"
+                      />
+                    ) : (
+                      <div className="h-48 w-48 bg-gray-200 rounded flex items-center justify-center">
+                        <span className="text-gray-500 text-sm">Admin QR</span>
+                      </div>
+                    )}
                   </div>
                   <p className="text-xs text-muted-foreground mt-3 font-inter">Solicita el QR del administrador</p>
                 </div>

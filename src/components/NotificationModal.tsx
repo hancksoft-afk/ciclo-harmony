@@ -81,18 +81,9 @@ export function NotificationModal() {
                 src={currentNotification.video_url}
                 className="w-full h-full object-cover"
                 controls
+                autoPlay
                 muted
               />
-              {!isPlaying && (
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                  <button
-                    onClick={togglePlay}
-                    className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-all duration-300 border-2 border-white/50"
-                  >
-                    <Play className="w-8 h-8 text-white ml-1" />
-                  </button>
-                </div>
-              )}
               
             </div>
           )}
