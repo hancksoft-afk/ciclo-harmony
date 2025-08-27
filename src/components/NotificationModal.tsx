@@ -96,31 +96,18 @@ export function NotificationModal() {
             </div>
 
             {/* Navigation */}
-            <div className="flex items-center justify-center">
-              <div className="flex items-center gap-2">
-                {notifications.map((_, index) => (
-                  <div
-                    key={index}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      index === currentIndex ? 'bg-purple-400 scale-125' : 'bg-slate-600'
-                    }`}
-                  />
-                ))}
-              </div>
-
-              <div className="flex items-center gap-4">
-                <span className="text-slate-400 text-sm">
-                  {currentIndex + 1} de {notifications.length}
-                </span>
-                {currentIndex < notifications.length - 1 && (
-                  <button
-                    onClick={nextNotification}
-                    className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
-                  >
-                    Siguiente
-                  </button>
-                )}
-              </div>
+            <div className="flex items-center gap-4">
+              <span className="text-slate-400 text-sm">
+                {currentIndex + 1} de {notifications.length}
+              </span>
+              {currentIndex < notifications.length - 1 && (
+                <button
+                  onClick={nextNotification}
+                  className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                  Siguiente
+                </button>
+              )}
             </div>
           </div>
         </div>

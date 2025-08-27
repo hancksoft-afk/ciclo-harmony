@@ -76,6 +76,24 @@ export function AdminSettings() {
     setImagePreviews(prev => ({ ...prev, [type]: url }));
   };
 
+  const handleImageRemove = (type: string) => {
+    // Revoke the existing URL to free up memory
+    if (imagePreviews[type]) {
+      URL.revokeObjectURL(imagePreviews[type]);
+    }
+    
+    setImageFiles(prev => {
+      const newFiles = { ...prev };
+      delete newFiles[type];
+      return newFiles;
+    });
+    setImagePreviews(prev => {
+      const newPreviews = { ...prev };
+      delete newPreviews[type];
+      return newPreviews;
+    });
+  };
+
   const uploadImage = async (type: string): Promise<string | null> => {
     const file = imageFiles[type];
     if (!file) return null;
@@ -411,18 +429,7 @@ export function AdminSettings() {
                           </div>
                           <button
                             type="button"
-                            onClick={() => {
-                              setImageFiles(prev => {
-                                const newFiles = { ...prev };
-                                delete newFiles[config.type];
-                                return newFiles;
-                              });
-                              setImagePreviews(prev => {
-                                const newPreviews = { ...prev };
-                                delete newPreviews[config.type];
-                                return newPreviews;
-                              });
-                            }}
+                            onClick={() => handleImageRemove(config.type)}
                             className="text-red-400 hover:text-red-300 text-sm flex items-center gap-2 mx-auto transition"
                           >
                             <X className="w-4 h-4" />

@@ -112,9 +112,6 @@ export function AdminDashboard() {
                 <div className={`p-2 rounded-lg border ${getColorClasses(metric.color)}`}>
                   <Icon className="w-5 h-5" />
                 </div>
-                <button className="text-slate-400 hover:text-white transition">
-                  <MoreHorizontal className="w-4 h-4" />
-                </button>
               </div>
               
               <div className="space-y-2">

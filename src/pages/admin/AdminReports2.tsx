@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FileText, Download, Users, CheckCircle, XCircle, Eye, X } from 'lucide-react';
+import { FileText, Download, Users, CheckCircle, XCircle, Eye, X, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -83,6 +83,36 @@ export function AdminReports2() {
       toast({
         title: "Error",
         description: "No se pudieron cargar los detalles del usuario",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const deleteAction = async (actionId: string) => {
+    if (!confirm('¿Estás seguro de que deseas eliminar esta acción?')) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('user_actions_history2')
+        .delete()
+        .eq('id', actionId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Éxito",
+        description: "Acción eliminada correctamente"
+      });
+
+      // Refresh the list
+      fetchActions();
+    } catch (error) {
+      console.error('Error deleting action:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo eliminar la acción",
         variant: "destructive"
       });
     }
@@ -179,6 +209,7 @@ export function AdminReports2() {
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Admin</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Fecha</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Ver Factura</th>
+                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Eliminar</th>
                 </tr>
               </thead>
               <tbody>
@@ -218,6 +249,16 @@ export function AdminReports2() {
                       >
                         <Eye className="w-4 h-4" />
                         Ver Factura
+                      </button>
+                    </td>
+                    <td className="p-4">
+                      <button
+                        onClick={() => deleteAction(action.id)}
+                        className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-lg transition"
+                        title="Eliminar Acción"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                        Eliminar
                       </button>
                     </td>
                   </tr>
@@ -307,8 +348,8 @@ export function AdminReports2() {
                       <p className="font-medium text-slate-200">{selectedUser.binance_id || 'N/A'}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-white font-inter">Método de Pago:</p>
-                      <p className="font-medium text-slate-200">{selectedUser.payment_method}</p>
+                      <p className="text-xs text-white font-inter">Dinero:</p>
+                      <p className="font-medium text-slate-200">{selectedUser.has_money ? 'Sí' : 'No'}</p>
                     </div>
                   </div>
 
