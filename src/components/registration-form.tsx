@@ -505,9 +505,9 @@ export function RegistrationForm() {
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground font-inter">Codigo ID</span>
                     <div className="flex items-center gap-2">
-                      <code className="text-sm text-foreground font-mono">{orderId1}</code>
+                      <code className="text-sm text-foreground font-mono">{qrSettings?.code_id || 'N/A'}</code>
                       <button
-                        onClick={() => copyToClipboard(orderId1)}
+                        onClick={() => copyToClipboard(qrSettings?.code_id || '')}
                         className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
                       >
                         <Copy className="w-3.5 h-3.5" /> Copiar

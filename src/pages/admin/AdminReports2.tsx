@@ -12,6 +12,7 @@ interface UserAction {
   action_type: string;
   admin_action_by: string;
   created_at: string;
+  user_code?: string;
 }
 
 interface Register150User {
@@ -47,13 +48,37 @@ export function AdminReports2() {
 
   const fetchActions = async () => {
     try {
-      const { data, error } = await supabase
+      const { data: actionsData, error: actionsError } = await supabase
         .from('user_actions_history2')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      setActions(data || []);
+      if (actionsError) throw actionsError;
+
+      // Fetch user codes for each action
+      const actionsWithCodes = await Promise.all(
+        (actionsData || []).map(async (action) => {
+          try {
+            const { data: userData, error: userError } = await supabase
+              .from('register150')
+              .select('codigo_masked')
+              .eq('id', action.user_id)
+              .single();
+
+            return {
+              ...action,
+              user_code: userData?.codigo_masked || 'N/A'
+            };
+          } catch (error) {
+            return {
+              ...action,
+              user_code: 'N/A'
+            };
+          }
+        })
+      );
+
+      setActions(actionsWithCodes);
     } catch (error) {
       console.error('Error fetching actions:', error);
       toast({
@@ -120,11 +145,12 @@ export function AdminReports2() {
 
   const exportData = () => {
     const csvContent = [
-      ['Nombre', 'Teléfono', 'País', 'Acción', 'Administrador', 'Fecha'],
+      ['Nombre', 'Teléfono', 'País', 'Código', 'Acción', 'Administrador', 'Fecha'],
       ...actions.map(action => [
         action.user_name,
         action.user_phone,
         action.user_country,
+        action.user_code || 'N/A',
         action.action_type === 'approved' ? 'Aprobado' : 'Desaprobado',
         action.admin_action_by,
         new Date(action.created_at).toLocaleDateString()
@@ -205,6 +231,7 @@ export function AdminReports2() {
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Nombre</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Teléfono</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">País</th>
+                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Código</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Acción</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Admin</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Fecha</th>
@@ -225,6 +252,7 @@ export function AdminReports2() {
                     </td>
                     <td className="p-4 text-slate-300">{action.user_phone}</td>
                     <td className="p-4 text-slate-300">{action.user_country}</td>
+                    <td className="p-4 text-slate-300 font-mono">{action.user_code}</td>
                     <td className="p-4">
                       <div className={`flex items-center gap-2 ${
                         action.action_type === 'approved' ? 'text-green-400' : 'text-red-400'
