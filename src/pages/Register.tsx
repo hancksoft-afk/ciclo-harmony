@@ -10,6 +10,8 @@ const Register = () => {
         .animated-border {
           position: relative;
           border-radius: 20px;
+          background: transparent;
+          isolation: isolate;
         }
         .animated-border:before,
         .animated-border:after {
@@ -18,28 +20,29 @@ const Register = () => {
           border-radius: 20px;
           left: -2px;
           top: -2px;
-          background: linear-gradient(21deg, #9f00fb, #090081, #8c00ff, #4500b3, #000399, #4000a7, #ef00ff, #5900ff, #0011ff, #3700ff);
-          background-size: 400%;
-          width: calc(100% + 6px);
-          height: calc(100% + 6px);
+          background: linear-gradient(45deg, #9f00fb, #090081, #8c00ff, #4500b3, #000399, #4000a7, #ef00ff, #5900ff, #0011ff, #3700ff);
+          background-size: 400% 400%;
+          width: calc(100% + 4px);
+          height: calc(100% + 4px);
           z-index: -1;
           animation: steam 20s linear infinite;
         }
 
         @keyframes steam {
           0% {
-            background-position: 0 0;
+            background-position: 0% 50%;
           }
           50% {
-            background-position: 400% 0;
+            background-position: 100% 50%;
           }
           100% {
-            background-position: 0 0;
+            background-position: 0% 50%;
           }
         }
 
         .animated-border:after {
-          filter: blur(57px);
+          filter: blur(50px);
+          opacity: 0.8;
         }
       `}</style>
       {/* Background Video */}

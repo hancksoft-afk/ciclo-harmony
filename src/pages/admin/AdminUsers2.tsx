@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { UserCheck, Download, Search, Calendar, DollarSign, CreditCard, FileText, Smartphone, MapPin, User, Code, CheckCircle, XCircle, X } from 'lucide-react';
+import { UserCheck, Download, Search, Calendar, DollarSign, CreditCard, FileText, Smartphone, MapPin, User, Code, CheckCircle, XCircle, X, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
@@ -72,6 +72,36 @@ export function AdminUsers2() {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteUser = async (userId: string) => {
+    if (!confirm('¿Estás seguro de que quieres eliminar este usuario?')) return;
+    
+    setUpdating(true);
+    try {
+      const { error } = await supabase
+        .from('register150')
+        .delete()
+        .eq('id', userId);
+
+      if (error) throw error;
+
+      setUsers(prevUsers => prevUsers.filter(u => u.id !== userId));
+      
+      toast({
+        title: "Usuario eliminado",
+        description: "El usuario ha sido eliminado exitosamente",
+      });
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo eliminar el usuario",
+        variant: "destructive"
+      });
+    } finally {
+      setUpdating(false);
     }
   };
 
@@ -244,6 +274,7 @@ export function AdminUsers2() {
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">ID Admin</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Fecha</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Acción</th>
+                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Eliminar</th>
                 </tr>
               </thead>
               <tbody>
@@ -336,6 +367,15 @@ export function AdminUsers2() {
                           <FileText className="w-4 h-4" />
                         </button>
                       </div>
+                    </td>
+                    <td className="p-4">
+                      <button
+                        onClick={() => handleDeleteUser(user.id)}
+                        className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition"
+                        title="Eliminar Usuario"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
                     </td>
                   </tr>
                 ))}

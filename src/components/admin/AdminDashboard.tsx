@@ -141,11 +141,6 @@ export function AdminDashboard() {
         <div className="lg:col-span-2 bg-slate-800/50 border border-slate-700 rounded-xl p-6">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-semibold text-white">Análisis de Ingresos</h3>
-            <div className="flex items-center gap-2">
-              <button className="px-3 py-1.5 text-xs bg-blue-600 text-white rounded-lg">7d</button>
-              <button className="px-3 py-1.5 text-xs text-slate-400 hover:text-white transition">30d</button>
-              <button className="px-3 py-1.5 text-xs text-slate-400 hover:text-white transition">90d</button>
-            </div>
           </div>
           
           <div className="h-64 bg-slate-900/50 rounded-lg flex items-center justify-center border border-slate-700">
