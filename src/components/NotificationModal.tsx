@@ -96,7 +96,7 @@ export function NotificationModal() {
               )}
               
               {/* Video Controls Overlay */}
-              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white text-sm">
+              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-center text-white text-sm">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-white rounded-full"></div>
                   <span>0:00 / 0:04</span>
@@ -130,7 +130,7 @@ export function NotificationModal() {
             </div>
 
             {/* Navigation */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-center">
               <div className="flex items-center gap-2">
                 {notifications.map((_, index) => (
                   <div

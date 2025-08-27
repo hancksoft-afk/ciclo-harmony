@@ -223,9 +223,6 @@ export function AdminUsers() {
                         >
                           <Receipt className="w-4 h-4" />
                         </button>
-                        <button className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-700 rounded transition">
-                          <MoreHorizontal className="w-4 h-4" />
-                        </button>
                       </div>
                     </td>
                   </tr>

@@ -141,7 +141,7 @@ export function RegistrationForm150() {
           binance_id_step3: formData.binanceIdStep3,
           order_id_1: orderId1,
           order_id_2: orderId2,
-          ticket_id: Math.random().toString(36).substr(2, 6).toUpperCase(),
+          ticket_id: codes.oculto,
           codigo_full: codes.codigo,
           codigo_masked: codes.oculto,
         });
