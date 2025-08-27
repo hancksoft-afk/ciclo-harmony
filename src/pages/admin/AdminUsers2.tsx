@@ -221,36 +221,6 @@ export function AdminUsers2() {
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
-          <div className="flex items-center gap-3">
-            <UserCheck className="w-8 h-8 text-blue-400" />
-            <div>
-              <p className="text-2xl font-bold text-white">{users.length}</p>
-              <p className="text-slate-400 text-sm">Total Usuarios</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
-          <div className="flex items-center gap-3">
-            <CheckCircle className="w-8 h-8 text-green-400" />
-            <div>
-              <p className="text-2xl font-bold text-white">{users.filter(u => u.has_money).length}</p>
-              <p className="text-slate-400 text-sm">Aprobados</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
-          <div className="flex items-center gap-3">
-            <XCircle className="w-8 h-8 text-red-400" />
-            <div>
-              <p className="text-2xl font-bold text-white">{users.filter(u => !u.has_money).length}</p>
-              <p className="text-slate-400 text-sm">Pendientes</p>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Users Table */}
       <div className="bg-slate-800/50 border border-slate-700 rounded-xl overflow-hidden">
