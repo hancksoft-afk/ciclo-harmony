@@ -234,20 +234,6 @@ export function AdminUsers() {
             </table>
           </div>
         )}
-        
-        {/* Pagination */}
-        <div className="flex items-center justify-between px-6 py-4 border-t border-slate-700">
-          <p className="text-slate-400 text-sm">Mostrando {filteredUsers.length} usuarios</p>
-          <div className="flex items-center gap-2">
-            <button className="px-3 py-1.5 text-sm bg-slate-700 text-slate-300 rounded hover:bg-slate-600 transition">
-              Anterior
-            </button>
-            <button className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded">1</button>
-            <button className="px-3 py-1.5 text-sm bg-slate-700 text-slate-300 rounded hover:bg-slate-600 transition">
-              Siguiente
-            </button>
-          </div>
-        </div>
       </div>
 
       {/* Invoice Modal */}

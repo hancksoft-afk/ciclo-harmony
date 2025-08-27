@@ -104,7 +104,6 @@ export function AdminSidebar({ collapsed, setCollapsed }: SidebarProps) {
                 <>
                   <div className="flex-1 text-left">
                     <p className="text-sm font-medium text-white">{user?.name}</p>
-                    <p className="text-xs text-slate-400">{user?.email}</p>
                   </div>
                   <ChevronDown className={`w-4 h-4 transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
                 </>

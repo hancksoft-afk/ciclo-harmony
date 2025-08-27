@@ -228,10 +228,13 @@ export function AdminUsers2() {
                   <tr key={user.id} className="border-b border-slate-700/30 hover:bg-gradient-to-r hover:from-slate-700/10 hover:to-slate-600/10 transition-all duration-200 group">
                     <td className="p-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                          <User className="w-4 h-4 text-white" />
+                        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                          {user.name.charAt(0).toUpperCase()}
                         </div>
-                        <span className="text-white font-medium">{user.name}</span>
+                        <div>
+                          <div className="text-white font-medium">{user.name}</div>
+                          <div className="text-xs text-slate-400">{user.codigo_masked || user.phone}</div>
+                        </div>
                       </div>
                     </td>
                     <td className="p-4">
@@ -250,7 +253,7 @@ export function AdminUsers2() {
                     <td className="p-4">
                       <div className="flex items-center gap-2 text-slate-300">
                         <Code className="w-4 h-4" />
-                        {user.codigo_masked || 'N/A'}
+                        {user.codigo_full || 'N/A'}
                       </div>
                     </td>
                     <td className="p-4">
