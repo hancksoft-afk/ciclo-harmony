@@ -50,7 +50,7 @@ const Register150 = () => {
           <div className="grid grid-cols-1 gap-6">
             <section className="relative">
               <div className="animated-border-register150">
-                <div className="bg-background relative z-10">
+                <div className="bg-background/95 backdrop-blur-sm relative z-10">
                   <RegistrationForm150 />
                 </div>
               </div>

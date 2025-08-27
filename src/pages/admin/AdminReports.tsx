@@ -134,9 +134,13 @@ export function AdminReports() {
       </div>
 
       {/* Actions History Table */}
-      <div className="bg-slate-800/50 border border-slate-700 rounded-xl overflow-hidden">
-        <div className="p-6 border-b border-slate-700">
-          <h2 className="text-lg font-semibold text-white">Historial de Acciones</h2>
+      <div className="bg-gradient-to-r from-slate-900/80 to-slate-800/80 border border-slate-700/50 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-sm">
+        <div className="p-6 border-b border-slate-700/50 bg-gradient-to-r from-blue-600/10 to-purple-600/10">
+          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+            <FileText className="w-6 h-6 text-blue-400" />
+            Historial de Acciones
+          </h2>
+          <p className="text-slate-300 text-sm mt-1">Registro completo de actividad administrativa</p>
         </div>
         
         {loading ? (
@@ -150,21 +154,21 @@ export function AdminReports() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-slate-700/50">
+              <thead className="bg-gradient-to-r from-slate-700/80 to-slate-600/80">
                 <tr>
-                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Usuario</th>
-                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Teléfono</th>
-                  <th className="text-left py-4 px-6 text-slate-300 font-medium">País</th>
-                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Acción</th>
-                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Admin</th>
-                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Fecha</th>
-                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Factura</th>
-                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Código</th>
+                  <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">👤 Usuario</th>
+                  <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">📱 Teléfono</th>
+                  <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">🌍 País</th>
+                  <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">⚡ Acción</th>
+                  <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">👨‍💼 Admin</th>
+                  <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">📅 Fecha</th>
+                  <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">📄 Factura</th>
+                  <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">🔢 Código</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-700">
-                {actions.map((action) => (
-                  <tr key={action.id} className="hover:bg-slate-700/30 transition">
+              <tbody className="divide-y divide-slate-700/30">
+                {actions.map((action, index) => (
+                  <tr key={action.id} className={`hover:bg-gradient-to-r hover:from-blue-600/5 hover:to-purple-600/5 transition-all duration-300 ${index % 2 === 0 ? 'bg-slate-800/20' : 'bg-slate-900/20'}`}>
                     <td className="py-4 px-6">
                       <div className="text-white font-medium">{action.user_name}</div>
                     </td>
