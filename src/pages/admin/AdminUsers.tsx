@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, Filter, Plus, MoreHorizontal, Check, X, Receipt, Calendar, TicketCheck, CheckCircle2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogOverlay } from '@/components/ui/dialog';
 
 interface RegisterUser {
@@ -23,6 +25,7 @@ interface RegisterUser {
 
 export function AdminUsers() {
   console.log('AdminUsers component loaded - new version');
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [users, setUsers] = useState<RegisterUser[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,18 +59,83 @@ export function AdminUsers() {
   };
 
   const handleApprove = async (userId: string) => {
-    toast({
-      title: "Aprobado",
-      description: "Usuario aprobado exitosamente",
-    });
+    const user = users.find(u => u.id === userId);
+    if (!user) return;
+
+    try {
+      // Save to history
+      const { error } = await supabase
+        .from('user_actions_history')
+        .insert({
+          user_id: userId,
+          user_name: user.name,
+          user_phone: user.phone,
+          user_country: user.country,
+          action_type: 'approved'
+        });
+
+      if (error) {
+        toast({
+          title: "Error",
+          description: "Error al guardar en historial",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      toast({
+        title: "Aprobado",
+        description: "Usuario aprobado exitosamente",
+      });
+      
+      // Navigate to reports page
+      navigate('/adminhub/reports');
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Error al aprobar usuario",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleDisapprove = async (userId: string) => {
-    toast({
-      title: "Desaprobado", 
-      description: "Usuario desaprobado",
-      variant: "destructive"
-    });
+    const user = users.find(u => u.id === userId);
+    if (!user) return;
+
+    try {
+      // Save to history
+      const { error } = await supabase
+        .from('user_actions_history')
+        .insert({
+          user_id: userId,
+          user_name: user.name,
+          user_phone: user.phone,
+          user_country: user.country,
+          action_type: 'disapproved'
+        });
+
+      if (error) {
+        toast({
+          title: "Error",
+          description: "Error al guardar en historial",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      toast({
+        title: "Desaprobado", 
+        description: "Usuario desaprobado",
+        variant: "destructive"
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Error al desaprobar usuario",
+        variant: "destructive"
+      });
+    }
   };
 
   const filteredUsers = users.filter(user =>
