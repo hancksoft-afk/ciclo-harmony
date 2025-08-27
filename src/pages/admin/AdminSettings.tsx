@@ -434,43 +434,14 @@ export function AdminSettings() {
                     <div>
                       <label className="block text-sm font-medium text-slate-300 mb-2 flex items-center gap-2">
                         <Clock className="w-4 h-4" />
-                        Tiempo restante
+                        Tiempo restante (minutos)
                       </label>
-                      <div className="flex gap-2 flex-wrap">
-                        {[
-                          { label: '10m', value: 10 },
-                          { label: '15m', value: 15 },
-                          { label: '30m', value: 30 },
-                          { label: '45m', value: 45 },
-                          { label: '1h', value: 60 }
-                        ].map(({ label, value }) => (
-                          <button
-                            key={value}
-                            type="button"
-                            onClick={(e) => {
-                              const form = e.currentTarget.closest('form');
-                              const input = form?.querySelector('input[name="remaining_time"]') as HTMLInputElement;
-                              if (input) input.value = value.toString();
-                              
-                              // Update visual state
-                              const buttons = form?.querySelectorAll('button[type="button"]');
-                              buttons?.forEach(btn => btn.classList.remove('bg-violet-600', 'text-white'));
-                              e.currentTarget.classList.add('bg-violet-600', 'text-white');
-                            }}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
-                              (setting?.remaining_time || 1440) === value 
-                                ? 'bg-violet-600 text-white' 
-                                : 'bg-slate-700/50 border border-slate-600/50 text-slate-300 hover:bg-slate-600/50'
-                            }`}
-                          >
-                            {label}
-                          </button>
-                        ))}
-                      </div>
                       <input
                         name="remaining_time"
-                        type="hidden"
+                        type="number"
                         defaultValue={setting?.remaining_time || 1440}
+                        className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
+                        placeholder="1440"
                       />
                     </div>
                   </div>

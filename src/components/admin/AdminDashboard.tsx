@@ -227,6 +227,42 @@ export function AdminDashboard() {
           </div>
         </div>
 
+        {/* EduPlatform */}
+        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+          <div className="flex flex-col items-center text-center space-y-4">
+            <div className={`w-16 h-16 rounded-xl flex items-center justify-center ${
+              settings['eduplatform'] ? 'bg-gradient-to-br from-green-500 to-emerald-600' : 'bg-gradient-to-br from-red-500 to-red-600'
+            }`}>
+              {settings['eduplatform'] ? (
+                <Eye className="w-8 h-8 text-white" />
+              ) : (
+                <EyeOff className="w-8 h-8 text-white" />
+              )}
+            </div>
+            <div>
+              <h3 className="text-white font-semibold text-lg">EduPlatform</h3>
+              <p className="text-slate-400 text-sm mt-1">Control de visibilidad</p>
+            </div>
+            <button
+              onClick={() => toggleSetting('eduplatform')}
+              className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 ${
+                settings['eduplatform'] ? 'bg-green-600' : 'bg-red-600'
+              }`}
+            >
+              <span
+                className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform shadow-lg ${
+                  settings['eduplatform'] ? 'translate-x-7' : 'translate-x-1'
+                }`}
+              />
+            </button>
+            <div className="flex items-center gap-2">
+              <div className={`w-2 h-2 rounded-full ${settings['eduplatform'] ? 'bg-green-400' : 'bg-red-400'}`}></div>
+              <span className={`text-sm font-medium ${settings['eduplatform'] ? 'text-green-400' : 'text-red-400'}`}>
+                {settings['eduplatform'] ? 'Abierto' : 'Cerrado'}
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Recent Activity */}

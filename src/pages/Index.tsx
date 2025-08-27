@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { RitualCard } from "@/components/ritual-card";
 import { NotificationModal } from "@/components/NotificationModal";
 import { Sunrise, Wind } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -65,33 +66,49 @@ const Index = () => {
           {/* Cards Grid */}
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 my-12">
             {isCardVisible('register_25_visible') && (
-              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
-                <h3 className="text-white font-semibold mb-2">Registro 25 USD</h3>
-                <p className="text-slate-400 text-sm mb-4">Bienvenido - Nuevo Registardo</p>
-                <a href="/register" className="inline-block bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition">
-                  Continue ritual
-                </a>
-              </div>
+              <RitualCard
+                title="Registardo 25 USD"
+                subtitle="Bienvenido"
+                description="Whisk, breathe, and be present. Today's ritual celebrated calm, bright energy."
+                status="Nuevo Registardo"
+                linkText="Continue ritual"
+                linkHref="/register"
+                variant="emerald"
+                videoSrc="https://cdn.pixabay.com/video/2021/02/17/65494-514501826_large.mp4"
+                videoPoster="https://cdn.pixabay.com/video/2021/02/17/65494-514501826_tiny.jpg?w=800&q=80"
+                icon={<Sunrise className="w-full h-full" strokeWidth={1.5} />}
+                delay={0}
+              />
             )}
             
             {isCardVisible('register_150_visible') && (
-              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
-                <h3 className="text-white font-semibold mb-2">Registro 150 USD</h3>
-                <p className="text-slate-400 text-sm mb-4">Bienvenido - Cursos en línea y mejora tus habilidades desde cualquier lugar del mundo.</p>
-                <a href="/register150" className="inline-block bg-cyan-600 text-white px-4 py-2 rounded-lg hover:bg-cyan-700 transition">
-                  Start ritual
-                </a>
-              </div>
+              <RitualCard
+                title="Registardo 150 USD"
+                subtitle="Bienvenido"
+                description="Cursos en línea y mejora tus habilidades desde cualquier lugar del mundo."
+                status="Nuevo Registardo"
+                linkText="Start ritual"
+                linkHref="/register150"
+                variant="cyan"
+                videoSrc="https://cdn.pixabay.com/video/2021/02/20/65771-515379416_large.mp4"
+                videoPoster="https://cdn.pixabay.com/video/2021/02/20/65771-515379416_tiny.jpg?w=800&q=80"
+                icon={<Wind className="w-full h-full" strokeWidth={1.5} />}
+                delay={100}
+              />
             )}
             
             {isCardVisible('eduplatform_visible') && (
-              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
-                <h3 className="text-white font-semibold mb-2">EduPlatform</h3>
-                <p className="text-slate-400 text-sm mb-4">A curated tea-ritual library with guided ceremonies for every mood and moment.</p>
-                <button className="inline-block bg-violet-600 text-white px-4 py-2 rounded-lg hover:bg-violet-700 transition">
-                  Explore rituals
-                </button>
-              </div>
+              <RitualCard
+                title="EduPlatform"
+                subtitle=""
+                description="A curated tea-ritual library with guided ceremonies for every mood and moment."
+                status="Virutal Binance"
+                linkText="Explore rituals"
+                variant="violet"
+                videoSrc="https://cdn.pixabay.com/video/2021/02/20/65772-515379427_large.mp4"
+                videoPoster="https://cdn.pixabay.com/video/2021/02/20/65772-515379427_tiny.jpg?w=800&q=80"
+                delay={200}
+              />
             )}
           </div>
 
