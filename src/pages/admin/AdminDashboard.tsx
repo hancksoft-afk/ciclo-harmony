@@ -104,6 +104,8 @@ export function AdminDashboard() {
     );
   }
 
+  console.log('Rendering dashboard with settings:', settings);
+  
   return (
     <div className="space-y-6">
       {/* Header */}
