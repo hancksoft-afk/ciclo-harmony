@@ -14,7 +14,7 @@ const Register150 = () => {
         playsInline 
         className="fixed top-0 left-0 w-full h-full object-cover -z-10"
       >
-        <source src="https://videos.pexels.com/video-files/2389545/2389545-hd_1920_1080_30fps.mp4" type="video/mp4" />
+        <source src="https://videos.pexels.com/video-files/18458403/18458403-hd_1920_1080_24fps.mp4" type="video/mp4" />
       </video>
 
       <div className="relative min-h-screen">

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { BarChart3, Users, TrendingUp, Settings, Eye, EyeOff } from 'lucide-react';
+import { BarChart3, Users, TrendingUp, Settings, Eye, EyeOff, Bell } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useNotificationContext } from '@/components/admin/AdminLayout';
 
 interface SystemSetting {
   id: string;
@@ -13,6 +14,7 @@ export function AdminDashboard() {
   const [settings, setSettings] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const { showNotifications, setShowNotifications } = useNotificationContext();
 
   useEffect(() => {
     fetchSettings();
@@ -104,6 +106,41 @@ export function AdminDashboard() {
         <div>
           <h1 className="text-2xl font-bold text-white">Dashboard</h1>
           <p className="text-slate-400">Panel de control y configuraciones del sistema</p>
+        </div>
+      </div>
+
+      {/* Notification Toggle Card */}
+      <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+              showNotifications ? 'bg-gradient-to-br from-blue-500 to-purple-600' : 'bg-gradient-to-br from-gray-500 to-gray-600'
+            }`}>
+              <Bell className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <p className="text-white font-semibold">Mostrar Notificaciones</p>
+              <p className="text-slate-400 text-sm">Controla la visibilidad del modal de notificaciones</p>
+            </div>
+          </div>
+          <button
+            onClick={() => setShowNotifications(!showNotifications)}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 ${
+              showNotifications ? 'bg-blue-600' : 'bg-gray-600'
+            }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                showNotifications ? 'translate-x-6' : 'translate-x-1'
+              }`}
+            />
+          </button>
+        </div>
+        <div className="flex items-center gap-2 mt-4">
+          <div className={`w-2 h-2 rounded-full ${showNotifications ? 'bg-blue-400' : 'bg-gray-400'}`}></div>
+          <span className={`text-sm font-medium ${showNotifications ? 'text-blue-400' : 'text-gray-400'}`}>
+            {showNotifications ? 'Modal Visible' : 'Modal Oculto'}
+          </span>
         </div>
       </div>
 
