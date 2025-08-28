@@ -44,6 +44,28 @@ export function AdminNotifications() {
   const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Validar tamaño del archivo (máximo 50MB para Supabase free tier)
+      const maxSize = 50 * 1024 * 1024; // 50MB en bytes
+      
+      if (file.size > maxSize) {
+        toast({
+          title: "Archivo muy grande",
+          description: `El video es demasiado grande. El tamaño máximo permitido es 50MB. Tu archivo es ${(file.size / 1024 / 1024).toFixed(1)}MB.`,
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // Validar duración aproximada basada en tamaño (estimación)
+      const estimatedDurationMins = file.size / (1024 * 1024 * 2); // Estimación: ~2MB por minuto para video comprimido
+      if (estimatedDurationMins > 8) {
+        toast({
+          title: "Video muy largo",
+          description: `Para asegurar una carga rápida, se recomienda videos de máximo 5-8 minutos. Tu video parece ser de aproximadamente ${Math.ceil(estimatedDurationMins)} minutos.`,
+          variant: "destructive"
+        });
+      }
+
       setVideoFile(file);
       const url = URL.createObjectURL(file);
       setVideoPreview(url);
@@ -104,11 +126,21 @@ export function AdminNotifications() {
       setVideoFile(null);
       setVideoPreview('');
       fetchNotifications();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating notification:', error);
+      
+      let errorMessage = "No se pudo crear la notificación";
+      
+      // Manejo específico de errores de storage
+      if (error?.message?.includes('exceeded the maximum allowed size')) {
+        errorMessage = "El video es demasiado grande. El tamaño máximo permitido es 50MB. Intenta comprimir el video o usar uno más corto.";
+      } else if (error?.message?.includes('storage')) {
+        errorMessage = "Error al subir el video. Verifica el formato y tamaño del archivo.";
+      }
+      
       toast({
         title: "Error",
-        description: "No se pudo crear la notificación",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {
@@ -343,6 +375,12 @@ export function AdminNotifications() {
                 <label className="block text-sm font-medium text-slate-300 mb-2">
                   Video (opcional)
                 </label>
+                <div className="mb-2 p-3 bg-slate-700/50 rounded-lg border border-slate-600">
+                  <div className="flex items-center gap-2 text-sm text-slate-300">
+                    <Video className="w-4 h-4 text-blue-400" />
+                    <span>Límites: Máximo 50MB | Recomendado: 5-8 minutos | Formatos: MP4, WebM, MOV</span>
+                  </div>
+                </div>
                 <div className="border-2 border-dashed border-slate-600 rounded-lg p-6 text-center">
                   {videoPreview ? (
                     <div className="space-y-4">
