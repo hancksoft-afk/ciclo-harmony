@@ -58,10 +58,10 @@ export function AdminNotifications() {
 
       // Validar duración aproximada basada en tamaño (estimación)
       const estimatedDurationMins = file.size / (1024 * 1024 * 2); // Estimación: ~2MB por minuto para video comprimido
-      if (estimatedDurationMins > 20) {
+      if (estimatedDurationMins > 120) {
         toast({
           title: "Video muy largo",
-          description: `Para asegurar una carga rápida, se recomienda videos de máximo 10-15 minutos. Tu video parece ser de aproximadamente ${Math.ceil(estimatedDurationMins)} minutos.`,
+          description: `Para asegurar una carga rápida, se recomienda videos de máximo 1-2 horas. Tu video parece ser de aproximadamente ${Math.ceil(estimatedDurationMins)} minutos.`,
           variant: "destructive"
         });
       }
@@ -75,7 +75,13 @@ export function AdminNotifications() {
   const uploadVideo = async (): Promise<string | null> => {
     if (!videoFile) return null;
 
-    const fileName = `${Date.now()}-${videoFile.name}`;
+    // Sanitizar el nombre del archivo para evitar errores de "InvalidKey"
+    const sanitizedFileName = videoFile.name
+      .replace(/[^\w\-_\.\s]/g, '') // Remover caracteres especiales excepto guiones, guiones bajos, puntos y espacios
+      .replace(/\s+/g, '_') // Reemplazar espacios con guiones bajos
+      .toLowerCase(); // Convertir a minúsculas
+
+    const fileName = `${Date.now()}-${sanitizedFileName}`;
     const { data, error } = await supabase.storage
       .from('notification-videos')
       .upload(fileName, videoFile, {
@@ -378,7 +384,7 @@ export function AdminNotifications() {
                 <div className="mb-2 p-3 bg-slate-700/50 rounded-lg border border-slate-600">
                   <div className="flex items-center gap-2 text-sm text-slate-300">
                     <Video className="w-4 h-4 text-blue-400" />
-                    <span>Límites: Máximo 1,500MB | Recomendado: 10-15 minutos | Formatos: MP4, WebM, MOV</span>
+                    <span>Límites: Máximo 1,500MB | Recomendado: 1-2 horas (≤ 120 min) | Formatos: MP4, WebM, MOV</span>
                   </div>
                 </div>
                 <div className="border-2 border-dashed border-slate-600 rounded-lg p-6 text-center">
