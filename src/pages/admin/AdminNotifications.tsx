@@ -44,13 +44,13 @@ export function AdminNotifications() {
   const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Validar tamaño del archivo (máximo 1,500MB)
-      const maxSize = 1500 * 1024 * 1024; // 1,500MB en bytes
+      // Validar tamaño del archivo (máximo 2GB)
+      const maxSize = 2048 * 1024 * 1024; // 2GB en bytes
       
       if (file.size > maxSize) {
         toast({
           title: "Archivo muy grande",
-          description: `El video es demasiado grande. El tamaño máximo permitido es 1,500MB. Tu archivo es ${(file.size / 1024 / 1024).toFixed(1)}MB.`,
+          description: `El video es demasiado grande. El tamaño máximo permitido es 2GB. Tu archivo es ${(file.size / 1024 / 1024).toFixed(1)}MB.`,
           variant: "destructive"
         });
         return;
@@ -139,7 +139,7 @@ export function AdminNotifications() {
       
       // Manejo específico de errores de storage
       if (error?.message?.includes('exceeded the maximum allowed size')) {
-        errorMessage = "El video es demasiado grande. El tamaño máximo permitido es 1,500MB. Intenta comprimir el video o usar uno más corto.";
+        errorMessage = "El video es demasiado grande. El tamaño máximo permitido es 2GB. Intenta comprimir el video o usar uno más corto.";
       } else if (error?.message?.includes('storage')) {
         errorMessage = "Error al subir el video. Verifica el formato y tamaño del archivo.";
       }
@@ -384,7 +384,7 @@ export function AdminNotifications() {
                 <div className="mb-2 p-3 bg-slate-700/50 rounded-lg border border-slate-600">
                   <div className="flex items-center gap-2 text-sm text-slate-300">
                     <Video className="w-4 h-4 text-blue-400" />
-                    <span>Límites: Máximo 1,500MB | Recomendado: 1-2 horas (≤ 120 min) | Formatos: MP4, WebM, MOV</span>
+                    <span>Límites: Máximo 2GB | Recomendado: 1-2 horas (≤ 120 min) | Formatos: MP4, WebM, MOV</span>
                   </div>
                 </div>
                 <div className="border-2 border-dashed border-slate-600 rounded-lg p-6 text-center">
