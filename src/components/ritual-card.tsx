@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { CheckCircle, Sunrise, Wind } from 'lucide-react';
+import { CheckCircle, Sunrise, Wind, ChevronUp, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface RitualCardProps {
@@ -31,6 +31,7 @@ export function RitualCard({
 }: RitualCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -124,59 +125,71 @@ export function RitualCard({
 
         <div className="space-y-6 relative z-10">
           <div className="flex items-center justify-between">
-            {icon && (
-              <div className={`w-8 h-8 ${classes.icon} group-hover:scale-110 transition-transform`}>
-                {icon}
-              </div>
-            )}
+            <div className="flex items-center gap-3">
+              {icon && (
+                <div className={`w-8 h-8 ${classes.icon} group-hover:scale-110 transition-transform`}>
+                  {icon}
+                </div>
+              )}
+              <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className={`w-6 h-6 ${classes.icon} hover:scale-110 transition-transform`}
+              >
+                {isExpanded ? <ChevronUp /> : <ChevronDown />}
+              </button>
+            </div>
             <span className={`text-xs px-3 py-1.5 ${classes.badge} rounded-full font-inter font-medium`}>
               Nuevo
             </span>
           </div>
-          <div>
-            <p className="text-3xl sm:text-4xl tracking-tight font-instrument">
-              {title}
-            </p>
-            <p className={`${classes.text} text-lg mt-2 font-inter`}>
-              {subtitle}
-            </p>
-          </div>
+          {isExpanded && (
+            <div>
+              <p className="text-3xl sm:text-4xl tracking-tight font-instrument">
+                {title}
+              </p>
+              <p className={`${classes.text} text-lg mt-2 font-inter`}>
+                {subtitle}
+              </p>
+            </div>
+          )}
         </div>
 
-        <div className={`space-y-4 border-t ${classes.border} pt-6 relative z-10`}>
-          <p className="leading-relaxed text-sm text-slate-50 font-inter font-light">
-            {description}
-          </p>
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <span className="text-xs tracking-wider font-inter font-semibold">
-                {status}
-              </span>
-              <CheckCircle className={`w-4 h-4 ${classes.text}`} />
+        {isExpanded && (
+          <div className={`space-y-4 border-t ${classes.border} pt-6 relative z-10`}>
+            <p className="leading-relaxed text-sm text-slate-50 font-inter font-light">
+              {description}
+            </p>
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <span className="text-xs tracking-wider font-inter font-semibold">
+                  {status}
+                </span>
+                <CheckCircle className={`w-4 h-4 ${classes.text}`} />
+              </div>
+              {linkHref.startsWith('/') ? (
+                <Link 
+                  to={linkHref}
+                  className={`inline-flex items-center gap-2 px-4 py-2 ${classes.bg} ${classes.text} text-sm font-medium rounded-xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl backdrop-blur-sm border border-white/10`}
+                >
+                  {linkText}
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              ) : (
+                <a 
+                  href={linkHref} 
+                  className={`inline-flex items-center gap-2 px-4 py-2 ${classes.bg} ${classes.text} text-sm font-medium rounded-xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl backdrop-blur-sm border border-white/10`}
+                >
+                  {linkText}
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+              )}
             </div>
-            {linkHref.startsWith('/') ? (
-              <Link 
-                to={linkHref}
-                className={`inline-flex items-center gap-2 px-4 py-2 ${classes.bg} ${classes.text} text-sm font-medium rounded-xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl backdrop-blur-sm border border-white/10`}
-              >
-                {linkText}
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-            ) : (
-              <a 
-                href={linkHref} 
-                className={`inline-flex items-center gap-2 px-4 py-2 ${classes.bg} ${classes.text} text-sm font-medium rounded-xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl backdrop-blur-sm border border-white/10`}
-              >
-                {linkText}
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </a>
-            )}
           </div>
-        </div>
+        )}
       </div>
   );
 }

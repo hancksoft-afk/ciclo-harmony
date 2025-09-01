@@ -1,7 +1,23 @@
 import { useState, useEffect } from 'react';
-import { Plus, Bell, Video, FileText, Send, Eye, EyeOff, Calendar, Upload, X, Trash2 } from 'lucide-react';
+import { Plus, Bell, Video, FileText, Send, Eye, EyeOff, Calendar, Upload, X, Trash2, GripVertical } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { SortableNotificationCard } from '@/components/SortableNotificationCard';
 
 interface Notification {
   id: string;
@@ -10,6 +26,13 @@ interface Notification {
   video_url: string | null;
   is_published: boolean;
   created_at: string;
+  order_index?: number;
+}
+
+interface SortableNotificationCardProps {
+  notification: Notification;
+  onTogglePublish: (id: string, currentStatus: boolean) => void;
+  onDelete: (id: string) => void;
 }
 
 export function AdminNotifications() {
@@ -21,6 +44,13 @@ export function AdminNotifications() {
   const [uploading, setUploading] = useState(false);
   const { toast } = useToast();
 
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
   useEffect(() => {
     fetchNotifications();
   }, []);
@@ -30,6 +60,7 @@ export function AdminNotifications() {
       const { data, error } = await supabase
         .from('notifications')
         .select('*')
+        .order('order_index', { ascending: true })
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -206,6 +237,50 @@ export function AdminNotifications() {
     }
   };
 
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      setNotifications((items) => {
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over.id);
+
+        const newOrder = arrayMove(items, oldIndex, newIndex);
+        
+        // Actualizar el orden en la base de datos
+        updateNotificationOrder(newOrder);
+        
+        return newOrder;
+      });
+    }
+  };
+
+  const updateNotificationOrder = async (orderedNotifications: Notification[]) => {
+    try {
+      // Actualizar cada notificación con su nuevo índice
+      const updates = orderedNotifications.map((notification, index) => 
+        supabase
+          .from('notifications')
+          .update({ order_index: index })
+          .eq('id', notification.id)
+      );
+
+      await Promise.all(updates);
+      
+      toast({
+        title: "Orden actualizado",
+        description: "El orden de las notificaciones se ha guardado exitosamente",
+      });
+    } catch (error) {
+      console.error('Error updating notification order:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo actualizar el orden de las notificaciones",
+        variant: "destructive"
+      });
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -233,102 +308,27 @@ export function AdminNotifications() {
             <div className="text-slate-400">Cargando notificaciones...</div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-            {notifications.map((notification) => (
-              <div key={notification.id} className="group relative bg-gradient-to-br from-slate-800/80 via-slate-700/60 to-slate-600/40 border border-slate-500/30 rounded-2xl p-6 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:border-purple-400/50 hover:scale-[1.02] backdrop-blur-sm">
-                {/* Header con icono y estado */}
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-14 h-14 bg-gradient-to-br from-blue-500 via-purple-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-purple-500/25 transition-shadow duration-300">
-                      <Bell className="w-7 h-7 text-white" />
-                    </div>
-                    <div className="flex flex-col">
-                      <div className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                        notification.is_published 
-                          ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' 
-                          : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                      }`}>
-                        {notification.is_published ? 'Publicado' : 'Borrador'}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Contenido */}
-                <div className="space-y-3">
-                  <h3 className="font-bold text-xl text-white group-hover:text-purple-300 transition-colors duration-300 line-clamp-2">{notification.title}</h3>
-                  <p className="text-slate-300 text-sm leading-relaxed line-clamp-3">{notification.description}</p>
-                  
-                  {/* Video preview si existe */}
-                  {notification.video_url && (
-                    <div className="relative mt-4">
-                      <div className="aspect-video bg-slate-900 rounded-lg overflow-hidden border border-slate-600/50">
-                        <video
-                          src={notification.video_url}
-                          className="w-full h-full object-cover"
-                          muted
-                        />
-                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/20 transition-colors">
-                          <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
-                            <Video className="w-6 h-6 text-white" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Metadatos */}
-                  <div className="flex items-center gap-4 pt-3 border-t border-slate-600/30">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-slate-400" />
-                      <span className="text-xs text-slate-400">
-                        {new Date(notification.created_at).toLocaleDateString('es-ES')}
-                      </span>
-                    </div>
-                    {notification.video_url && (
-                      <div className="mt-3">
-                        <video
-                          src={notification.video_url}
-                          className="w-32 h-20 object-cover rounded border border-slate-600"
-                          controls
-                        />
-                      </div>
-                    )}
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => togglePublish(notification.id, notification.is_published)}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition ${
-                      notification.is_published
-                        ? 'bg-green-600 text-white hover:bg-green-700'
-                        : 'bg-slate-600 text-slate-300 hover:bg-slate-500'
-                    }`}
-                  >
-                    {notification.is_published ? (
-                      <>
-                        <Eye className="w-4 h-4" />
-                        Publicado
-                      </>
-                    ) : (
-                      <>
-                        <EyeOff className="w-4 h-4" />
-                        Borrador
-                      </>
-                    )}
-                  </button>
-                  <button
-                    onClick={() => deleteNotification(notification.id)}
-                    className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition"
-                    title="Eliminar notificación"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={notifications.map(n => n.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                {notifications.map((notification) => (
+                  <SortableNotificationCard
+                    key={notification.id}
+                    notification={notification}
+                    onTogglePublish={togglePublish}
+                    onDelete={deleteNotification}
+                  />
+                ))}
               </div>
-            ))}
-          </div>
+            </SortableContext>
+          </DndContext>
         )}
       </div>
 

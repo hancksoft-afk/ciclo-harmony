@@ -54,6 +54,13 @@ export function NotificationModal() {
     }
   };
 
+  const prevNotification = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+      setIsPlaying(false);
+    }
+  };
+
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
   };
@@ -96,14 +103,25 @@ export function NotificationModal() {
             </div>
 
             {/* Navigation */}
-            {currentIndex < notifications.length - 1 && (
-              <button
-                onClick={nextNotification}
-                className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
-              >
-                Siguiente
-              </button>
-            )}
+            <div className="flex items-center justify-between">
+              {currentIndex > 0 && (
+                <button
+                  onClick={prevNotification}
+                  className="px-6 py-3 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                  Anterior
+                </button>
+              )}
+              
+              {currentIndex < notifications.length - 1 && (
+                <button
+                  onClick={nextNotification}
+                  className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl ml-auto"
+                >
+                  Siguiente
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
