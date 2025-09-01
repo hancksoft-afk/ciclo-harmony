@@ -65,6 +65,30 @@ export function AdminSidebar({ collapsed, setCollapsed }: SidebarProps) {
 
         {/* Navigation */}
         <nav className="flex-1 px-4 py-6 space-y-2">
+          {navigation.map((item) => {
+            const isActive = location.pathname === item.href;
+            return (
+              <NavLink
+                key={item.name}
+                to={item.href}
+                className={`
+                  flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors
+                  ${isActive 
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white' 
+                    : 'text-slate-300 hover:text-white hover:bg-slate-700/50'
+                  }
+                  ${collapsed ? 'justify-center' : ''}
+                `}
+                title={collapsed ? item.name : undefined}
+              >
+                <item.icon className="w-5 h-5 flex-shrink-0" />
+                {!collapsed && <span className="font-medium">{item.name}</span>}
+                {!collapsed && isActive && (
+                  <div className="ml-auto w-2 h-2 bg-white rounded-full" />
+                )}
+              </NavLink>
+            );
+          })}
         </nav>
 
         {/* User Menu */}
