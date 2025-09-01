@@ -79,7 +79,10 @@ export function SortableNotificationCard({ notification, onTogglePublish, onDele
               <video
                 src={notification.video_url}
                 className="w-full h-full object-cover"
+                controls
+                controlsList="nodownload"
                 muted
+                preload="metadata"
               />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/20 transition-colors">
                 <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
@@ -98,15 +101,6 @@ export function SortableNotificationCard({ notification, onTogglePublish, onDele
               {new Date(notification.created_at).toLocaleDateString('es-ES')}
             </span>
           </div>
-          {notification.video_url && (
-            <div className="mt-3">
-              <video
-                src={notification.video_url}
-                className="w-32 h-20 object-cover rounded border border-slate-600"
-                controls
-              />
-            </div>
-          )}
         </div>
       </div>
       
