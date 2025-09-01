@@ -21,7 +21,6 @@ export function AdminSidebar({ collapsed, setCollapsed }: SidebarProps) {
     { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
     { name: 'Usuarios', href: '/admin/users', icon: Users },
     { name: 'Usuarios2', href: '/admin/users2', icon: UserCheck },
-    { name: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
     { name: 'Reportes', href: '/admin/reportes', icon: FileText },
     { name: 'Reportes2', href: '/admin/reportes2', icon: FileText },
     { name: 'Notificaciones', href: '/admin/notifications', icon: Bell },
