@@ -261,7 +261,7 @@ export function AdminNotifications() {
       const updates = orderedNotifications.map((notification, index) => 
         supabase
           .from('notifications')
-          .update({ order_index: index })
+          .update({ order_index: index } as any)
           .eq('id', notification.id)
       );
 

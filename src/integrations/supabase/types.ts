@@ -50,6 +50,7 @@ export type Database = {
           description: string
           id: string
           is_published: boolean
+          order_index: number | null
           title: string
           updated_at: string
           video_url: string | null
@@ -59,6 +60,7 @@ export type Database = {
           description: string
           id?: string
           is_published?: boolean
+          order_index?: number | null
           title: string
           updated_at?: string
           video_url?: string | null
@@ -68,6 +70,7 @@ export type Database = {
           description?: string
           id?: string
           is_published?: boolean
+          order_index?: number | null
           title?: string
           updated_at?: string
           video_url?: string | null
