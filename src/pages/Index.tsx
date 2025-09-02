@@ -3,7 +3,7 @@ import { RitualCard } from "@/components/ritual-card";
 import { NotificationModal } from "@/components/NotificationModal";
 import { Sunrise, Wind } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import cicloLogo from "@/assets/ciclo-logo.png";
+import cicloLogo from "@/assets/ciclovida-logo.png";
 
 const Index = () => {
   const [systemSettings, setSystemSettings] = useState<any>({});
