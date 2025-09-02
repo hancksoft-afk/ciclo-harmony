@@ -49,7 +49,7 @@ const Index = () => {
           {/* Header */}
           <header className="flex pt-8 items-center justify-center gap-4">
             <img 
-              src={cicloLogo} 
+              src="/lovable-uploads/28d885bc-fc01-4fa6-804c-fe9a1a8094f6.png" 
               alt="Ciclo" 
               className="w-20 h-20 object-contain"
             />
