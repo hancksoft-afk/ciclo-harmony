@@ -254,7 +254,7 @@ export function RegistrationForm() {
 
   return (
     <>
-      <div className="rounded-2xl ring-1 ring-white/10 backdrop-blur-sm p-6 md:p-8 bg-gradient-to-b from-[#00075bd9] to-[#2c0097] relative">
+      <div className="rounded-2xl ring-1 ring-white/10 backdrop-blur-sm p-6 md:p-8 bg-gradient-to-b from-[#4a009d] to-[#050010] relative">
         <div className="absolute inset-0 rounded-2xl">
           <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-violet-500/10 via-indigo-500/10 to-cyan-500/10 animate-pulse" />
           <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-violet-500/5 via-transparent to-cyan-500/5 blur-xl" />
