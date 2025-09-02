@@ -87,7 +87,7 @@ const Register150 = () => {
         playsInline 
         className="fixed top-0 left-0 w-full h-full object-cover -z-10"
       >
-        <source src="https://limewire.com/decrypt?downloadUrl=https%3A%2F%2Flimewire-filesharing-production.b61cdfd8cf17f52ddc020162e738eb5d.r2.cloudflarestorage.com%2Fbuckets%2F8a00a651-1973-4efc-aa6d-92bbbf16f8cc%2F954c7fcc-2854-4ccb-a117-2a6b4e084309%3FX-Amz-Algorithm%3DAWS4-HMAC-SHA256%26X-Amz-Date%3D20250902T020112Z%26X-Amz-SignedHeaders%3Dhost%26X-Amz-Credential%3Da1868571dfad6d4fe293ee5b945a0ad5%252F20250902%252Fauto%252Fs3%252Faws4_request%26X-Amz-Expires%3D14400%26X-Amz-Signature%3D7cbb92498db0ac65e793ac6ed16bbbfdf3ef8a947421a4b41f01b4f9e9863eaa&mediaType=video%2Fmp4&decryptionKeys=eyJhZXNHY21Kd2siOnsiYWVzS2V5VHlwZSI6IlNZTU1FVFJJQ19BRVMtR0NNX0tFWSIsImp3ayI6eyJhbGciOiJBMjU2R0NNIiwiZXh0Ijp0cnVlLCJrIjoiRFlIaFh1aEdxd3J2RXBsbFBFYzc3VF9lY25OUFR0Y05wbnNoQWRjaG4xWSIsImtleV9vcHMiOlsiZW5jcnlwdCIsImRlY3J5cHQiXSwia3R5Ijoib2N0In19LCJhZXNDdHJKd2siOnsiYWVzS2V5VHlwZSI6IlNZTU1FVFJJQ19BRVMtQ1RSX0tFWSIsImp3ayI6eyJhbGciOiJBMjU2Q1RSIiwiZXh0Ijp0cnVlLCJrIjoiRFlIaFh1aEdxd3J2RXBsbFBFYzc3VF9lY25OUFR0Y05wbnNoQWRjaG4xWSIsImtleV9vcHMiOlsiZW5jcnlwdCIsImRlY3J5cHQiXSwia3R5Ijoib2N0In19fQ" type="video/mp4" />
+        <source src="https://videos.pexels.com/video-files/18458403/18458403-hd_1920_1080_24fps.mp4" type="video/mp4" />
       </video>
 
       <div className="relative min-h-screen">
