@@ -437,12 +437,37 @@ export function AdminSettings() {
                         Tiempo restante (minutos)
                       </label>
                       <input
+                        id={`time-input-${config.type}`}
                         name="remaining_time"
                         type="number"
                         defaultValue={setting?.remaining_time || 1440}
                         className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
                         placeholder="1440"
                       />
+                      <div className="mt-3">
+                        <p className="text-xs text-slate-400 mb-2">Presets rápidos:</p>
+                        <div className="flex gap-2">
+                          {[
+                            { label: '10m', value: 10 },
+                            { label: '15m', value: 15 },
+                            { label: '30m', value: 30 },
+                            { label: '45m', value: 45 },
+                            { label: '1h', value: 60 }
+                          ].map((preset) => (
+                            <button
+                              key={preset.value}
+                              type="button"
+                              onClick={() => {
+                                const input = document.getElementById(`time-input-${config.type}`) as HTMLInputElement;
+                                if (input) input.value = preset.value.toString();
+                              }}
+                              className="px-3 py-1.5 text-sm bg-slate-700/50 hover:bg-violet-600 text-slate-300 hover:text-white border border-slate-600/50 hover:border-violet-500 rounded-lg transition-all duration-200"
+                            >
+                              {preset.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
 
