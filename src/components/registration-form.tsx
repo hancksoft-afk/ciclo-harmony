@@ -542,7 +542,7 @@ export function RegistrationForm() {
 
               {/* Payment Platform Selection */}
               <div>
-                <label className="block text-sm text-muted-foreground mb-2 font-inter">Selecciona tu plataforma de pago</label>
+                <label className="block text-sm text-muted-foreground mb-2 font-inter">Selecciona tu método de pago preferido:</label>
                 {!selectedPlatform ? (
                   <button
                     type="button"
