@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Settings, QrCode, Clock, Image, Upload, Save, X, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { Switch } from '@/components/ui/switch';
 
 interface QrSetting {
   id: string;
@@ -49,10 +50,12 @@ export function AdminSettings() {
   const [imagePreviews, setImagePreviews] = useState<Record<string, string>>({});
   const [isUploading, setIsUploading] = useState(false);
   const [inputValues, setInputValues] = useState<{ [key: string]: { code_id: string; remaining_time: string } }>({});
+  const [systemSettings, setSystemSettings] = useState<{ [key: string]: boolean }>({});
   const { toast } = useToast();
 
   useEffect(() => {
     fetchQrSettings();
+    fetchSystemSettings();
   }, []);
 
   // Actualizar inputValues cuando qrSettings cambie
@@ -80,6 +83,51 @@ export function AdminSettings() {
       console.error('Error fetching QR settings:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchSystemSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('*')
+        .in('setting_key', ['binance_enabled', 'nequi_25_enabled', 'nequi_150_enabled']);
+
+      if (error) throw error;
+      
+      const settingsMap: { [key: string]: boolean } = {};
+      data?.forEach(setting => {
+        settingsMap[setting.setting_key] = setting.setting_value;
+      });
+      setSystemSettings(settingsMap);
+    } catch (error) {
+      console.error('Error fetching system settings:', error);
+    }
+  };
+
+  const handleToggleSystem = async (settingKey: string, newValue: boolean) => {
+    try {
+      const { error } = await supabase
+        .from('system_settings')
+        .upsert({
+          setting_key: settingKey,
+          setting_value: newValue
+        });
+
+      if (error) throw error;
+      
+      setSystemSettings(prev => ({ ...prev, [settingKey]: newValue }));
+      toast({
+        title: "Configuración actualizada",
+        description: `${settingKey} ${newValue ? 'activado' : 'desactivado'}`,
+      });
+    } catch (error) {
+      console.error('Error updating system setting:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo actualizar la configuración",
+        variant: "destructive"
+      });
     }
   };
 
@@ -623,6 +671,36 @@ export function AdminSettings() {
           <p className="text-muted-foreground">Configuración para el proceso de registro de $25 USD</p>
         </div>
         
+        {/* Toggle Settings Section for $25 */}
+        <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700/50 rounded-xl p-6 backdrop-blur-sm mb-6">
+          <h3 className="text-lg font-semibold text-white mb-4">Opciones de Pago</h3>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Binance Toggle */}
+            <div className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg border border-slate-600/50">
+              <div>
+                <h4 className="text-white font-medium">Binance</h4>
+                <p className="text-sm text-slate-400">Habilitar/deshabilitar pagos con Binance</p>
+              </div>
+              <Switch
+                checked={systemSettings.binance_enabled ?? true}
+                onCheckedChange={(checked) => handleToggleSystem('binance_enabled', checked)}
+              />
+            </div>
+            
+            {/* Nequi $25 Toggle */}
+            <div className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg border border-slate-600/50">
+              <div>
+                <h4 className="text-white font-medium">Nequi</h4>
+                <p className="text-sm text-slate-400">Habilitar/deshabilitar pagos con Nequi para $25</p>
+              </div>
+              <Switch
+                checked={systemSettings.nequi_25_enabled ?? true}
+                onCheckedChange={(checked) => handleToggleSystem('nequi_25_enabled', checked)}
+              />
+            </div>
+          </div>
+        </div>
+        
         <QrFormGroup
           title="Configuración de QR Codes $25 USD"
           qrSettings={[
@@ -652,6 +730,36 @@ export function AdminSettings() {
         <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-lg p-6 mb-6">
           <h2 className="text-2xl font-semibold text-green-400 mb-2">Registro $150 USD</h2>
           <p className="text-muted-foreground">Configuración para el proceso de registro de $150 USD</p>
+        </div>
+        
+        {/* Toggle Settings Section for $150 */}
+        <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700/50 rounded-xl p-6 backdrop-blur-sm mb-6">
+          <h3 className="text-lg font-semibold text-white mb-4">Opciones de Pago</h3>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Binance Toggle */}
+            <div className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg border border-slate-600/50">
+              <div>
+                <h4 className="text-white font-medium">Binance</h4>
+                <p className="text-sm text-slate-400">Habilitar/deshabilitar pagos con Binance</p>
+              </div>
+              <Switch
+                checked={systemSettings.binance_enabled ?? true}
+                onCheckedChange={(checked) => handleToggleSystem('binance_enabled', checked)}
+              />
+            </div>
+            
+            {/* Nequi $150 Toggle */}
+            <div className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg border border-slate-600/50">
+              <div>
+                <h4 className="text-white font-medium">Nequi</h4>
+                <p className="text-sm text-slate-400">Habilitar/deshabilitar pagos con Nequi para $150</p>
+              </div>
+              <Switch
+                checked={systemSettings.nequi_150_enabled ?? true}
+                onCheckedChange={(checked) => handleToggleSystem('nequi_150_enabled', checked)}
+              />
+            </div>
+          </div>
         </div>
         
         <QrFormGroup
