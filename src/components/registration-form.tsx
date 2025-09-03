@@ -24,6 +24,8 @@ interface FormData {
 const countries = ['México', 'España', 'Colombia', 'Argentina', 'Perú', 'Chile'];
 
 export function RegistrationForm() {
+  const [showPlatformModal, setShowPlatformModal] = useState(true);
+  const [selectedPlatform, setSelectedPlatform] = useState<string>('');
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -316,6 +318,12 @@ export function RegistrationForm() {
     setShowTicketModal(false);
   };
 
+  const handlePlatformSelection = (platform: string) => {
+    setSelectedPlatform(platform);
+    setFormData({...formData, paymentMethod: platform});
+    setShowPlatformModal(false);
+  };
+
   const canProceedStep1 = formData.name && formData.invitee && formData.country && 
                           formData.phone && formData.hasMoney && 
                           formData.paymentMethod && 
@@ -328,6 +336,66 @@ export function RegistrationForm() {
 
   return (
     <>
+      {/* Platform Selection Modal */}
+      {showPlatformModal && (
+        <div className="fixed inset-0 z-50 overflow-auto bg-black/60">
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+          <div className="relative mx-auto w-full max-w-lg px-4 py-8 min-h-full flex items-center justify-center">
+            <div className="w-full rounded-2xl bg-gradient-to-b from-[#4a009d] to-[#050010] ring-1 ring-white/10 shadow-2xl overflow-hidden p-6">
+              <div className="space-y-6">
+                <div className="text-center">
+                  <h2 className="text-2xl font-semibold tracking-tight text-white font-inter mb-2">
+                    ¿Tienes dinero ahora?
+                  </h2>
+                  <p className="text-sm text-muted-foreground font-inter">
+                    Selecciona tu plataforma de pago para continuar
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  <label className="block text-sm text-muted-foreground mb-2 font-inter">Selecciona una plataforma:</label>
+                  <div className="space-y-3">
+                    <button
+                      type="button"
+                      onClick={() => handlePlatformSelection('binance_pay')}
+                      className="group w-full rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 hover:ring-primary/50 transition p-4 text-left"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-lg bg-amber-500/10 ring-1 ring-amber-500/20 flex items-center justify-center">
+                          <Hash className="w-5 h-5 text-amber-500" />
+                        </div>
+                        <div>
+                          <span className="text-base font-medium text-foreground font-inter">Binance</span>
+                          <p className="text-sm text-muted-foreground font-inter">Pago con Binance Pay</p>
+                        </div>
+                      </div>
+                    </button>
+                    
+                    <button
+                      type="button"
+                      onClick={() => handlePlatformSelection('nequi_pay')}
+                      className="group w-full rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 hover:ring-primary/50 transition p-4 text-left"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-lg bg-green-500/10 ring-1 ring-green-500/20 flex items-center justify-center">
+                          <Hash className="w-5 h-5 text-green-500" />
+                        </div>
+                        <div>
+                          <span className="text-base font-medium text-foreground font-inter">Nequi</span>
+                          <p className="text-sm text-muted-foreground font-inter">Pago con Nequi</p>
+                        </div>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Main Registration Form */}
+      {!showPlatformModal && (
       <div className="rounded-2xl ring-1 ring-white/10 backdrop-blur-sm p-6 md:p-8 bg-gradient-to-b from-[#4a009d] to-[#050010] relative">
         <div className="absolute inset-0 rounded-2xl">
           <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-violet-500/10 via-indigo-500/10 to-cyan-500/10 animate-pulse" />
@@ -340,7 +408,7 @@ export function RegistrationForm() {
               Vamos a crear tu cuenta
             </h1>
             <p className="text-sm text-muted-foreground mt-1.5 font-inter">
-              Completa los pasos y estarás listo en minutos.
+              Completa los pasos y estarás listo en minutos. Plataforma seleccionada: <span className="text-foreground">{formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi'}</span>
             </p>
           </div>
 
@@ -471,40 +539,6 @@ export function RegistrationForm() {
                       No
                     </button>
                   </div>
-                </div>
-              </div>
-
-              {/* Payment Platform Selection */}
-              <div>
-                <label className="block text-sm text-muted-foreground mb-2 font-inter">Selecciona tu plataforma de pago</label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setFormData({...formData, paymentMethod: 'binance_pay'})}
-                    className={`group rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-3 text-left ${
-                      formData.paymentMethod === 'binance_pay' ? 'ring-primary/50 bg-primary/5' : ''
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Hash className="w-4 h-4 text-primary" />
-                      <span className="text-sm text-foreground font-inter">Binance</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-1 font-inter">Pago con Binance Pay</p>
-                  </button>
-                  
-                  <button
-                    type="button"
-                    onClick={() => setFormData({...formData, paymentMethod: 'nequi_pay'})}
-                    className={`group rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-3 text-left ${
-                      formData.paymentMethod === 'nequi_pay' ? 'ring-primary/50 bg-primary/5' : ''
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Hash className="w-4 h-4 text-green-500" />
-                      <span className="text-sm text-foreground font-inter">Nequi</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-1 font-inter">Pago con Nequi</p>
-                  </button>
                 </div>
               </div>
 
@@ -831,6 +865,7 @@ export function RegistrationForm() {
           )}
         </div>
       </div>
+      )}
 
       {/* Ticket Modal */}
       {showTicketModal && (
