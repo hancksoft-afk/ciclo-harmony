@@ -432,18 +432,6 @@ export function AdminSettings() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2 flex items-center gap-2">
-                        <Clock className="w-4 h-4" />
-                        Tiempo restante (minutos)
-                      </label>
-                      <input
-                        id={`time-input-${config.type}`}
-                        name="remaining_time"
-                        type="number"
-                        defaultValue={setting?.remaining_time || 1440}
-                        className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
-                        placeholder="1440"
-                      />
                       <div className="mt-3">
                         <p className="text-xs text-slate-400 mb-2">Presets rápidos:</p>
                         <div className="flex gap-2">
@@ -467,6 +455,12 @@ export function AdminSettings() {
                             </button>
                           ))}
                         </div>
+                        <input
+                          id={`time-input-${config.type}`}
+                          name="remaining_time"
+                          type="hidden"
+                          defaultValue={setting?.remaining_time || 1440}
+                        />
                       </div>
                     </div>
                   </div>
@@ -527,29 +521,15 @@ export function AdminSettings() {
         </div>
 
         <div className="pt-4 border-t border-slate-700/50 space-y-3">
-          <div className="grid grid-cols-2 gap-3">
-            {qrSettingsConfig.map((config, index) => (
-              <button
-                key={config.type}
-                type="button"
-                onClick={() => handleSave(config.type)}
-                disabled={isUploading}
-                className={`flex items-center justify-center gap-2 px-4 py-3 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg text-sm ${
-                  index === 0 
-                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800'
-                    : 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800'
-                }`}
-              >
-                <Save className="w-4 h-4" />
-                {isUploading ? 'Guardando...' : (
-                  config.type === 'register' ? 'Ciclo de vida' :
-                  config.type === 'register_admin' ? 'Admin $25' :
-                  config.type === 'register150' ? 'Ciclo de vida' :
-                  'Admin $150'
-                )}
-              </button>
-            ))}
-          </div>
+          <button
+            type="button"
+            onClick={() => handleSaveGroup(qrSettingsConfig.map(config => config.type))}
+            disabled={isUploading}
+            className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg text-lg font-medium"
+          >
+            <Save className="w-5 h-5" />
+            {isUploading ? 'Publicando...' : 'Publicar'}
+          </button>
         </div>
       </div>
     );
