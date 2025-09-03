@@ -521,26 +521,15 @@ export function AdminSettings() {
         </div>
 
         <div className="pt-4 border-t border-slate-700/50 space-y-3">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <button
-              type="button"
-              onClick={() => handleSaveGroup(['register', 'register_admin'])}
-              disabled={isUploading}
-              className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg font-medium"
-            >
-              <Save className="w-4 h-4" />
-              {isUploading ? 'Publicando...' : 'Registro $25 USD'}
-            </button>
-            <button
-              type="button"
-              onClick={() => handleSaveGroup(['register150', 'register150_admin'])}
-              disabled={isUploading}
-              className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg font-medium"
-            >
-              <Save className="w-4 h-4" />
-              {isUploading ? 'Publicando...' : 'Registro $150 USD'}
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => handleSaveGroup(['register', 'register_admin'])}
+            disabled={isUploading}
+            className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg text-lg font-medium"
+          >
+            <Save className="w-5 h-5" />
+            {isUploading ? 'Publicando...' : 'Registro $25 USD'}
+          </button>
         </div>
       </div>
     );
@@ -615,6 +604,18 @@ export function AdminSettings() {
           onImageChange={handleImageChange}
           settings={qrSettings}
         />
+        
+        <div className="pt-4 border-t border-slate-700/50 space-y-3">
+          <button
+            type="button"
+            onClick={() => handleSaveGroup(['register150', 'register150_admin'])}
+            disabled={isUploading}
+            className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg text-lg font-medium"
+          >
+            <Save className="w-5 h-5" />
+            {isUploading ? 'Publicando...' : 'Registro $150 USD'}
+          </button>
+        </div>
       </div>
 
       {loading ? (
