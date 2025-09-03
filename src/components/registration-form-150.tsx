@@ -42,8 +42,8 @@ export function RegistrationForm150() {
   const [showTicketModal, setShowTicketModal] = useState(false);
   const [timer1, setTimer1] = useState(30 * 60); // 30 minutes
   const [timer2, setTimer2] = useState(30 * 60);
-  const [orderId1] = useState(Math.random().toString(36).substr(2, 9).toUpperCase());
-  const [orderId2] = useState(Math.random().toString(36).substr(2, 9).toUpperCase());
+  const [orderId1, setOrderId1] = useState(Math.random().toString(36).substr(2, 9).toUpperCase());
+  const [orderId2, setOrderId2] = useState(Math.random().toString(36).substr(2, 9).toUpperCase());
   const [generatedCodes, setGeneratedCodes] = useState<{codigo: string, oculto: string, ticketId: string} | null>(null);
   const [qrSettings, setQrSettings] = useState<any>(null);
   const [adminQrSettings, setAdminQrSettings] = useState<any>(null);
@@ -74,16 +74,46 @@ export function RegistrationForm150() {
 
   const fetchAdminQrSettings = async () => {
     try {
+      console.log('Fetching admin QR settings for register150_admin...');
       const { data, error } = await supabase
         .rpc('get_active_qr_setting', { qr_type: 'register150_admin' });
 
       if (error) {
-        console.error('Error fetching admin QR settings:', error);
+        console.error('Error fetching admin QR settings RPC:', error);
+        // Try direct query as fallback
+        const { data: directData, error: directError } = await supabase
+          .from('qr_settings')
+          .select('*')
+          .eq('type', 'register150_admin')
+          .eq('is_active', true)
+          .order('updated_at', { ascending: false })
+          .maybeSingle();
+        
+        if (directError) {
+          console.error('Error fetching admin QR settings direct:', directError);
+          return;
+        }
+        
+        console.log('Direct admin QR settings result:', directData);
+        if (directData) {
+          setAdminQrSettings(directData);
+          // Update orderId2 with the admin code_id
+          if (directData.code_id) {
+            console.log('Setting orderId2 to admin code_id:', directData.code_id);
+            setOrderId2(directData.code_id);
+          }
+        }
         return;
       }
 
+      console.log('RPC admin QR settings result:', data);
       if (data && data.length > 0) {
         setAdminQrSettings(data[0]);
+        // Update orderId2 with the admin code_id
+        if (data[0].code_id) {
+          console.log('Setting orderId2 to admin code_id from RPC:', data[0].code_id);
+          setOrderId2(data[0].code_id);
+        }
       }
     } catch (error) {
       console.error('Error fetching admin QR settings:', error);
