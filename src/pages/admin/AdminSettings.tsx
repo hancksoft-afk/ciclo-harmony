@@ -710,12 +710,12 @@ export function AdminSettings() {
               type: "register"
             },
             {
-              title: "Pago por QR (Admin) - Binance",
+              title: "Pago por QR (Admin) - Binance", 
               description: "Configuración del código QR administrativo para registros de $25 con Binance",
               type: "register_admin"
             }
           ]}
-          onSave={handleSave}
+          onSave={(type) => handleSaveGroup(['register', 'register_admin'])}
           loading={loading}
           isUploading={isUploading}
           imageFiles={imageFiles}
@@ -738,7 +738,7 @@ export function AdminSettings() {
               type: "register_admin_nequi"
             }
           ]}
-          onSave={handleSave}
+          onSave={(type) => handleSaveGroup(['register_nequi', 'register_admin_nequi'])}
           loading={loading}
           isUploading={isUploading}
           imageFiles={imageFiles}
@@ -799,7 +799,7 @@ export function AdminSettings() {
               type: "register150_admin"
             }
           ]}
-          onSave={handleSave}
+          onSave={(type) => handleSaveGroup(['register150', 'register150_admin'])}
           loading={loading}
           isUploading={isUploading}
           imageFiles={imageFiles}
@@ -822,7 +822,7 @@ export function AdminSettings() {
               type: "register150_admin_nequi"
             }
           ]}
-          onSave={handleSave}
+          onSave={(type) => handleSaveGroup(['register150_nequi', 'register150_admin_nequi'])}
           loading={loading}
           isUploading={isUploading}
           imageFiles={imageFiles}
