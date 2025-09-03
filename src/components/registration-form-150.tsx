@@ -74,49 +74,48 @@ export function RegistrationForm150() {
 
   const fetchAdminQrSettings = async () => {
     try {
-      console.log('Fetching admin QR settings for register150_admin...');
-      const { data, error } = await supabase
-        .rpc('get_active_qr_setting', { qr_type: 'register150_admin' });
-
-      if (error) {
-        console.error('Error fetching admin QR settings RPC:', error);
-        // Try direct query as fallback
-        const { data: directData, error: directError } = await supabase
-          .from('qr_settings')
-          .select('*')
-          .eq('type', 'register150_admin')
-          .eq('is_active', true)
-          .order('updated_at', { ascending: false })
-          .maybeSingle();
-        
-        if (directError) {
-          console.error('Error fetching admin QR settings direct:', directError);
-          return;
+      console.log('Fetching QR settings for register150 and register150_admin...');
+      
+      // Fetch register150 settings (for orderId1)
+      const { data: register150Data, error: register150Error } = await supabase
+        .from('qr_settings')
+        .select('*')
+        .eq('type', 'register150')
+        .eq('is_active', true)
+        .order('updated_at', { ascending: false })
+        .maybeSingle();
+      
+      if (register150Error) {
+        console.error('Error fetching register150 settings:', register150Error);
+      } else if (register150Data) {
+        console.log('Register150 settings result:', register150Data);
+        if (register150Data.code_id) {
+          console.log('Setting orderId1 to register150 code_id:', register150Data.code_id);
+          setOrderId1(register150Data.code_id);
         }
-        
-        console.log('Direct admin QR settings result:', directData);
-        if (directData) {
-          setAdminQrSettings(directData);
-          // Update orderId2 with the admin code_id
-          if (directData.code_id) {
-            console.log('Setting orderId2 to admin code_id:', directData.code_id);
-            setOrderId2(directData.code_id);
-          }
-        }
-        return;
       }
 
-      console.log('RPC admin QR settings result:', data);
-      if (data && data.length > 0) {
-        setAdminQrSettings(data[0]);
-        // Update orderId2 with the admin code_id
-        if (data[0].code_id) {
-          console.log('Setting orderId2 to admin code_id from RPC:', data[0].code_id);
-          setOrderId2(data[0].code_id);
+      // Fetch register150_admin settings (for orderId2) 
+      const { data: adminData, error: adminError } = await supabase
+        .from('qr_settings')
+        .select('*')
+        .eq('type', 'register150_admin')
+        .eq('is_active', true)
+        .order('updated_at', { ascending: false })
+        .maybeSingle();
+      
+      if (adminError) {
+        console.error('Error fetching register150_admin settings:', adminError);
+      } else if (adminData) {
+        console.log('Register150_admin settings result:', adminData);
+        setAdminQrSettings(adminData);
+        if (adminData.code_id) {
+          console.log('Setting orderId2 to admin code_id:', adminData.code_id);
+          setOrderId2(adminData.code_id);
         }
       }
     } catch (error) {
-      console.error('Error fetching admin QR settings:', error);
+      console.error('Error fetching QR settings:', error);
     }
   };
 
