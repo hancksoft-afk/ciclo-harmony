@@ -403,12 +403,18 @@ export function RegistrationForm() {
         </div>
         
         <div className="relative z-10">
-          <div className="mb-6">
-            <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-white font-inter">
+          <div className="mb-6 space-y-3">
+            <div className="text-center mb-4">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 ring-1 ring-primary/30 text-primary font-medium text-sm">
+                <CheckCircle2 className="w-4 h-4" />
+                Plataforma seleccionada: {formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi'}
+              </div>
+            </div>
+            <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-white font-inter text-center">
               Vamos a crear tu cuenta
             </h1>
-            <p className="text-sm text-muted-foreground mt-1.5 font-inter">
-              Completa los pasos y estarás listo en minutos. Plataforma seleccionada: <span className="text-foreground">{formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi'}</span>
+            <p className="text-sm text-muted-foreground mt-1.5 font-inter text-center">
+              Completa los pasos y estarás listo en minutos
             </p>
           </div>
 
