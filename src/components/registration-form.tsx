@@ -25,7 +25,7 @@ const countries = ['México', 'España', 'Colombia', 'Argentina', 'Perú', 'Chil
 
 export function RegistrationForm() {
   const [currentStep, setCurrentStep] = useState(1);
-  const [showPlatformModal, setShowPlatformModal] = useState(true);
+  const [showPlatformModal, setShowPlatformModal] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState<'binance' | 'nequi' | null>(null);
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -543,35 +543,40 @@ export function RegistrationForm() {
               {/* Payment Platform Selection */}
               <div>
                 <label className="block text-sm text-muted-foreground mb-2 font-inter">Selecciona tu plataforma de pago</label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {!selectedPlatform ? (
                   <button
                     type="button"
-                    onClick={() => setFormData({...formData, paymentMethod: 'binance_pay'})}
-                    className={`group rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-3 text-left ${
-                      formData.paymentMethod === 'binance_pay' ? 'ring-primary/50 bg-primary/5' : ''
-                    }`}
+                    onClick={() => setShowPlatformModal(true)}
+                    className="w-full rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 hover:ring-primary/50 transition p-4 text-center"
                   >
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center justify-center gap-2">
                       <Hash className="w-4 h-4 text-primary" />
-                      <span className="text-sm text-foreground font-inter">Binance</span>
+                      <span className="text-sm text-foreground font-inter">Seleccionar Plataforma</span>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1 font-inter">Pago con Binance Pay</p>
+                    <p className="text-xs text-muted-foreground mt-1 font-inter">Haz clic para elegir entre Binance o Nequi</p>
                   </button>
-                  
-                  <button
-                    type="button"
-                    onClick={() => setFormData({...formData, paymentMethod: 'nequi_pay'})}
-                    className={`group rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-3 text-left ${
-                      formData.paymentMethod === 'nequi_pay' ? 'ring-primary/50 bg-primary/5' : ''
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Hash className="w-4 h-4 text-green-500" />
-                      <span className="text-sm text-foreground font-inter">Nequi</span>
+                ) : (
+                  <div className="rounded-lg ring-1 ring-primary/50 bg-primary/5 p-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Hash className="w-4 h-4 text-primary" />
+                        <span className="text-sm text-foreground font-inter">
+                          {selectedPlatform === 'binance' ? 'Binance' : 'Nequi'}
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowPlatformModal(true)}
+                        className="text-xs text-muted-foreground hover:text-foreground transition"
+                      >
+                        Cambiar
+                      </button>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1 font-inter">Pago con Nequi</p>
-                  </button>
-                </div>
+                    <p className="text-xs text-muted-foreground mt-1 font-inter">
+                      Pago con {selectedPlatform === 'binance' ? 'Binance Pay' : 'Nequi'}
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* Binance/Nequi ID */}
