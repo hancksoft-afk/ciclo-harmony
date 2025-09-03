@@ -75,6 +75,7 @@ export function RegistrationForm() {
 
   const fetchAdminQrSettings = async () => {
     try {
+      console.log('Fetching admin QR settings...');
       const { data, error } = await supabase
         .rpc('get_active_qr_setting', { qr_type: 'register_admin' });
 
@@ -83,8 +84,13 @@ export function RegistrationForm() {
         return;
       }
 
+      console.log('Admin QR settings data:', data);
       if (data && data.length > 0) {
+        console.log('Setting admin QR settings:', data[0]);
         setAdminQrSettings(data[0]);
+      } else {
+        console.log('No admin QR settings found');
+        setAdminQrSettings(null);
       }
     } catch (error) {
       console.error('Error fetching admin QR settings:', error);
@@ -609,7 +615,9 @@ export function RegistrationForm() {
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground font-inter">Codigo ID</span>
                     <div className="flex items-center gap-2">
-                      <code className="text-sm text-foreground font-mono">{adminQrSettings?.code_id || 'N/A'}</code>
+                       <code className="text-sm text-foreground font-mono">
+                         {adminQrSettings?.code_id && adminQrSettings.code_id.trim() !== '' ? adminQrSettings.code_id : 'Pendiente'}
+                       </code>
                       <button
                         onClick={() => copyToClipboard(adminQrSettings?.code_id || '')}
                         className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
