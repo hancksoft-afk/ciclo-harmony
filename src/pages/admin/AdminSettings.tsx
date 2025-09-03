@@ -198,6 +198,17 @@ export function AdminSettings() {
         const codeId = formData.get('code_id') as string;
         const remainingTime = parseInt(formData.get('remaining_time') as string) || 1440;
 
+        // Debug: verificar todos los valores del formulario
+        console.log(`FormData entries for ${type}:`);
+        for (let [key, value] of formData.entries()) {
+          console.log(`  ${key}: "${value}"`);
+        }
+        
+        // Debug: verificar el input directamente
+        const codeInput = form.querySelector('input[name="code_id"]') as HTMLInputElement;
+        console.log(`Direct input value for ${type}: "${codeInput?.value}"`);
+        console.log(`Input defaultValue: "${codeInput?.defaultValue}"`);
+
         console.log(`Type: ${type}, Code ID: "${codeId}", Remaining Time: ${remainingTime}`);
 
         // Validación para admin
