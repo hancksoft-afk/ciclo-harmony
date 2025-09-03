@@ -523,12 +523,12 @@ export function AdminSettings() {
         <div className="pt-4 border-t border-slate-700/50 space-y-3">
           <button
             type="button"
-            onClick={() => handleSaveGroup(['register', 'register_admin'])}
+            onClick={() => handleSaveGroup(qrSettingsConfig.map(config => config.type))}
             disabled={isUploading}
-            className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg text-lg font-medium"
+            className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg text-lg font-medium"
           >
             <Save className="w-5 h-5" />
-            {isUploading ? 'Publicando...' : 'Registro $25 USD'}
+            {isUploading ? 'Publicando...' : 'Publicar'}
           </button>
         </div>
       </div>
@@ -604,18 +604,6 @@ export function AdminSettings() {
           onImageChange={handleImageChange}
           settings={qrSettings}
         />
-        
-        <div className="pt-4 border-t border-slate-700/50 space-y-3">
-          <button
-            type="button"
-            onClick={() => handleSaveGroup(['register150', 'register150_admin'])}
-            disabled={isUploading}
-            className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg text-lg font-medium"
-          >
-            <Save className="w-5 h-5" />
-            {isUploading ? 'Publicando...' : 'Registro $150 USD'}
-          </button>
-        </div>
       </div>
 
       {loading ? (
