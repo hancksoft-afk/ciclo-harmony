@@ -194,22 +194,15 @@ export function AdminSettings() {
           continue;
         }
         
-        const formData = new FormData(form);
-        const codeId = formData.get('code_id') as string;
-        const remainingTime = parseInt(formData.get('remaining_time') as string) || 1440;
-
-        // Debug: verificar todos los valores del formulario
-        console.log(`FormData entries for ${type}:`);
-        for (let [key, value] of formData.entries()) {
-          console.log(`  ${key}: "${value}"`);
-        }
-        
-        // Debug: verificar el input directamente
+        // Obtener datos del formulario de manera más específica
         const codeInput = form.querySelector('input[name="code_id"]') as HTMLInputElement;
-        console.log(`Direct input value for ${type}: "${codeInput?.value}"`);
-        console.log(`Input defaultValue: "${codeInput?.defaultValue}"`);
+        const timeInput = form.querySelector('input[name="remaining_time"]') as HTMLInputElement;
+        
+        const codeId = codeInput?.value?.trim() || '';
+        const remainingTime = parseInt(timeInput?.value || '1440') || 1440;
 
         console.log(`Type: ${type}, Code ID: "${codeId}", Remaining Time: ${remainingTime}`);
+        console.log(`Form found: ${!!form}, Code input found: ${!!codeInput}, Time input found: ${!!timeInput}`);
 
         // Validación para admin
         if (type.includes('admin') && !codeId?.trim()) {
