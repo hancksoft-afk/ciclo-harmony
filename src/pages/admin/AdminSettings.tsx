@@ -184,9 +184,22 @@ export function AdminSettings() {
     setIsUploading(true);
     try {
       for (const type of types) {
-        const formData = new FormData(document.getElementById(`form-${type}`) as HTMLFormElement);
+        const form = document.getElementById(`form-${type}`) as HTMLFormElement;
+        if (!form) continue;
+        
+        const formData = new FormData(form);
         const codeId = formData.get('code_id') as string;
-        const remainingTime = parseInt(formData.get('remaining_time') as string);
+        const remainingTime = parseInt(formData.get('remaining_time') as string) || 1440;
+
+        // Validación para admin
+        if (type.includes('admin') && !codeId?.trim()) {
+          toast({
+            title: "Error",
+            description: "El código admin es requerido",
+            variant: "destructive"
+          });
+          continue;
+        }
 
         const existingSetting = qrSettings.find(setting => setting.type === type);
         let qrImageUrl = existingSetting?.qr_image_url || null;
@@ -197,7 +210,7 @@ export function AdminSettings() {
 
         const settingData = {
           type,
-          code_id: codeId,
+          code_id: codeId || '',
           remaining_time: remainingTime,
           qr_image_url: qrImageUrl,
           is_active: true
@@ -425,10 +438,11 @@ export function AdminSettings() {
                        <input
                          name="code_id"
                          type="text"
+                         key={`${config.type}-code-${setting?.code_id}`}
                          defaultValue={setting?.code_id || ''}
                          className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
-                         placeholder={config.type.includes('admin') ? "Código admin requerido" : "Ingrese código ID"}
-                         required
+                         placeholder={config.type.includes('admin') ? "Ingrese código admin" : "Ingrese código ID"}
+                         required={config.type.includes('admin')}
                        />
                     </div>
 
