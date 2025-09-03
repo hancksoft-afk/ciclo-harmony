@@ -25,6 +25,8 @@ const countries = ['México', 'España', 'Colombia', 'Argentina', 'Perú', 'Chil
 
 export function RegistrationForm() {
   const [currentStep, setCurrentStep] = useState(1);
+  const [showPlatformModal, setShowPlatformModal] = useState(true);
+  const [selectedPlatform, setSelectedPlatform] = useState<'binance' | 'nequi' | null>(null);
   const [formData, setFormData] = useState<FormData>({
     name: '',
     invitee: '',
@@ -316,6 +318,15 @@ export function RegistrationForm() {
     setShowTicketModal(false);
   };
 
+  const handlePlatformSelection = (platform: 'binance' | 'nequi') => {
+    setSelectedPlatform(platform);
+    setFormData({
+      ...formData, 
+      paymentMethod: platform === 'binance' ? 'binance_pay' : 'nequi_pay'
+    });
+    setShowPlatformModal(false);
+  };
+
   const canProceedStep1 = formData.name && formData.invitee && formData.country && 
                           formData.phone && formData.hasMoney && 
                           formData.paymentMethod && 
@@ -328,6 +339,53 @@ export function RegistrationForm() {
 
   return (
     <>
+      {/* Platform Selection Modal */}
+      {showPlatformModal && (
+        <div className="fixed inset-0 z-50 overflow-auto bg-black/60">
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+          <div className="relative mx-auto w-full max-w-md px-4 py-8 min-h-full flex items-center justify-center">
+            <div className="w-full rounded-2xl bg-[#0c111b] ring-1 ring-white/10 shadow-2xl overflow-hidden">
+              <div className="px-6 py-4 border-b border-white/10">
+                <h3 className="text-lg font-semibold tracking-tight text-white font-inter">Selecciona tu plataforma</h3>
+                <p className="text-sm text-muted-foreground mt-1 font-inter">¿Cuál es tu método de pago preferido?</p>
+              </div>
+
+              <div className="p-6 space-y-4">
+                <button
+                  onClick={() => handlePlatformSelection('binance')}
+                  className="w-full group rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 hover:ring-primary/50 transition p-4 text-left"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center">
+                      <Hash className="w-5 h-5 text-yellow-400" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-medium text-foreground font-inter">Binance</h4>
+                      <p className="text-xs text-muted-foreground font-inter">Pago con Binance Pay</p>
+                    </div>
+                  </div>
+                </button>
+                
+                <button
+                  onClick={() => handlePlatformSelection('nequi')}
+                  className="w-full group rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 hover:ring-primary/50 transition p-4 text-left"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center">
+                      <Hash className="w-5 h-5 text-green-400" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-medium text-foreground font-inter">Nequi</h4>
+                      <p className="text-xs text-muted-foreground font-inter">Pago con Nequi</p>
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="rounded-2xl ring-1 ring-white/10 backdrop-blur-sm p-6 md:p-8 bg-gradient-to-b from-[#4a009d] to-[#050010] relative">
         <div className="absolute inset-0 rounded-2xl">
           <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-violet-500/10 via-indigo-500/10 to-cyan-500/10 animate-pulse" />
@@ -339,6 +397,14 @@ export function RegistrationForm() {
             <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-white font-inter">
               Vamos a crear tu cuenta
             </h1>
+            {selectedPlatform && (
+              <div className="mt-2">
+                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary ring-1 ring-primary/30">
+                  <Hash className="w-3 h-3" />
+                  Plataforma seleccionada: {selectedPlatform === 'binance' ? 'Binance' : 'Nequi'}
+                </span>
+              </div>
+            )}
             <p className="text-sm text-muted-foreground mt-1.5 font-inter">
               Completa los pasos y estarás listo en minutos.
             </p>
