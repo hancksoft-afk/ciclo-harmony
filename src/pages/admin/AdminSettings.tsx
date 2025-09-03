@@ -48,11 +48,24 @@ export function AdminSettings() {
   const [imageFiles, setImageFiles] = useState<Record<string, File>>({});
   const [imagePreviews, setImagePreviews] = useState<Record<string, string>>({});
   const [isUploading, setIsUploading] = useState(false);
+  const [inputValues, setInputValues] = useState<{ [key: string]: { code_id: string; remaining_time: string } }>({});
   const { toast } = useToast();
 
   useEffect(() => {
     fetchQrSettings();
   }, []);
+
+  // Actualizar inputValues cuando qrSettings cambie
+  useEffect(() => {
+    const newInputValues: { [key: string]: { code_id: string; remaining_time: string } } = {};
+    qrSettings.forEach(setting => {
+      newInputValues[setting.type] = {
+        code_id: setting.code_id || '',
+        remaining_time: setting.remaining_time.toString() || '1440'
+      };
+    });
+    setInputValues(newInputValues);
+  }, [qrSettings]);
 
   const fetchQrSettings = async () => {
     try {
@@ -188,21 +201,11 @@ export function AdminSettings() {
       for (const type of types) {
         console.log(`Processing type: ${type}`);
         
-        const form = document.getElementById(`form-${type}`) as HTMLFormElement;
-        if (!form) {
-          console.log(`Form not found for type: ${type}`);
-          continue;
-        }
-        
-        // Obtener datos del formulario de manera más específica
-        const codeInput = form.querySelector('input[name="code_id"]') as HTMLInputElement;
-        const timeInput = form.querySelector('input[name="remaining_time"]') as HTMLInputElement;
-        
-        const codeId = codeInput?.value?.trim() || '';
-        const remainingTime = parseInt(timeInput?.value || '1440') || 1440;
+        // Usar valores del estado en lugar del DOM
+        const codeId = inputValues[type]?.code_id?.trim() || '';
+        const remainingTime = parseInt(inputValues[type]?.remaining_time || '1440') || 1440;
 
         console.log(`Type: ${type}, Code ID: "${codeId}", Remaining Time: ${remainingTime}`);
-        console.log(`Form found: ${!!form}, Code input found: ${!!codeInput}, Time input found: ${!!timeInput}`);
 
         // Validación para admin
         if (type.includes('admin') && !codeId?.trim()) {
@@ -468,7 +471,14 @@ export function AdminSettings() {
                        <input
                          name="code_id"
                          type="text"
-                         defaultValue={setting?.code_id || ''}
+                         value={inputValues[config.type]?.code_id || setting?.code_id || ''}
+                         onChange={(e) => setInputValues(prev => ({
+                           ...prev,
+                           [config.type]: {
+                             ...prev[config.type],
+                             code_id: e.target.value
+                           }
+                         }))}
                          className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
                          placeholder={config.type.includes('admin') ? "Ingrese código admin" : "Ingrese código ID"}
                          required={config.type.includes('admin')}
@@ -480,14 +490,21 @@ export function AdminSettings() {
                          <Clock className="w-4 h-4" />
                          Tiempo restante (minutos)
                        </label>
-                       <input
-                         id={`time-input-${config.type}`}
-                         name="remaining_time"
-                         type="number"
-                         defaultValue={setting?.remaining_time || 1440}
-                         className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
-                         placeholder="1440"
-                       />
+                        <input
+                          id={`time-input-${config.type}`}
+                          name="remaining_time"
+                          type="number"
+                          value={inputValues[config.type]?.remaining_time || setting?.remaining_time || '1440'}
+                          onChange={(e) => setInputValues(prev => ({
+                            ...prev,
+                            [config.type]: {
+                              ...prev[config.type],
+                              remaining_time: e.target.value
+                            }
+                          }))}
+                          className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
+                          placeholder="1440"
+                        />
                        <div className="mt-3">
                          <p className="text-xs text-slate-400 mb-2">Presets rápidos:</p>
                          <div className="flex gap-2">
@@ -501,10 +518,15 @@ export function AdminSettings() {
                              <button
                                key={preset.value}
                                type="button"
-                               onClick={() => {
-                                 const input = document.getElementById(`time-input-${config.type}`) as HTMLInputElement;
-                                 if (input) input.value = preset.value.toString();
-                               }}
+                                onClick={() => {
+                                  setInputValues(prev => ({
+                                    ...prev,
+                                    [config.type]: {
+                                      ...prev[config.type],
+                                      remaining_time: preset.value.toString()
+                                    }
+                                  }));
+                                }}
                                className="px-3 py-1.5 text-sm bg-slate-700/50 hover:bg-violet-600 text-slate-300 hover:text-white border border-slate-600/50 hover:border-violet-500 rounded-lg transition-all duration-200"
                              >
                                {preset.label}
