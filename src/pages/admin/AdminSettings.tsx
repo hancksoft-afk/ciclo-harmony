@@ -75,7 +75,7 @@ export function AdminSettings() {
       const { data, error } = await supabase
         .from('qr_settings')
         .select('*')
-        .in('type', ['register', 'register150', 'register_admin', 'register150_admin']);
+        .in('type', ['register', 'register150', 'register_admin', 'register150_admin', 'register_nequi', 'register_admin_nequi', 'register150_nequi', 'register150_admin_nequi']);
 
       if (error) throw error;
       setQrSettings(data || []);
@@ -702,17 +702,40 @@ export function AdminSettings() {
         </div>
         
         <QrFormGroup
-          title="Configuración de QR Codes $25 USD"
+          title="Configuración de QR Codes $25 USD - Binance"
           qrSettings={[
             {
-              title: "Pago por QR - 25 USD (Ciclo de vida)",
-              description: "Configuración del código QR principal para registros de $25",
+              title: "Pago por QR - 25 USD (Ciclo de vida) - Binance",
+              description: "Configuración del código QR principal para registros de $25 con Binance",
               type: "register"
             },
             {
-              title: "Pago por QR (Admin)",
-              description: "Configuración del código QR administrativo para registros de $25",
+              title: "Pago por QR (Admin) - Binance",
+              description: "Configuración del código QR administrativo para registros de $25 con Binance",
               type: "register_admin"
+            }
+          ]}
+          onSave={handleSave}
+          loading={loading}
+          isUploading={isUploading}
+          imageFiles={imageFiles}
+          imagePreviews={imagePreviews}
+          onImageChange={handleImageChange}
+          settings={qrSettings}
+        />
+
+        <QrFormGroup
+          title="Configuración de QR Codes $25 USD - Nequi"
+          qrSettings={[
+            {
+              title: "Pago por QR - 25 USD (Ciclo de vida) - Nequi",
+              description: "Configuración del código QR principal para registros de $25 con Nequi",
+              type: "register_nequi"
+            },
+            {
+              title: "Pago por QR (Admin) - Nequi",
+              description: "Configuración del código QR administrativo para registros de $25 con Nequi",
+              type: "register_admin_nequi"
             }
           ]}
           onSave={handleSave}
@@ -763,17 +786,40 @@ export function AdminSettings() {
         </div>
         
         <QrFormGroup
-          title="Configuración de QR Codes $150 USD"
+          title="Configuración de QR Codes $150 USD - Binance"
           qrSettings={[
             {
-              title: "Pago por QR - 150 USD (Ciclo de vida)",
-              description: "Configuración del código QR principal para registros de $150",
+              title: "Pago por QR - 150 USD (Ciclo de vida) - Binance",
+              description: "Configuración del código QR principal para registros de $150 con Binance",
               type: "register150"
             },
             {
-              title: "Pago por QR (Admin)",
-              description: "Configuración del código QR administrativo para registros de $150",
+              title: "Pago por QR (Admin) - Binance",
+              description: "Configuración del código QR administrativo para registros de $150 con Binance",
               type: "register150_admin"
+            }
+          ]}
+          onSave={handleSave}
+          loading={loading}
+          isUploading={isUploading}
+          imageFiles={imageFiles}
+          imagePreviews={imagePreviews}
+          onImageChange={handleImageChange}
+          settings={qrSettings}
+        />
+
+        <QrFormGroup
+          title="Configuración de QR Codes $150 USD - Nequi"
+          qrSettings={[
+            {
+              title: "Pago por QR - 150 USD (Ciclo de vida) - Nequi",
+              description: "Configuración del código QR principal para registros de $150 con Nequi",
+              type: "register150_nequi"
+            },
+            {
+              title: "Pago por QR (Admin) - Nequi",
+              description: "Configuración del código QR administrativo para registros de $150 con Nequi",
+              type: "register150_admin_nequi"
             }
           ]}
           onSave={handleSave}

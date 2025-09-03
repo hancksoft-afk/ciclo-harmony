@@ -48,11 +48,15 @@ export function RegistrationForm() {
   const [generatedCodes, setGeneratedCodes] = useState<{codigo: string, oculto: string} | null>(null);
   const [qrSettings, setQrSettings] = useState<any>(null);
   const [adminQrSettings, setAdminQrSettings] = useState<any>(null);
+  const [nequiQrSettings, setNequiQrSettings] = useState<any>(null);
+  const [adminNequiQrSettings, setAdminNequiQrSettings] = useState<any>(null);
 
   // Load QR settings on mount
   useEffect(() => {
     fetchQrSettings();
     fetchAdminQrSettings();
+    fetchNequiQrSettings();
+    fetchAdminNequiQrSettings();
   }, []);
 
   const fetchQrSettings = async () => {
@@ -122,6 +126,42 @@ export function RegistrationForm() {
     }
   };
 
+  const fetchNequiQrSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .rpc('get_active_qr_setting', { qr_type: 'register_nequi' });
+
+      if (error) {
+        console.error('Error fetching Nequi QR settings:', error);
+        return;
+      }
+
+      if (data && data.length > 0) {
+        setNequiQrSettings(data[0]);
+      }
+    } catch (error) {
+      console.error('Error fetching Nequi QR settings:', error);
+    }
+  };
+
+  const fetchAdminNequiQrSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .rpc('get_active_qr_setting', { qr_type: 'register_admin_nequi' });
+
+      if (error) {
+        console.error('Error fetching Admin Nequi QR settings:', error);
+        return;
+      }
+
+      if (data && data.length > 0) {
+        setAdminNequiQrSettings(data[0]);
+      }
+    } catch (error) {
+      console.error('Error fetching Admin Nequi QR settings:', error);
+    }
+  };
+
   // Timer effects
   useEffect(() => {
     if (currentStep === 2 && timer1 > 0) {
@@ -161,7 +201,8 @@ export function RegistrationForm() {
     }
     
     
-    if (formData.paymentMethod === 'binance_pay' && (!formData.binanceId || !/^\d{9,10}$/.test(formData.binanceId))) {
+    if ((formData.paymentMethod === 'binance_pay' && (!formData.binanceId || !/^\d{9,10}$/.test(formData.binanceId))) ||
+        (formData.paymentMethod === 'nequi_pay' && !formData.binanceId)) {
       newErrors.binanceId = true;
     }
 
@@ -278,7 +319,9 @@ export function RegistrationForm() {
   const canProceedStep1 = formData.name && formData.invitee && formData.country && 
                           formData.phone && formData.hasMoney && 
                           formData.paymentMethod && 
-                          (formData.paymentMethod !== 'binance_pay' || formData.binanceId);
+                           (formData.paymentMethod !== 'binance_pay' && formData.paymentMethod !== 'nequi_pay') || 
+                           (formData.paymentMethod === 'binance_pay' && formData.binanceId) ||
+                           (formData.paymentMethod === 'nequi_pay' && formData.binanceId);
 
   const canProceedStep2 = formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19;
   const canProceedStep3 = formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19;
@@ -431,10 +474,10 @@ export function RegistrationForm() {
                 </div>
               </div>
 
-              {/* Payment Method */}
+              {/* Payment Platform Selection */}
               <div>
-                <label className="block text-sm text-muted-foreground mb-2 font-inter">Selecciona tu método de pago preferido</label>
-                <div className="grid grid-cols-1 gap-3">
+                <label className="block text-sm text-muted-foreground mb-2 font-inter">Selecciona tu plataforma de pago</label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <button
                     type="button"
                     onClick={() => setFormData({...formData, paymentMethod: 'binance_pay'})}
@@ -444,22 +487,61 @@ export function RegistrationForm() {
                   >
                     <div className="flex items-center gap-2">
                       <Hash className="w-4 h-4 text-primary" />
-                      <span className="text-sm text-foreground font-inter">Binance Pay</span>
+                      <span className="text-sm text-foreground font-inter">Binance</span>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1 font-inter">Pago directo</p>
+                    <p className="text-xs text-muted-foreground mt-1 font-inter">Pago con Binance Pay</p>
+                  </button>
+                  
+                  <button
+                    type="button"
+                    onClick={() => setFormData({...formData, paymentMethod: 'nequi_pay'})}
+                    className={`group rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-3 text-left ${
+                      formData.paymentMethod === 'nequi_pay' ? 'ring-primary/50 bg-primary/5' : ''
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Hash className="w-4 h-4 text-green-500" />
+                      <span className="text-sm text-foreground font-inter">Nequi</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1 font-inter">Pago con Nequi</p>
                   </button>
                 </div>
               </div>
 
-              {/* Binance ID */}
+              {/* Binance/Nequi ID */}
               {formData.paymentMethod === 'binance_pay' && (
                 <div>
-                  <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID / Número de Binance</label>
+                  <label className="block text-sm text-muted-foreground mb-1.5 font-inter">
+                    {formData.paymentMethod === 'binance_pay' ? 'ID / Número de Binance' : 'ID / Número de Nequi'}
+                  </label>
                   <div className="relative">
                     <Fingerprint className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                     <input
                       type="text"
-                      placeholder="9 o 10 dígitos"
+                      placeholder={formData.paymentMethod === 'binance_pay' ? '9 o 10 dígitos' : 'Ingrese su ID de Nequi'}
+                      value={formData.binanceId}
+                      onChange={(e) => setFormData({...formData, binanceId: e.target.value})}
+                      className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
+                    />
+                  </div>
+                    {errors.binanceId && (
+                      <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
+                        <AlertTriangle className="w-3.5 h-3.5" />
+                        <span><strong className="font-medium">ID inválido</strong> — Debe tener 9 y 10 dígitos numéricos.</span>
+                      </div>
+                    )}
+                </div>
+              )}
+
+              {/* Nequi ID */}
+              {formData.paymentMethod === 'nequi_pay' && (
+                <div>
+                  <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID / Número de Nequi</label>
+                  <div className="relative">
+                    <Fingerprint className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                    <input
+                      type="text"
+                      placeholder="Ingrese su ID de Nequi"
                       value={formData.binanceId}
                       onChange={(e) => setFormData({...formData, binanceId: e.target.value})}
                       className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
@@ -468,7 +550,7 @@ export function RegistrationForm() {
                   {errors.binanceId && (
                     <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
                       <AlertTriangle className="w-3.5 h-3.5" />
-                      <span><strong className="font-medium">ID de Binance inválido</strong> — Debe tener 9 Y 10 numéricos.</span>
+                      <span><strong className="font-medium">ID de Nequi inválido</strong> — Por favor ingrese un ID válido.</span>
                     </div>
                   )}
                 </div>
@@ -517,9 +599,9 @@ export function RegistrationForm() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="rounded-xl bg-[#0f1522] ring-1 ring-white/10 p-4 grid place-items-center">
                   <div className="rounded-lg bg-white p-3">
-                    {qrSettings?.qr_image_url ? (
+                    {(formData.paymentMethod === 'binance_pay' ? qrSettings : nequiQrSettings)?.qr_image_url ? (
                       <img 
-                        src={qrSettings.qr_image_url} 
+                        src={(formData.paymentMethod === 'binance_pay' ? qrSettings : nequiQrSettings)?.qr_image_url} 
                         alt="QR Code" 
                         className="h-48 w-48 object-contain rounded"
                       />
@@ -536,9 +618,9 @@ export function RegistrationForm() {
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground font-inter">Codigo ID</span>
                     <div className="flex items-center gap-2">
-                      <code className="text-sm text-foreground font-mono">{qrSettings?.code_id || 'N/A'}</code>
+                      <code className="text-sm text-foreground font-mono">{(formData.paymentMethod === 'binance_pay' ? qrSettings : nequiQrSettings)?.code_id || 'N/A'}</code>
                       <button
-                        onClick={() => copyToClipboard(qrSettings?.code_id || '')}
+                        onClick={() => copyToClipboard((formData.paymentMethod === 'binance_pay' ? qrSettings : nequiQrSettings)?.code_id || '')}
                         className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
                       >
                         <Copy className="w-3.5 h-3.5" /> Copiar
@@ -562,7 +644,7 @@ export function RegistrationForm() {
                       <Hash className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                       <input
                         type="text"
-                        placeholder="Ingresa tu ID de Binance"
+                       placeholder={formData.paymentMethod === 'binance_pay' ? 'Ingresa tu ID de Binance' : 'Ingresa tu ID de Nequi'}
                         value={formData.binanceIdStep2}
                         onChange={(e) => setFormData({...formData, binanceIdStep2: e.target.value})}
                         className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
@@ -621,9 +703,9 @@ export function RegistrationForm() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="rounded-xl bg-[#0f1522] ring-1 ring-white/10 p-4 grid place-items-center">
                   <div className="rounded-lg bg-white p-3">
-                    {adminQrSettings?.qr_image_url ? (
+                    {(formData.paymentMethod === 'binance_pay' ? adminQrSettings : adminNequiQrSettings)?.qr_image_url ? (
                       <img 
-                        src={adminQrSettings.qr_image_url} 
+                        src={(formData.paymentMethod === 'binance_pay' ? adminQrSettings : adminNequiQrSettings)?.qr_image_url} 
                         alt="QR Code Admin" 
                         className="h-48 w-48 object-contain rounded"
                       />
@@ -640,11 +722,13 @@ export function RegistrationForm() {
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground font-inter">Codigo ID</span>
                     <div className="flex items-center gap-2">
-                       <code className="text-sm text-foreground font-mono">
-                         {adminQrSettings?.code_id && adminQrSettings.code_id.trim() !== '' ? adminQrSettings.code_id : 'Pendiente'}
-                       </code>
+                        <code className="text-sm text-foreground font-mono">
+                          {(formData.paymentMethod === 'binance_pay' ? adminQrSettings : adminNequiQrSettings)?.code_id && 
+                           (formData.paymentMethod === 'binance_pay' ? adminQrSettings : adminNequiQrSettings).code_id.trim() !== '' ? 
+                           (formData.paymentMethod === 'binance_pay' ? adminQrSettings : adminNequiQrSettings).code_id : 'Pendiente'}
+                        </code>
                       <button
-                        onClick={() => copyToClipboard(adminQrSettings?.code_id || '')}
+                        onClick={() => copyToClipboard((formData.paymentMethod === 'binance_pay' ? adminQrSettings : adminNequiQrSettings)?.code_id || '')}
                         className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
                       >
                         <Copy className="w-3.5 h-3.5" /> Copiar
@@ -668,7 +752,7 @@ export function RegistrationForm() {
                       <Hash className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                       <input
                         type="text"
-                        placeholder="Ingresa tu ID de Binance"
+                        placeholder={formData.paymentMethod === 'binance_pay' ? 'Ingresa tu ID de Binance' : 'Ingresa tu ID de Nequi'}
                         value={formData.binanceIdStep3}
                         onChange={(e) => setFormData({...formData, binanceIdStep3: e.target.value})}
                         className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
@@ -835,10 +919,14 @@ export function RegistrationForm() {
                             <p className="text-xs text-white font-inter">Dinero:</p>
                             <p className="font-medium text-slate-200">{formData.hasMoney === 'yes' ? 'Sí' : 'No'}</p>
                           </div>
-                          <div>
-                            <p className="text-xs text-white font-inter">Binance de Pay:</p>
-                            <p className="font-medium text-slate-200">{formData.binanceId}</p>
-                          </div>
+                           <div>
+                             <p className="text-xs text-white font-inter">Plataforma:</p>
+                             <p className="font-medium text-slate-200">{formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi'}</p>
+                           </div>
+                           <div>
+                             <p className="text-xs text-white font-inter">ID de {formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi'}:</p>
+                             <p className="font-medium text-slate-200">{formData.binanceId}</p>
+                           </div>
                         </div>
 
                         <div className="mt-6 rounded-xl border border-amber-400/20 bg-neutral-900/40 p-3">
