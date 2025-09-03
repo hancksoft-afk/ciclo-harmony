@@ -182,17 +182,27 @@ export function AdminSettings() {
 
   const handleSaveGroup = async (types: string[]) => {
     setIsUploading(true);
+    console.log('handleSaveGroup called with types:', types);
+    
     try {
       for (const type of types) {
+        console.log(`Processing type: ${type}`);
+        
         const form = document.getElementById(`form-${type}`) as HTMLFormElement;
-        if (!form) continue;
+        if (!form) {
+          console.log(`Form not found for type: ${type}`);
+          continue;
+        }
         
         const formData = new FormData(form);
         const codeId = formData.get('code_id') as string;
         const remainingTime = parseInt(formData.get('remaining_time') as string) || 1440;
 
+        console.log(`Type: ${type}, Code ID: "${codeId}", Remaining Time: ${remainingTime}`);
+
         // Validación para admin
         if (type.includes('admin') && !codeId?.trim()) {
+          console.log(`Admin type ${type} missing code_id`);
           toast({
             title: "Error",
             description: "El código admin es requerido",
@@ -204,8 +214,12 @@ export function AdminSettings() {
         const existingSetting = qrSettings.find(setting => setting.type === type);
         let qrImageUrl = existingSetting?.qr_image_url || null;
         
+        console.log(`Existing setting for ${type}:`, existingSetting);
+        console.log(`Image file for ${type}:`, imageFiles[type]);
+        
         if (imageFiles[type]) {
           qrImageUrl = await uploadImage(type);
+          console.log(`Uploaded image URL for ${type}:`, qrImageUrl);
         }
 
         const settingData = {
@@ -216,20 +230,32 @@ export function AdminSettings() {
           is_active: true
         };
 
+        console.log(`Saving data for ${type}:`, settingData);
+
         if (existingSetting) {
           // Update existing
+          console.log(`Updating existing setting for ${type}`);
           const { error } = await supabase
             .from('qr_settings')
             .update(settingData)
             .eq('id', existingSetting.id);
-          if (error) throw error;
+          if (error) {
+            console.error(`Update error for ${type}:`, error);
+            throw error;
+          }
         } else {
           // Insert new
+          console.log(`Inserting new setting for ${type}`);
           const { error } = await supabase
             .from('qr_settings')
             .insert([settingData]);
-          if (error) throw error;
+          if (error) {
+            console.error(`Insert error for ${type}:`, error);
+            throw error;
+          }
         }
+        
+        console.log(`Successfully processed type: ${type}`);
       }
 
       toast({
