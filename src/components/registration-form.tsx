@@ -76,18 +76,43 @@ export function RegistrationForm() {
   const fetchAdminQrSettings = async () => {
     try {
       console.log('Fetching admin QR settings...');
-      const { data, error } = await supabase
+      
+      // Primero intentamos con la función RPC
+      const { data: rpcData, error: rpcError } = await supabase
         .rpc('get_active_qr_setting', { qr_type: 'register_admin' });
 
-      if (error) {
-        console.error('Error fetching admin QR settings:', error);
+      console.log('RPC result for register_admin:', { rpcData, rpcError });
+
+      if (rpcError) {
+        console.error('RPC Error fetching admin QR settings:', rpcError);
+      }
+
+      if (rpcData && rpcData.length > 0) {
+        console.log('Setting admin QR settings from RPC:', rpcData[0]);
+        setAdminQrSettings(rpcData[0]);
         return;
       }
 
-      console.log('Admin QR settings data:', data);
-      if (data && data.length > 0) {
-        console.log('Setting admin QR settings:', data[0]);
-        setAdminQrSettings(data[0]);
+      // Si RPC no devuelve datos, consultar directamente la tabla
+      console.log('RPC returned no data, trying direct query...');
+      const { data: directData, error: directError } = await supabase
+        .from('qr_settings')
+        .select('*')
+        .eq('type', 'register_admin')
+        .eq('is_active', true)
+        .order('updated_at', { ascending: false })
+        .maybeSingle();
+
+      console.log('Direct query result:', { directData, directError });
+
+      if (directError) {
+        console.error('Direct query error:', directError);
+        return;
+      }
+
+      if (directData) {
+        console.log('Setting admin QR settings from direct query:', directData);
+        setAdminQrSettings(directData);
       } else {
         console.log('No admin QR settings found');
         setAdminQrSettings(null);
