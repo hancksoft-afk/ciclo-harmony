@@ -447,6 +447,34 @@ export function RegistrationForm() {
                   </div>
                 </div>
 
+                {/* Payment Method */}
+                <div>
+                  <label className="block text-sm text-muted-foreground mb-2 font-inter">Método de pago</label>
+                  <div className="inline-flex rounded-lg ring-1 ring-white/10 p-1 bg-white/5 w-full">
+                    <button
+                      type="button"
+                      onClick={() => setFormData({...formData, paymentMethod: 'binance_pay'})}
+                      className={`flex-1 px-3 py-2 text-sm rounded-md transition ${
+                        formData.paymentMethod === 'binance_pay' 
+                          ? 'bg-white/10 text-white' 
+                          : 'text-muted-foreground hover:text-white hover:bg-white/5'
+                      }`}
+                    >
+                      Binance
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({...formData, paymentMethod: 'nequi_pay'})}
+                      className={`flex-1 px-3 py-2 text-sm rounded-md transition ${
+                        formData.paymentMethod === 'nequi_pay' 
+                          ? 'bg-white/10 text-white' 
+                          : 'text-muted-foreground hover:text-white hover:bg-white/5'
+                      }`}
+                    >
+                      Nequi
+                    </button>
+                  </div>
+                </div>
 
                 {/* Money */}
                 <div>
@@ -509,7 +537,7 @@ export function RegistrationForm() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                    Pago por QR - 25 USD (Ciclo de vida) - {selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')}
+                    Pago por QR - 25 USD (Ciclo de vida) - {selectedPlatform}
                   </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el código para continuar. Tiempo restante: <span className="text-foreground">{formatTime(timer1)}</span>
@@ -615,7 +643,7 @@ export function RegistrationForm() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                    Pago por QR - 25 USD (Admin) - {selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')}
+                    Pago por QR - 25 USD (Admin) - {selectedPlatform}
                   </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el QR del administrador. Tiempo restante: <span className="text-foreground">{formatTime(timer2)}</span>
@@ -917,7 +945,10 @@ export function RegistrationForm() {
                   </p>
                   
                   <button
-                    onClick={() => setFormData({...formData, paymentMethod: 'binance_pay'})}
+                    onClick={() => {
+                      setFormData({...formData, paymentMethod: 'binance_pay'});
+                      setSelectedPlatform('Binance');
+                    }}
                     className="w-full group rounded-lg ring-1 ring-primary/50 bg-primary/5 hover:bg-primary/10 transition p-4 text-left"
                   >
                     <div className="flex items-center gap-3">
@@ -930,7 +961,10 @@ export function RegistrationForm() {
                   </button>
                   
                   <button
-                    onClick={() => setFormData({...formData, paymentMethod: 'nequi_pay'})}
+                    onClick={() => {
+                      setFormData({...formData, paymentMethod: 'nequi_pay'});
+                      setSelectedPlatform('Nequi');
+                    }}
                     className="w-full group rounded-lg ring-1 ring-green-500/50 bg-green-500/5 hover:bg-green-500/10 transition p-4 text-left"
                   >
                     <div className="flex items-center gap-3">
@@ -975,7 +1009,7 @@ export function RegistrationForm() {
                         disabled={!formData.binanceId || (formData.paymentMethod === 'binance_pay' && !/^\d{9,10}$/.test(formData.binanceId))}
                         className="w-full mt-4 inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm text-white bg-primary hover:bg-primary/80 ring-1 ring-primary/50 disabled:opacity-40 disabled:cursor-not-allowed transition"
                       >
-                        Continuar con {formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi'}
+                        Continuar con {selectedPlatform}
                         <ArrowRight className="w-4 h-4" />
                       </button>
                     </div>
