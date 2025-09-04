@@ -325,11 +325,7 @@ export function RegistrationForm() {
   };
 
   const canProceedStep1 = formData.name && formData.invitee && formData.country && 
-                          formData.phone && formData.hasMoney && 
-                          formData.paymentMethod && 
-                           (formData.paymentMethod !== 'binance_pay' && formData.paymentMethod !== 'nequi_pay') || 
-                           (formData.paymentMethod === 'binance_pay' && formData.binanceId) ||
-                           (formData.paymentMethod === 'nequi_pay' && formData.binanceId);
+                          formData.phone && formData.hasMoney;
 
   const canProceedStep2 = formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19;
   const canProceedStep3 = formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19;
@@ -482,87 +478,6 @@ export function RegistrationForm() {
                 </div>
               </div>
 
-              {/* Payment Platform Selection */}
-              <div>
-                <label className="block text-sm text-muted-foreground mb-2 font-inter">Selecciona tu método de pago preferido</label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setFormData({...formData, paymentMethod: 'binance_pay'})}
-                    className={`group rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-3 text-left ${
-                      formData.paymentMethod === 'binance_pay' ? 'ring-primary/50 bg-primary/5' : ''
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Hash className="w-4 h-4 text-primary" />
-                      <span className="text-sm text-foreground font-inter">Binance Pay</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-1 font-inter">Pago con Binance Pay</p>
-                  </button>
-                  
-                  <button
-                    type="button"
-                    onClick={() => setFormData({...formData, paymentMethod: 'nequi_pay'})}
-                    className={`group rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-3 text-left ${
-                      formData.paymentMethod === 'nequi_pay' ? 'ring-primary/50 bg-primary/5' : ''
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Hash className="w-4 h-4 text-green-500" />
-                      <span className="text-sm text-foreground font-inter">Nequi</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-1 font-inter">Pago con Nequi</p>
-                  </button>
-                </div>
-              </div>
-
-              {/* Binance/Nequi ID */}
-              {formData.paymentMethod === 'binance_pay' && (
-                <div>
-                  <label className="block text-sm text-muted-foreground mb-1.5 font-inter">
-                    {formData.paymentMethod === 'binance_pay' ? 'ID / Número de Binance' : 'ID / Número de Nequi'}
-                  </label>
-                  <div className="relative">
-                    <Fingerprint className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                    <input
-                      type="text"
-                      placeholder={formData.paymentMethod === 'binance_pay' ? '9 o 10 dígitos' : 'Ingrese su ID de Nequi'}
-                      value={formData.binanceId}
-                      onChange={(e) => setFormData({...formData, binanceId: e.target.value})}
-                      className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
-                    />
-                  </div>
-                    {errors.binanceId && (
-                      <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
-                        <AlertTriangle className="w-3.5 h-3.5" />
-                        <span><strong className="font-medium">ID inválido</strong> — Debe tener 9 y 10 dígitos numéricos.</span>
-                      </div>
-                    )}
-                </div>
-              )}
-
-              {/* Nequi ID */}
-              {formData.paymentMethod === 'nequi_pay' && (
-                <div>
-                  <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID / Número de Nequi</label>
-                  <div className="relative">
-                    <Fingerprint className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                    <input
-                      type="text"
-                      placeholder="Ingrese su ID de Nequi"
-                      value={formData.binanceId}
-                      onChange={(e) => setFormData({...formData, binanceId: e.target.value})}
-                      className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
-                    />
-                  </div>
-                  {errors.binanceId && (
-                    <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
-                      <AlertTriangle className="w-3.5 h-3.5" />
-                      <span><strong className="font-medium">ID de Nequi inválido</strong> — Por favor ingrese un ID válido.</span>
-                    </div>
-                  )}
-                </div>
-              )}
 
               <div className="h-px bg-white/10" />
 
@@ -998,37 +913,72 @@ export function RegistrationForm() {
               <div className="p-6">
                 <div className="space-y-4">
                   <p className="text-sm text-muted-foreground font-inter">
-                    Confirma la plataforma para proceder con el pago:
+                    Elige tu método de pago preferido:
                   </p>
                   
-                  {formData.paymentMethod === 'binance_pay' && (
-                    <button
-                      onClick={() => handlePlatformSelect('Binance')}
-                      className="w-full group rounded-lg ring-1 ring-primary/50 bg-primary/5 hover:bg-primary/10 transition p-4 text-left"
-                    >
-                      <div className="flex items-center gap-3">
-                        <Hash className="w-5 h-5 text-primary" />
-                        <div>
-                          <span className="text-base font-medium text-foreground font-inter">Binance</span>
-                          <p className="text-sm text-muted-foreground mt-1 font-inter">Pago con Binance Pay</p>
-                        </div>
+                  <button
+                    onClick={() => setFormData({...formData, paymentMethod: 'binance_pay'})}
+                    className="w-full group rounded-lg ring-1 ring-primary/50 bg-primary/5 hover:bg-primary/10 transition p-4 text-left"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Hash className="w-5 h-5 text-primary" />
+                      <div>
+                        <span className="text-base font-medium text-foreground font-inter">Binance Pay</span>
+                        <p className="text-sm text-muted-foreground mt-1 font-inter">Pago con Binance Pay</p>
                       </div>
-                    </button>
-                  )}
+                    </div>
+                  </button>
                   
-                  {formData.paymentMethod === 'nequi_pay' && (
-                    <button
-                      onClick={() => handlePlatformSelect('Nequi')}
-                      className="w-full group rounded-lg ring-1 ring-green-500/50 bg-green-500/5 hover:bg-green-500/10 transition p-4 text-left"
-                    >
-                      <div className="flex items-center gap-3">
-                        <Hash className="w-5 h-5 text-green-500" />
-                        <div>
-                          <span className="text-base font-medium text-foreground font-inter">Nequi</span>
-                          <p className="text-sm text-muted-foreground mt-1 font-inter">Pago con Nequi</p>
-                        </div>
+                  <button
+                    onClick={() => setFormData({...formData, paymentMethod: 'nequi_pay'})}
+                    className="w-full group rounded-lg ring-1 ring-green-500/50 bg-green-500/5 hover:bg-green-500/10 transition p-4 text-left"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Hash className="w-5 h-5 text-green-500" />
+                      <div>
+                        <span className="text-base font-medium text-foreground font-inter">Nequi</span>
+                        <p className="text-sm text-muted-foreground mt-1 font-inter">Pago con Nequi</p>
                       </div>
-                    </button>
+                    </div>
+                  </button>
+
+                  {/* Show ID input fields only after platform selection */}
+                  {formData.paymentMethod && (
+                    <div className="pt-4 border-t border-white/10">
+                      <label className="block text-sm text-muted-foreground mb-1.5 font-inter">
+                        {formData.paymentMethod === 'binance_pay' ? 'ID / Número de Binance' : 'ID / Número de Nequi'}
+                      </label>
+                      <div className="relative">
+                        <Fingerprint className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                        <input
+                          type="text"
+                          placeholder={formData.paymentMethod === 'binance_pay' ? '9 o 10 dígitos' : 'Ingrese su ID de Nequi'}
+                          value={formData.binanceId}
+                          onChange={(e) => setFormData({...formData, binanceId: e.target.value})}
+                          className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
+                        />
+                      </div>
+                      {errors.binanceId && (
+                        <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
+                          <AlertTriangle className="w-3.5 h-3.5" />
+                          <span><strong className="font-medium">ID inválido</strong> — {formData.paymentMethod === 'binance_pay' ? 'Debe tener 9 y 10 dígitos numéricos.' : 'Por favor ingrese un ID válido.'}</span>
+                        </div>
+                      )}
+                      
+                      <button
+                        onClick={() => {
+                          if (validateStep1()) {
+                            setShowPlatformModal(false);
+                            setCurrentStep(2);
+                          }
+                        }}
+                        disabled={!formData.binanceId || (formData.paymentMethod === 'binance_pay' && !/^\d{9,10}$/.test(formData.binanceId))}
+                        className="w-full mt-4 inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm text-white bg-primary hover:bg-primary/80 ring-1 ring-primary/50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                      >
+                        Continuar con {formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi'}
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>
