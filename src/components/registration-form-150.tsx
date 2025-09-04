@@ -17,6 +17,7 @@ interface FormData {
   hasMoney: string;
   paymentMethod: string;
   binanceId: string;
+  nequiPhone: string;
   binanceIdStep2: string;
   binanceIdStep3: string;
 }
@@ -34,6 +35,7 @@ export function RegistrationForm150() {
     hasMoney: '',
     paymentMethod: '',
     binanceId: '',
+    nequiPhone: '',
     binanceIdStep2: '',
     binanceIdStep3: ''
   });
@@ -496,7 +498,7 @@ export function RegistrationForm150() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <button
                     type="button"
-                    onClick={() => setFormData({...formData, paymentMethod: 'binance_pay'})}
+                    onClick={() => setFormData({...formData, paymentMethod: 'binance_pay', nequiPhone: ''})}
                     className={`group rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-3 text-left ${
                       formData.paymentMethod === 'binance_pay' ? 'ring-primary/50 bg-primary/5' : ''
                     }`}
@@ -509,7 +511,7 @@ export function RegistrationForm150() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setFormData({...formData, paymentMethod: 'nequi'})}
+                    onClick={() => setFormData({...formData, paymentMethod: 'nequi', binanceId: ''})}
                     className={`group rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-3 text-left ${
                       formData.paymentMethod === 'nequi' ? 'ring-primary/50 bg-primary/5' : ''
                     }`}
@@ -555,12 +557,12 @@ export function RegistrationForm150() {
                     <input
                       type="text"
                       placeholder="Ej: 3001234567"
-                      value={formData.binanceId}
-                      onChange={(e) => setFormData({...formData, binanceId: e.target.value})}
+                      value={formData.nequiPhone}
+                      onChange={(e) => setFormData({...formData, nequiPhone: e.target.value})}
                       className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
                     />
                   </div>
-                  {errors.binanceId && (
+                  {errors.nequiPhone && (
                     <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
                       <AlertTriangle className="w-3.5 h-3.5" />
                       <span><strong className="font-medium">Número de Nequi inválido</strong> — Debe ser un número de teléfono válido.</span>
