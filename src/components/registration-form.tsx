@@ -547,35 +547,29 @@ export function RegistrationForm() {
               {/* Payment Method Selection */}
               <div>
                 <label className="block text-sm text-muted-foreground mb-4 font-inter">Selecciona tu método de pago preferido:</label>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-3">
                   {/* Binance Pay Option */}
                   <button
                     type="button"
                     onClick={() => setFormData({...formData, paymentMethod: 'binance_pay', binanceId: ''})}
                     onDoubleClick={() => setFormData({...formData, paymentMethod: 'binance_pay', binanceId: ''})}
-                    className={`relative rounded-xl p-6 text-left transition-all duration-300 border-2 hover:scale-105 hover:shadow-lg ${
+                    className={`relative rounded-lg p-3 text-center transition-all duration-200 border hover:scale-[1.02] ${
                       formData.paymentMethod === 'binance_pay' 
-                        ? 'border-primary bg-primary/10 shadow-lg shadow-primary/20' 
-                        : 'border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20'
+                        ? 'border-primary bg-primary/10 text-primary shadow-md' 
+                        : 'border-white/20 bg-white/5 text-muted-foreground hover:bg-white/10 hover:border-white/30'
                     }`}
                   >
-                    <div className="flex flex-col items-center gap-3">
-                      <div className={`p-3 rounded-full ${
-                        formData.paymentMethod === 'binance_pay' 
-                          ? 'bg-primary/20 text-primary' 
-                          : 'bg-white/10 text-muted-foreground'
-                      }`}>
-                        <Fingerprint className="w-6 h-6" />
-                      </div>
-                      <span className="text-sm font-medium text-foreground font-inter">
+                    <div className="flex items-center gap-2 justify-center">
+                      <Fingerprint className="w-4 h-4" />
+                      <span className="text-xs font-medium font-inter">
                         Binance Pay
                       </span>
-                      {formData.paymentMethod === 'binance_pay' && (
-                        <div className="absolute top-2 right-2">
-                          <div className="w-3 h-3 rounded-full bg-primary"></div>
-                        </div>
-                      )}
                     </div>
+                    {formData.paymentMethod === 'binance_pay' && (
+                      <div className="absolute top-1 right-1">
+                        <div className="w-2 h-2 rounded-full bg-primary"></div>
+                      </div>
+                    )}
                   </button>
 
                   {/* Nequi Option */}
@@ -583,29 +577,23 @@ export function RegistrationForm() {
                     type="button"
                     onClick={() => setFormData({...formData, paymentMethod: 'nequi', binanceId: ''})}
                     onDoubleClick={() => setFormData({...formData, paymentMethod: 'nequi', binanceId: ''})}
-                    className={`relative rounded-xl p-6 text-left transition-all duration-300 border-2 hover:scale-105 hover:shadow-lg ${
+                    className={`relative rounded-lg p-3 text-center transition-all duration-200 border hover:scale-[1.02] ${
                       formData.paymentMethod === 'nequi' 
-                        ? 'border-primary bg-primary/10 shadow-lg shadow-primary/20' 
-                        : 'border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20'
+                        ? 'border-primary bg-primary/10 text-primary shadow-md' 
+                        : 'border-white/20 bg-white/5 text-muted-foreground hover:bg-white/10 hover:border-white/30'
                     }`}
                   >
-                    <div className="flex flex-col items-center gap-3">
-                      <div className={`p-3 rounded-full ${
-                        formData.paymentMethod === 'nequi' 
-                          ? 'bg-primary/20 text-primary' 
-                          : 'bg-white/10 text-muted-foreground'
-                      }`}>
-                        <Phone className="w-6 h-6" />
-                      </div>
-                      <span className="text-sm font-medium text-foreground font-inter">
+                    <div className="flex items-center gap-2 justify-center">
+                      <Phone className="w-4 h-4" />
+                      <span className="text-xs font-medium font-inter">
                         Nequi
                       </span>
-                      {formData.paymentMethod === 'nequi' && (
-                        <div className="absolute top-2 right-2">
-                          <div className="w-3 h-3 rounded-full bg-primary"></div>
-                        </div>
-                      )}
                     </div>
+                    {formData.paymentMethod === 'nequi' && (
+                      <div className="absolute top-1 right-1">
+                        <div className="w-2 h-2 rounded-full bg-primary"></div>
+                      </div>
+                    )}
                   </button>
                 </div>
 
