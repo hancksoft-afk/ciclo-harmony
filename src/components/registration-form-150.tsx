@@ -546,6 +546,29 @@ export function RegistrationForm150() {
                 </div>
               )}
 
+              {/* Nequi Phone */}
+              {formData.paymentMethod === 'nequi' && (
+                <div>
+                  <label className="block text-sm text-muted-foreground mb-1.5 font-inter">Número de teléfono Nequi</label>
+                  <div className="relative">
+                    <Phone className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                    <input
+                      type="text"
+                      placeholder="Ej: 3001234567"
+                      value={formData.binanceId}
+                      onChange={(e) => setFormData({...formData, binanceId: e.target.value})}
+                      className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
+                    />
+                  </div>
+                  {errors.binanceId && (
+                    <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
+                      <AlertTriangle className="w-3.5 h-3.5" />
+                      <span><strong className="font-medium">Número de Nequi inválido</strong> — Debe ser un número de teléfono válido.</span>
+                    </div>
+                  )}
+                </div>
+              )}
+
               <div className="h-px bg-white/10" />
 
               <div className="flex items-center justify-between">
