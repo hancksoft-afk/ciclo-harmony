@@ -482,20 +482,38 @@ export function RegistrationForm150() {
                 </div>
               </div>
 
-              {/* Payment Method - Selected in Platform Modal */}
-              {selectedPlatform && (
-                <div className="rounded-lg ring-1 ring-white/10 bg-white/5 p-3">
-                  <div className="flex items-center gap-2">
-                    <Hash className={`w-4 h-4 ${selectedPlatform === 'Binance' ? 'text-yellow-400' : 'text-green-400'}`} />
-                    <span className="text-sm text-foreground font-inter">
-                      Método seleccionado: {selectedPlatform}
-                    </span>
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-1 font-inter">
-                    {selectedPlatform === 'Binance' ? 'Plataforma de criptomonedas' : 'Aplicación móvil de pagos'}
-                  </p>
+              {/* Payment Method */}
+              <div>
+                <label className="block text-sm text-muted-foreground mb-2 font-inter">Selecciona tu método de pago preferido</label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setFormData({...formData, paymentMethod: 'binance_pay'})}
+                    className={`group rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-3 text-left ${
+                      formData.paymentMethod === 'binance_pay' ? 'ring-primary/50 bg-primary/5' : ''
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Hash className="w-4 h-4 text-primary" />
+                      <span className="text-sm text-foreground font-inter">Binance Pay</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1 font-inter">Pago directo</p>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setFormData({...formData, paymentMethod: 'nequi'})}
+                    className={`group rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-3 text-left ${
+                      formData.paymentMethod === 'nequi' ? 'ring-primary/50 bg-primary/5' : ''
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Hash className="w-4 h-4 text-green-400" />
+                      <span className="text-sm text-foreground font-inter">Nequi</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1 font-inter">Pago móvil</p>
+                  </button>
                 </div>
-              )}
+              </div>
 
               {/* Binance ID */}
               {formData.paymentMethod === 'binance_pay' && (
@@ -819,7 +837,6 @@ export function RegistrationForm150() {
                 <button
                   onClick={() => {
                     setSelectedPlatform('Binance');
-                    setFormData({...formData, paymentMethod: 'binance_pay'});
                     fetchPlatformQrSettings('Binance');
                     setShowPlatformModal(false);
                     setCurrentStep(2);
@@ -838,7 +855,6 @@ export function RegistrationForm150() {
                 <button
                   onClick={() => {
                     setSelectedPlatform('Nequi');
-                    setFormData({...formData, paymentMethod: 'nequi'});
                     fetchPlatformQrSettings('Nequi');
                     setShowPlatformModal(false);
                     setCurrentStep(2);
