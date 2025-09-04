@@ -503,8 +503,12 @@ export function RegistrationForm150() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <button
                     type="button"
-                    onClick={() => setFormData({...formData, paymentMethod: 'binance_pay', nequiPhone: ''})}
-                    className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden ${
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setFormData(prev => ({...prev, paymentMethod: 'binance_pay', nequiPhone: ''}));
+                    }}
+                    className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
                       formData.paymentMethod === 'binance_pay' 
                         ? 'ring-primary bg-primary/10 border-primary shadow-lg shadow-primary/25' 
                         : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
@@ -534,8 +538,12 @@ export function RegistrationForm150() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setFormData({...formData, paymentMethod: 'nequi', binanceId: ''})}
-                    className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden ${
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setFormData(prev => ({...prev, paymentMethod: 'nequi', binanceId: ''}));
+                    }}
+                    className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
                       formData.paymentMethod === 'nequi' 
                         ? 'ring-green-500 bg-green-500/10 border-green-500 shadow-lg shadow-green-500/25' 
                         : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
