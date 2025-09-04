@@ -1001,35 +1001,31 @@ export function RegistrationForm() {
                     Confirma la plataforma para proceder con el pago:
                   </p>
                   
-                  {formData.paymentMethod === 'binance_pay' && (
-                    <button
-                      onClick={() => handlePlatformSelect('Binance')}
-                      className="w-full group rounded-lg ring-1 ring-primary/50 bg-primary/5 hover:bg-primary/10 transition p-4 text-left"
-                    >
-                      <div className="flex items-center gap-3">
-                        <Hash className="w-5 h-5 text-primary" />
-                        <div>
-                          <span className="text-base font-medium text-foreground font-inter">Binance</span>
-                          <p className="text-sm text-muted-foreground mt-1 font-inter">Pago con Binance Pay</p>
-                        </div>
+                  <button
+                    onClick={() => handlePlatformSelect('Binance')}
+                    className="w-full group rounded-lg ring-1 ring-primary/50 bg-primary/5 hover:bg-primary/10 transition p-4 text-left"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Hash className="w-5 h-5 text-primary" />
+                      <div>
+                        <span className="text-base font-medium text-foreground font-inter">Binance</span>
+                        <p className="text-sm text-muted-foreground mt-1 font-inter">Pago con Binance Pay</p>
                       </div>
-                    </button>
-                  )}
+                    </div>
+                  </button>
                   
-                  {formData.paymentMethod === 'nequi_pay' && (
-                    <button
-                      onClick={() => handlePlatformSelect('Nequi')}
-                      className="w-full group rounded-lg ring-1 ring-green-500/50 bg-green-500/5 hover:bg-green-500/10 transition p-4 text-left"
-                    >
-                      <div className="flex items-center gap-3">
-                        <Hash className="w-5 h-5 text-green-500" />
-                        <div>
-                          <span className="text-base font-medium text-foreground font-inter">Nequi</span>
-                          <p className="text-sm text-muted-foreground mt-1 font-inter">Pago con Nequi</p>
-                        </div>
+                  <button
+                    onClick={() => handlePlatformSelect('Nequi')}
+                    className="w-full group rounded-lg ring-1 ring-green-500/50 bg-green-500/5 hover:bg-green-500/10 transition p-4 text-left"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Hash className="w-5 h-5 text-green-500" />
+                      <div>
+                        <span className="text-base font-medium text-foreground font-inter">Nequi</span>
+                        <p className="text-sm text-muted-foreground mt-1 font-inter">Pago con Nequi</p>
                       </div>
-                    </button>
-                  )}
+                    </div>
+                  </button>
                 </div>
               </div>
             </div>
