@@ -484,7 +484,7 @@ export function RegistrationForm() {
 
               {/* Payment Platform Selection */}
               <div>
-                <label className="block text-sm text-muted-foreground mb-2 font-inter">Selecciona tu plataforma de pago</label>
+                <label className="block text-sm text-muted-foreground mb-2 font-inter">Selecciona tu método de pago preferido</label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <button
                     type="button"
@@ -495,7 +495,7 @@ export function RegistrationForm() {
                   >
                     <div className="flex items-center gap-2">
                       <Hash className="w-4 h-4 text-primary" />
-                      <span className="text-sm text-foreground font-inter">Binance</span>
+                      <span className="text-sm text-foreground font-inter">Binance Pay</span>
                     </div>
                     <p className="text-xs text-muted-foreground mt-1 font-inter">Pago con Binance Pay</p>
                   </button>
@@ -577,7 +577,7 @@ export function RegistrationForm() {
                 </button>
                 <button
                   type="button"
-                  onClick={handleNext}
+                  onClick={() => setShowPlatformModal(true)}
                   disabled={!canProceedStep1}
                   className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-white bg-primary hover:bg-primary/80 ring-1 ring-primary/50 disabled:opacity-40 disabled:cursor-not-allowed transition"
                 >
