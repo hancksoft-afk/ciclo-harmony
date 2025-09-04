@@ -112,6 +112,8 @@ export function AdminSettings() {
         .upsert({
           setting_key: settingKey,
           setting_value: newValue
+        }, {
+          onConflict: 'setting_key'
         });
 
       if (error) throw error;
