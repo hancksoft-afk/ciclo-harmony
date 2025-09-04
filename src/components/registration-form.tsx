@@ -4,7 +4,7 @@ import {
   User, UserPlus, Globe, Phone, Mail, Fingerprint, 
   ChevronDown, AlertTriangle, ArrowLeft, ArrowRight,
   CircleX, Timer, Copy, Hash, CheckCircle2, Ticket,
-  TicketCheck, X
+  TicketCheck, X, CreditCard
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -344,23 +344,15 @@ export function RegistrationForm() {
 
   const handlePlatformSelection = (platform: 'binance' | 'nequi') => {
     setSelectedPlatform(platform);
+    setFormData({...formData, paymentMethod: platform === 'binance' ? 'binance_pay' : 'nequi', binanceId: ''});
     setShowPlatformModal(false);
-    // Now proceed to next step based on selected platform
-    if (platform === 'nequi') {
-      // Nequi flow: Registration $25 USD → QR Payment (Life Cycle) - Nequi → QR Payment (Admin) - Nequi → Final success
-      setCurrentStep(2);
-    } else {
-      // Binance flow
-      setCurrentStep(2);
-    }
+    // Don't advance step here, just update the form to show input fields
   };
 
   const canProceedStep1 = formData.name && formData.invitee && formData.country && 
-                          formData.phone && formData.hasMoney && 
-                          formData.paymentMethod && 
-                           (formData.paymentMethod !== 'binance_pay' && formData.paymentMethod !== 'nequi_pay') || 
-                           (formData.paymentMethod === 'binance_pay' && formData.binanceId) ||
-                           (formData.paymentMethod === 'nequi_pay' && formData.binanceId);
+                          formData.phone && formData.hasMoney && formData.paymentMethod &&
+                          ((formData.paymentMethod === 'binance_pay' && formData.binanceId) ||
+                           (formData.paymentMethod === 'nequi' && formData.binanceId));
 
   const canProceedStep2 = formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19;
   const canProceedStep3 = formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19;
@@ -568,62 +560,22 @@ export function RegistrationForm() {
                 </div>
               </div>
 
-              {/* Payment Method Selection */}
+              {/* Platform Selection Button */}
               <div>
                 <label className="block text-sm text-muted-foreground mb-4 font-inter">Selecciona tu método de pago preferido:</label>
-                <div className="grid grid-cols-2 gap-3">
-                  {/* Binance Pay Option - only show if enabled */}
-                  {(systemSettings.binance_enabled ?? true) && (
-                    <button
-                      type="button"
-                      onClick={() => setFormData({...formData, paymentMethod: 'binance_pay', binanceId: ''})}
-                      onDoubleClick={() => setFormData({...formData, paymentMethod: 'binance_pay', binanceId: ''})}
-                      className={`relative rounded-lg p-3 text-center transition-all duration-200 border hover:scale-[1.02] ${
-                        formData.paymentMethod === 'binance_pay' 
-                          ? 'border-primary bg-primary/10 text-primary shadow-md' 
-                          : 'border-white/20 bg-white/5 text-muted-foreground hover:bg-white/10 hover:border-white/30'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2 justify-center">
-                        <Fingerprint className="w-4 h-4" />
-                        <span className="text-xs font-medium font-inter">
-                          Binance Pay
-                        </span>
-                      </div>
-                      {formData.paymentMethod === 'binance_pay' && (
-                        <div className="absolute top-1 right-1">
-                          <div className="w-2 h-2 rounded-full bg-primary"></div>
-                        </div>
-                      )}
-                    </button>
-                  )}
-
-                  {/* Nequi Option - only show if enabled */}
-                  {(systemSettings.nequi_25_enabled ?? true) && (
-                    <button
-                      type="button"
-                      onClick={() => setFormData({...formData, paymentMethod: 'nequi', binanceId: ''})}
-                      onDoubleClick={() => setFormData({...formData, paymentMethod: 'nequi', binanceId: ''})}
-                      className={`relative rounded-lg p-3 text-center transition-all duration-200 border hover:scale-[1.02] ${
-                        formData.paymentMethod === 'nequi' 
-                          ? 'border-primary bg-primary/10 text-primary shadow-md' 
-                          : 'border-white/20 bg-white/5 text-muted-foreground hover:bg-white/10 hover:border-white/30'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2 justify-center">
-                        <Phone className="w-4 h-4" />
-                        <span className="text-xs font-medium font-inter">
-                          Nequi
-                        </span>
-                      </div>
-                      {formData.paymentMethod === 'nequi' && (
-                        <div className="absolute top-1 right-1">
-                          <div className="w-2 h-2 rounded-full bg-primary"></div>
-                        </div>
-                      )}
-                    </button>
-                  )}
-                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowPlatformModal(true)}
+                  className="w-full rounded-lg p-4 text-center transition-all duration-200 border border-white/20 bg-white/5 text-muted-foreground hover:bg-white/10 hover:border-white/30 hover:scale-[1.02]"
+                >
+                  <div className="flex items-center gap-2 justify-center">
+                    <CreditCard className="w-5 h-5" />
+                    <span className="text-sm font-medium font-inter">
+                      Selecciona tu plataforma
+                    </span>
+                  </div>
+                </button>
+              </div>
 
                 {/* Payment Method Input Fields */}
                 <div className="mt-6">
@@ -673,8 +625,7 @@ export function RegistrationForm() {
                       )}
                     </div>
                   )}
-                </div>
-              </div>
+                 </div>
 
               <div className="h-px bg-white/10" />
 
@@ -690,11 +641,13 @@ export function RegistrationForm() {
                 <button
                   type="button"
                   onClick={() => {
-                    if (validateStep1()) {
+                    if (!formData.paymentMethod) {
                       setShowPlatformModal(true);
+                    } else if (validateStep1()) {
+                      setCurrentStep(2);
                     }
                   }}
-                  disabled={!canProceedStep1}
+                  disabled={!canProceedStep1 && !formData.paymentMethod}
                   className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-white bg-primary hover:bg-primary/80 ring-1 ring-primary/50 disabled:opacity-40 disabled:cursor-not-allowed transition"
                 >
                   Continuar
@@ -709,7 +662,9 @@ export function RegistrationForm() {
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-semibold tracking-tight text-white font-inter">Pago por QR Ciclo vida</h2>
+                  <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
+                    Pago por QR - 25 USD (Ciclo de vida) - {formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi'}
+                  </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el código para continuar. Tiempo restante: <span className="text-foreground">{formatTime(timer1)}</span>
                   </p>
@@ -813,7 +768,9 @@ export function RegistrationForm() {
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-semibold tracking-tight text-white font-inter">Pago de QR (Admin)</h2>
+                  <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
+                    Pago por QR (Admin) - {formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi'}
+                  </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el QR del administrador. Tiempo restante: <span className="text-foreground">{formatTime(timer2)}</span>
                   </p>
