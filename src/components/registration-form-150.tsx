@@ -504,28 +504,64 @@ export function RegistrationForm150() {
                   <button
                     type="button"
                     onClick={() => setFormData({...formData, paymentMethod: 'binance_pay', nequiPhone: ''})}
-                    className={`group rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-3 text-left ${
-                      formData.paymentMethod === 'binance_pay' ? 'ring-primary/50 bg-primary/5' : ''
+                    className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden ${
+                      formData.paymentMethod === 'binance_pay' 
+                        ? 'ring-primary bg-primary/10 border-primary shadow-lg shadow-primary/25' 
+                        : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
                     }`}
                   >
-                    <div className="flex items-center gap-2">
-                      <Hash className="w-4 h-4 text-primary" />
-                      <span className="text-sm text-foreground font-inter">Binance Pay</span>
+                    {formData.paymentMethod === 'binance_pay' && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
+                    )}
+                    <div className="relative flex items-center gap-3">
+                      <div className={`p-2 rounded-lg ${formData.paymentMethod === 'binance_pay' ? 'bg-primary/20' : 'bg-white/10'}`}>
+                        <Hash className={`w-5 h-5 ${formData.paymentMethod === 'binance_pay' ? 'text-primary' : 'text-muted-foreground'}`} />
+                      </div>
+                      <div>
+                        <span className={`text-sm font-medium font-inter ${formData.paymentMethod === 'binance_pay' ? 'text-white' : 'text-foreground'}`}>
+                          Binance Pay
+                        </span>
+                        <p className="text-xs text-muted-foreground mt-0.5 font-inter">Pago directo</p>
+                      </div>
+                      {formData.paymentMethod === 'binance_pay' && (
+                        <div className="ml-auto">
+                          <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                            <div className="w-2 h-2 bg-white rounded-full" />
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1 font-inter">Pago directo</p>
                   </button>
                   <button
                     type="button"
                     onClick={() => setFormData({...formData, paymentMethod: 'nequi', binanceId: ''})}
-                    className={`group rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-3 text-left ${
-                      formData.paymentMethod === 'nequi' ? 'ring-primary/50 bg-primary/5' : ''
+                    className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden ${
+                      formData.paymentMethod === 'nequi' 
+                        ? 'ring-green-500 bg-green-500/10 border-green-500 shadow-lg shadow-green-500/25' 
+                        : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
                     }`}
                   >
-                    <div className="flex items-center gap-2">
-                      <Hash className="w-4 h-4 text-green-400" />
-                      <span className="text-sm text-foreground font-inter">Nequi</span>
+                    {formData.paymentMethod === 'nequi' && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-transparent" />
+                    )}
+                    <div className="relative flex items-center gap-3">
+                      <div className={`p-2 rounded-lg ${formData.paymentMethod === 'nequi' ? 'bg-green-500/20' : 'bg-white/10'}`}>
+                        <Hash className={`w-5 h-5 ${formData.paymentMethod === 'nequi' ? 'text-green-400' : 'text-muted-foreground'}`} />
+                      </div>
+                      <div>
+                        <span className={`text-sm font-medium font-inter ${formData.paymentMethod === 'nequi' ? 'text-white' : 'text-foreground'}`}>
+                          Nequi
+                        </span>
+                        <p className="text-xs text-muted-foreground mt-0.5 font-inter">Pago móvil</p>
+                      </div>
+                      {formData.paymentMethod === 'nequi' && (
+                        <div className="ml-auto">
+                          <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                            <div className="w-2 h-2 bg-white rounded-full" />
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1 font-inter">Pago móvil</p>
                   </button>
                 </div>
               </div>
