@@ -609,9 +609,9 @@ export function RegistrationForm() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="rounded-xl bg-[#0f1522] ring-1 ring-white/10 p-4 grid place-items-center">
                   <div className="rounded-lg bg-white p-3">
-                    {(formData.paymentMethod === 'binance_pay' ? qrSettings : nequiQrSettings)?.qr_image_url ? (
+                    {(selectedPlatform === 'Binance' ? qrSettings : nequiQrSettings)?.qr_image_url ? (
                       <img 
-                        src={(formData.paymentMethod === 'binance_pay' ? qrSettings : nequiQrSettings)?.qr_image_url} 
+                        src={(selectedPlatform === 'Binance' ? qrSettings : nequiQrSettings)?.qr_image_url} 
                         alt="QR Code" 
                         className="h-48 w-48 object-contain rounded"
                       />
@@ -625,18 +625,18 @@ export function RegistrationForm() {
                 </div>
 
                 <div className="rounded-xl bg-white/5 ring-1 ring-white/10 p-4 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground font-inter">Codigo ID</span>
-                    <div className="flex items-center gap-2">
-                      <code className="text-sm text-foreground font-mono">{(formData.paymentMethod === 'binance_pay' ? qrSettings : nequiQrSettings)?.code_id || 'N/A'}</code>
-                      <button
-                        onClick={() => copyToClipboard((formData.paymentMethod === 'binance_pay' ? qrSettings : nequiQrSettings)?.code_id || '')}
-                        className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
-                      >
-                        <Copy className="w-3.5 h-3.5" /> Copiar
-                      </button>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground font-inter">Codigo ID</span>
+                      <div className="flex items-center gap-2">
+                        <code className="text-sm text-foreground font-mono">{(selectedPlatform === 'Binance' ? qrSettings : nequiQrSettings)?.code_id || 'N/A'}</code>
+                        <button
+                          onClick={() => copyToClipboard((selectedPlatform === 'Binance' ? qrSettings : nequiQrSettings)?.code_id || '')}
+                          className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
+                        >
+                          <Copy className="w-3.5 h-3.5" /> Copiar
+                        </button>
+                      </div>
                     </div>
-                  </div>
                   <div className="h-px bg-white/10" />
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-sm">
@@ -654,7 +654,7 @@ export function RegistrationForm() {
                       <Hash className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                       <input
                         type="text"
-                       placeholder={formData.paymentMethod === 'binance_pay' ? 'Ingresa tu ID de Binance' : 'Ingresa tu ID de Nequi'}
+                       placeholder={selectedPlatform === 'Binance' ? 'Ingresa tu ID de Binance' : 'Ingresa tu ID de Nequi'}
                         value={formData.binanceIdStep2}
                         onChange={(e) => setFormData({...formData, binanceIdStep2: e.target.value})}
                         className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
@@ -715,9 +715,9 @@ export function RegistrationForm() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="rounded-xl bg-[#0f1522] ring-1 ring-white/10 p-4 grid place-items-center">
                   <div className="rounded-lg bg-white p-3">
-                    {(formData.paymentMethod === 'binance_pay' ? adminQrSettings : adminNequiQrSettings)?.qr_image_url ? (
+                    {(selectedPlatform === 'Binance' ? adminQrSettings : adminNequiQrSettings)?.qr_image_url ? (
                       <img 
-                        src={(formData.paymentMethod === 'binance_pay' ? adminQrSettings : adminNequiQrSettings)?.qr_image_url} 
+                        src={(selectedPlatform === 'Binance' ? adminQrSettings : adminNequiQrSettings)?.qr_image_url} 
                         alt="QR Code Admin" 
                         className="h-48 w-48 object-contain rounded"
                       />
@@ -735,12 +735,12 @@ export function RegistrationForm() {
                     <span className="text-sm text-muted-foreground font-inter">Codigo ID</span>
                     <div className="flex items-center gap-2">
                         <code className="text-sm text-foreground font-mono">
-                          {(formData.paymentMethod === 'binance_pay' ? adminQrSettings : adminNequiQrSettings)?.code_id && 
-                           (formData.paymentMethod === 'binance_pay' ? adminQrSettings : adminNequiQrSettings).code_id.trim() !== '' ? 
-                           (formData.paymentMethod === 'binance_pay' ? adminQrSettings : adminNequiQrSettings).code_id : 'Pendiente'}
+                          {(selectedPlatform === 'Binance' ? adminQrSettings : adminNequiQrSettings)?.code_id && 
+                           (selectedPlatform === 'Binance' ? adminQrSettings : adminNequiQrSettings).code_id.trim() !== '' ? 
+                           (selectedPlatform === 'Binance' ? adminQrSettings : adminNequiQrSettings).code_id : 'Pendiente'}
                         </code>
                       <button
-                        onClick={() => copyToClipboard((formData.paymentMethod === 'binance_pay' ? adminQrSettings : adminNequiQrSettings)?.code_id || '')}
+                        onClick={() => copyToClipboard((selectedPlatform === 'Binance' ? adminQrSettings : adminNequiQrSettings)?.code_id || '')}
                         className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
                       >
                         <Copy className="w-3.5 h-3.5" /> Copiar
@@ -764,7 +764,7 @@ export function RegistrationForm() {
                       <Hash className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                       <input
                         type="text"
-                        placeholder={formData.paymentMethod === 'binance_pay' ? 'Ingresa tu ID de Binance' : 'Ingresa tu ID de Nequi'}
+                        placeholder={selectedPlatform === 'Binance' ? 'Ingresa tu ID de Binance' : 'Ingresa tu ID de Nequi'}
                         value={formData.binanceIdStep3}
                         onChange={(e) => setFormData({...formData, binanceIdStep3: e.target.value})}
                         className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
