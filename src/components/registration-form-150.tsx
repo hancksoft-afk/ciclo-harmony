@@ -125,19 +125,27 @@ export function RegistrationForm150() {
 
   const fetchPlatformQrSettings = async (platform: string) => {
     try {
-      const platformSuffix = platform.toLowerCase();
+      let mainType, adminType;
+      
+      if (platform === 'Binance') {
+        mainType = 'register150';
+        adminType = 'register150_admin';
+      } else if (platform === 'Nequi') {
+        mainType = 'register150_nequi';
+        adminType = 'register150_admin_nequi';
+      }
       
       // Fetch platform-specific register150 settings
       const { data: platformData, error: platformError } = await supabase
         .from('qr_settings')
         .select('*')
-        .eq('type', `register150_${platformSuffix}`)
+        .eq('type', mainType)
         .eq('is_active', true)
         .order('updated_at', { ascending: false })
         .maybeSingle();
       
       if (platformError) {
-        console.error(`Error fetching register150_${platformSuffix} settings:`, platformError);
+        console.error(`Error fetching ${mainType} settings:`, platformError);
       } else if (platformData) {
         setPlatformQrSettings(platformData);
         if (platformData.code_id) {
@@ -149,13 +157,13 @@ export function RegistrationForm150() {
       const { data: platformAdminData, error: platformAdminError } = await supabase
         .from('qr_settings')
         .select('*')
-        .eq('type', `register150_admin_${platformSuffix}`)
+        .eq('type', adminType)
         .eq('is_active', true)
         .order('updated_at', { ascending: false })
         .maybeSingle();
       
       if (platformAdminError) {
-        console.error(`Error fetching register150_admin_${platformSuffix} settings:`, platformAdminError);
+        console.error(`Error fetching ${adminType} settings:`, platformAdminError);
       } else if (platformAdminData) {
         setPlatformAdminQrSettings(platformAdminData);
         if (platformAdminData.code_id) {
