@@ -49,6 +49,8 @@ export function RegistrationForm150() {
   const [generatedCodes, setGeneratedCodes] = useState<{codigo: string, oculto: string, ticketId: string} | null>(null);
   const [qrSettings, setQrSettings] = useState<any>(null);
   const [adminQrSettings, setAdminQrSettings] = useState<any>(null);
+  const [platformQrSettings, setPlatformQrSettings] = useState<any>(null);
+  const [platformAdminQrSettings, setPlatformAdminQrSettings] = useState<any>(null);
 
   // Load QR settings on mount
   useEffect(() => {
@@ -118,6 +120,50 @@ export function RegistrationForm150() {
       }
     } catch (error) {
       console.error('Error fetching QR settings:', error);
+    }
+  };
+
+  const fetchPlatformQrSettings = async (platform: string) => {
+    try {
+      const platformSuffix = platform.toLowerCase();
+      
+      // Fetch platform-specific register150 settings
+      const { data: platformData, error: platformError } = await supabase
+        .from('qr_settings')
+        .select('*')
+        .eq('type', `register150_${platformSuffix}`)
+        .eq('is_active', true)
+        .order('updated_at', { ascending: false })
+        .maybeSingle();
+      
+      if (platformError) {
+        console.error(`Error fetching register150_${platformSuffix} settings:`, platformError);
+      } else if (platformData) {
+        setPlatformQrSettings(platformData);
+        if (platformData.code_id) {
+          setOrderId1(platformData.code_id);
+        }
+      }
+
+      // Fetch platform-specific admin settings
+      const { data: platformAdminData, error: platformAdminError } = await supabase
+        .from('qr_settings')
+        .select('*')
+        .eq('type', `register150_admin_${platformSuffix}`)
+        .eq('is_active', true)
+        .order('updated_at', { ascending: false })
+        .maybeSingle();
+      
+      if (platformAdminError) {
+        console.error(`Error fetching register150_admin_${platformSuffix} settings:`, platformAdminError);
+      } else if (platformAdminData) {
+        setPlatformAdminQrSettings(platformAdminData);
+        if (platformAdminData.code_id) {
+          setOrderId2(platformAdminData.code_id);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching platform-specific QR settings:', error);
     }
   };
 
@@ -522,7 +568,7 @@ export function RegistrationForm150() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                    Pago por QR - 25 USD (Ciclo de vida) - {selectedPlatform}
+                    Pago por QR - 150 USD (Ciclo de vida) - {selectedPlatform}
                   </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el código para continuar. Tiempo restante: <span className="text-foreground">{formatTime(timer1)}</span>
@@ -537,9 +583,9 @@ export function RegistrationForm150() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="rounded-xl bg-[#0f1522] ring-1 ring-white/10 p-4 grid place-items-center">
                   <div className="rounded-lg bg-white p-3">
-                    {qrSettings?.qr_image_url ? (
+                    {(platformQrSettings?.qr_image_url || qrSettings?.qr_image_url) ? (
                       <img 
-                        src={qrSettings.qr_image_url} 
+                        src={platformQrSettings?.qr_image_url || qrSettings?.qr_image_url} 
                         alt="QR Code" 
                         className="h-48 w-48 object-contain rounded"
                       />
@@ -630,7 +676,7 @@ export function RegistrationForm150() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                    Pago por QR - 25 USD (Admin) - {selectedPlatform}
+                    Pago por QR - 150 USD (Admin) - {selectedPlatform}
                   </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el QR del administrador. Tiempo restante: <span className="text-foreground">{formatTime(timer2)}</span>
@@ -645,9 +691,9 @@ export function RegistrationForm150() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="rounded-xl bg-[#0f1522] ring-1 ring-white/10 p-4 grid place-items-center">
                   <div className="rounded-lg bg-white p-3">
-                    {adminQrSettings?.qr_image_url ? (
+                    {(platformAdminQrSettings?.qr_image_url || adminQrSettings?.qr_image_url) ? (
                       <img 
-                        src={adminQrSettings.qr_image_url} 
+                        src={platformAdminQrSettings?.qr_image_url || adminQrSettings?.qr_image_url} 
                         alt="QR Code Admin" 
                         className="h-48 w-48 object-contain rounded"
                       />
@@ -791,6 +837,7 @@ export function RegistrationForm150() {
                 <button
                   onClick={() => {
                     setSelectedPlatform('Binance');
+                    fetchPlatformQrSettings('Binance');
                     setShowPlatformModal(false);
                     setCurrentStep(2);
                   }}
@@ -808,6 +855,7 @@ export function RegistrationForm150() {
                 <button
                   onClick={() => {
                     setSelectedPlatform('Nequi');
+                    fetchPlatformQrSettings('Nequi');
                     setShowPlatformModal(false);
                     setCurrentStep(2);
                   }}
