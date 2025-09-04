@@ -52,13 +52,15 @@ export function RegistrationForm() {
   const [adminQrSettings, setAdminQrSettings] = useState<any>(null);
   const [nequiQrSettings, setNequiQrSettings] = useState<any>(null);
   const [adminNequiQrSettings, setAdminNequiQrSettings] = useState<any>(null);
+  const [systemSettings, setSystemSettings] = useState<{ [key: string]: boolean }>({});
 
-  // Load QR settings on mount
+  // Load QR settings and system settings on mount
   useEffect(() => {
     fetchQrSettings();
     fetchAdminQrSettings();
     fetchNequiQrSettings();
     fetchAdminNequiQrSettings();
+    fetchSystemSettings();
   }, []);
 
   const fetchQrSettings = async () => {
@@ -161,6 +163,28 @@ export function RegistrationForm() {
       }
     } catch (error) {
       console.error('Error fetching Admin Nequi QR settings:', error);
+    }
+  };
+
+  const fetchSystemSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('*')
+        .in('setting_key', ['binance_enabled', 'nequi_25_enabled']);
+
+      if (error) {
+        console.error('Error fetching system settings:', error);
+        return;
+      }
+      
+      const settingsMap: { [key: string]: boolean } = {};
+      data?.forEach(setting => {
+        settingsMap[setting.setting_key] = setting.setting_value;
+      });
+      setSystemSettings(settingsMap);
+    } catch (error) {
+      console.error('Error fetching system settings:', error);
     }
   };
 
@@ -548,53 +572,57 @@ export function RegistrationForm() {
               <div>
                 <label className="block text-sm text-muted-foreground mb-4 font-inter">Selecciona tu método de pago preferido:</label>
                 <div className="grid grid-cols-2 gap-3">
-                  {/* Binance Pay Option */}
-                  <button
-                    type="button"
-                    onClick={() => setFormData({...formData, paymentMethod: 'binance_pay', binanceId: ''})}
-                    onDoubleClick={() => setFormData({...formData, paymentMethod: 'binance_pay', binanceId: ''})}
-                    className={`relative rounded-lg p-3 text-center transition-all duration-200 border hover:scale-[1.02] ${
-                      formData.paymentMethod === 'binance_pay' 
-                        ? 'border-primary bg-primary/10 text-primary shadow-md' 
-                        : 'border-white/20 bg-white/5 text-muted-foreground hover:bg-white/10 hover:border-white/30'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2 justify-center">
-                      <Fingerprint className="w-4 h-4" />
-                      <span className="text-xs font-medium font-inter">
-                        Binance Pay
-                      </span>
-                    </div>
-                    {formData.paymentMethod === 'binance_pay' && (
-                      <div className="absolute top-1 right-1">
-                        <div className="w-2 h-2 rounded-full bg-primary"></div>
+                  {/* Binance Pay Option - only show if enabled */}
+                  {(systemSettings.binance_enabled ?? true) && (
+                    <button
+                      type="button"
+                      onClick={() => setFormData({...formData, paymentMethod: 'binance_pay', binanceId: ''})}
+                      onDoubleClick={() => setFormData({...formData, paymentMethod: 'binance_pay', binanceId: ''})}
+                      className={`relative rounded-lg p-3 text-center transition-all duration-200 border hover:scale-[1.02] ${
+                        formData.paymentMethod === 'binance_pay' 
+                          ? 'border-primary bg-primary/10 text-primary shadow-md' 
+                          : 'border-white/20 bg-white/5 text-muted-foreground hover:bg-white/10 hover:border-white/30'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 justify-center">
+                        <Fingerprint className="w-4 h-4" />
+                        <span className="text-xs font-medium font-inter">
+                          Binance Pay
+                        </span>
                       </div>
-                    )}
-                  </button>
+                      {formData.paymentMethod === 'binance_pay' && (
+                        <div className="absolute top-1 right-1">
+                          <div className="w-2 h-2 rounded-full bg-primary"></div>
+                        </div>
+                      )}
+                    </button>
+                  )}
 
-                  {/* Nequi Option */}
-                  <button
-                    type="button"
-                    onClick={() => setFormData({...formData, paymentMethod: 'nequi', binanceId: ''})}
-                    onDoubleClick={() => setFormData({...formData, paymentMethod: 'nequi', binanceId: ''})}
-                    className={`relative rounded-lg p-3 text-center transition-all duration-200 border hover:scale-[1.02] ${
-                      formData.paymentMethod === 'nequi' 
-                        ? 'border-primary bg-primary/10 text-primary shadow-md' 
-                        : 'border-white/20 bg-white/5 text-muted-foreground hover:bg-white/10 hover:border-white/30'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2 justify-center">
-                      <Phone className="w-4 h-4" />
-                      <span className="text-xs font-medium font-inter">
-                        Nequi
-                      </span>
-                    </div>
-                    {formData.paymentMethod === 'nequi' && (
-                      <div className="absolute top-1 right-1">
-                        <div className="w-2 h-2 rounded-full bg-primary"></div>
+                  {/* Nequi Option - only show if enabled */}
+                  {(systemSettings.nequi_25_enabled ?? true) && (
+                    <button
+                      type="button"
+                      onClick={() => setFormData({...formData, paymentMethod: 'nequi', binanceId: ''})}
+                      onDoubleClick={() => setFormData({...formData, paymentMethod: 'nequi', binanceId: ''})}
+                      className={`relative rounded-lg p-3 text-center transition-all duration-200 border hover:scale-[1.02] ${
+                        formData.paymentMethod === 'nequi' 
+                          ? 'border-primary bg-primary/10 text-primary shadow-md' 
+                          : 'border-white/20 bg-white/5 text-muted-foreground hover:bg-white/10 hover:border-white/30'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 justify-center">
+                        <Phone className="w-4 h-4" />
+                        <span className="text-xs font-medium font-inter">
+                          Nequi
+                        </span>
                       </div>
-                    )}
-                  </button>
+                      {formData.paymentMethod === 'nequi' && (
+                        <div className="absolute top-1 right-1">
+                          <div className="w-2 h-2 rounded-full bg-primary"></div>
+                        </div>
+                      )}
+                    </button>
+                  )}
                 </div>
 
                 {/* Payment Method Input Fields */}
