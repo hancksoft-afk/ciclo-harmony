@@ -371,30 +371,7 @@ export function RegistrationForm150() {
 
   const handleNext = () => {
     if (currentStep === 1 && validateStep1()) {
-      // For "binance_nequi" payment method, skip platform selection and QR steps
-      if (formData.paymentMethod === 'binance_nequi') {
-        // Generate codes and go directly to final step
-        const codes = generarCodigoNumeroYOculto();
-        setGeneratedCodes(codes);
-        setCurrentStep(4);
-        // Save to Supabase with the same codes used in UI
-        saveToSupabase(codes);
-        // Show modal automatically when reaching step 4
-        setTimeout(() => {
-          setShowTicketModal(true);
-          // Trigger confetti when modal opens
-          setTimeout(() => {
-            confetti({
-              particleCount: 150,
-              spread: 100,
-              origin: { y: 0.6 },
-              colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff']
-            });
-          }, 300);
-        }, 500);
-      } else {
-        setShowPlatformModal(true);
-      }
+      setShowPlatformModal(true);
     } else if (currentStep === 2 && validateStep2()) {
       setCurrentStep(3);
     } else if (currentStep === 3 && validateStep3()) {
