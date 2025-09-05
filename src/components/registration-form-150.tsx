@@ -370,10 +370,7 @@ export function RegistrationForm150() {
                           formData.phone && formData.hasMoney && 
                           formData.paymentMethod && 
                           ((formData.paymentMethod === 'binance_pay' && formData.binanceId) || 
-                           (formData.paymentMethod === 'nequi' && formData.nequiPhone) ||
-                           (formData.paymentMethod === 'binance_pay_2') ||
-                           (formData.paymentMethod === 'nequi_2') ||
-                           (formData.paymentMethod === 'cualquiera'));
+                           (formData.paymentMethod === 'nequi' && formData.nequiPhone));
 
   const canProceedStep2 = formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19;
   const canProceedStep3 = formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19;
@@ -549,8 +546,8 @@ export function RegistrationForm150() {
                 <label className="block text-sm text-muted-foreground mb-2 font-inter">
                   Selecciona tu método de pago preferido
                 </label>
-                {/* Puedes agregar tantos botones como quieras */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                {/* Solo Binance Pay y Nequi - cada uno funciona con 1 clic */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <button
                     type="button"
                     onClick={() => handlePaymentMethodClick('binance_pay')}
@@ -650,147 +647,6 @@ export function RegistrationForm150() {
                       {formData.paymentMethod === 'nequi' && (
                         <div className="ml-auto">
                           <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                            <div className="w-2 h-2 bg-white rounded-full" />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </button>
-                  
-                  {/* Botón Binance Pay 2 */}
-                  <button
-                    type="button"
-                    onClick={() => handlePaymentMethodClick('binance_pay_2')}
-                    className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
-                      formData.paymentMethod === 'binance_pay_2' 
-                        ? 'ring-primary bg-primary/10 border-primary shadow-lg shadow-primary/25' 
-                        : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
-                    }`}
-                  >
-                    {formData.paymentMethod === 'binance_pay_2' && (
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
-                    )}
-                    <div className="relative flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${
-                        formData.paymentMethod === 'binance_pay_2' 
-                          ? 'bg-primary/20' 
-                          : 'bg-white/10'
-                      }`}>
-                        <Hash className={`w-5 h-5 ${
-                          formData.paymentMethod === 'binance_pay_2' 
-                            ? 'text-primary' 
-                            : 'text-muted-foreground'
-                        }`} />
-                      </div>
-                      <div className="flex-1">
-                        <span className={`text-sm font-medium font-inter ${
-                          formData.paymentMethod === 'binance_pay_2' 
-                            ? 'text-white' 
-                            : 'text-foreground'
-                        }`}>
-                          Binance Pay 2
-                        </span>
-                        <p className="text-xs text-muted-foreground mt-0.5 font-inter">
-                          Alternativa Binance
-                        </p>
-                      </div>
-                      {formData.paymentMethod === 'binance_pay_2' && (
-                        <div className="ml-auto">
-                          <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                            <div className="w-2 h-2 bg-white rounded-full" />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </button>
-                  
-                  {/* Botón Nequi 2 */}
-                  <button
-                    type="button"
-                    onClick={() => handlePaymentMethodClick('nequi_2')}
-                    className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
-                      formData.paymentMethod === 'nequi_2' 
-                        ? 'ring-green-500 bg-green-500/10 border-green-500 shadow-lg shadow-green-500/25' 
-                        : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
-                    }`}
-                  >
-                    {formData.paymentMethod === 'nequi_2' && (
-                      <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-transparent" />
-                    )}
-                    <div className="relative flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${
-                        formData.paymentMethod === 'nequi_2' 
-                          ? 'bg-green-500/20' 
-                          : 'bg-white/10'
-                      }`}>
-                        <Hash className={`w-5 h-5 ${
-                          formData.paymentMethod === 'nequi_2' 
-                            ? 'text-green-400' 
-                            : 'text-muted-foreground'
-                        }`} />
-                      </div>
-                      <div className="flex-1">
-                        <span className={`text-sm font-medium font-inter ${
-                          formData.paymentMethod === 'nequi_2' 
-                            ? 'text-white' 
-                            : 'text-foreground'
-                        }`}>
-                          Nequi 2
-                        </span>
-                        <p className="text-xs text-muted-foreground mt-0.5 font-inter">
-                          Alternativa Nequi
-                        </p>
-                      </div>
-                      {formData.paymentMethod === 'nequi_2' && (
-                        <div className="ml-auto">
-                          <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                            <div className="w-2 h-2 bg-white rounded-full" />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </button>
-                  
-                  {/* Botón Cualquiera */}
-                  <button
-                    type="button"
-                    onClick={() => handlePaymentMethodClick('cualquiera')}
-                    className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
-                      formData.paymentMethod === 'cualquiera' 
-                        ? 'ring-purple-500 bg-purple-500/10 border-purple-500 shadow-lg shadow-purple-500/25' 
-                        : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
-                    }`}
-                  >
-                    {formData.paymentMethod === 'cualquiera' && (
-                      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-transparent" />
-                    )}
-                    <div className="relative flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${
-                        formData.paymentMethod === 'cualquiera' 
-                          ? 'bg-purple-500/20' 
-                          : 'bg-white/10'
-                      }`}>
-                        <Hash className={`w-5 h-5 ${
-                          formData.paymentMethod === 'cualquiera' 
-                            ? 'text-purple-400' 
-                            : 'text-muted-foreground'
-                        }`} />
-                      </div>
-                      <div className="flex-1">
-                        <span className={`text-sm font-medium font-inter ${
-                          formData.paymentMethod === 'cualquiera' 
-                            ? 'text-white' 
-                            : 'text-foreground'
-                        }`}>
-                          Cualquiera
-                        </span>
-                        <p className="text-xs text-muted-foreground mt-0.5 font-inter">
-                          Método flexible
-                        </p>
-                      </div>
-                      {formData.paymentMethod === 'cualquiera' && (
-                        <div className="ml-auto">
-                          <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
                             <div className="w-2 h-2 bg-white rounded-full" />
                           </div>
                         </div>
