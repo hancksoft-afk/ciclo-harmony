@@ -53,6 +53,8 @@ export function RegistrationForm150() {
   const [adminQrSettings, setAdminQrSettings] = useState<any>(null);
   const [platformQrSettings, setPlatformQrSettings] = useState<any>(null);
   const [platformAdminQrSettings, setPlatformAdminQrSettings] = useState<any>(null);
+  const [doubleClickMode, setDoubleClickMode] = useState(false);
+  const [paymentClickCount, setPaymentClickCount] = useState<{binance: number, nequi: number}>({binance: 0, nequi: 0});
 
   // Load QR settings on mount
   useEffect(() => {
@@ -340,6 +342,43 @@ export function RegistrationForm150() {
     setShowTicketModal(false);
   };
 
+  const handlePaymentMethodClick = (method: 'binance_pay' | 'nequi') => {
+    if (!doubleClickMode) {
+      // Modo de un solo clic
+      if (method === 'binance_pay') {
+        setFormData({...formData, paymentMethod: 'binance_pay', nequiPhone: ''});
+      } else {
+        setFormData({...formData, paymentMethod: 'nequi', binanceId: ''});
+      }
+      return;
+    }
+
+    // Modo de doble clic
+    if (method === 'binance_pay') {
+      const newCount = paymentClickCount.binance + 1;
+      if (newCount === 1) {
+        setPaymentClickCount({...paymentClickCount, binance: newCount});
+        setTimeout(() => {
+          setPaymentClickCount(prev => ({...prev, binance: 0}));
+        }, 2000);
+      } else if (newCount === 2) {
+        setFormData({...formData, paymentMethod: 'binance_pay', nequiPhone: ''});
+        setPaymentClickCount({binance: 0, nequi: 0});
+      }
+    } else if (method === 'nequi') {
+      const newCount = paymentClickCount.nequi + 1;
+      if (newCount === 1) {
+        setPaymentClickCount({...paymentClickCount, nequi: newCount});
+        setTimeout(() => {
+          setPaymentClickCount(prev => ({...prev, nequi: 0}));
+        }, 2000);
+      } else if (newCount === 2) {
+        setFormData({...formData, paymentMethod: 'nequi', binanceId: ''});
+        setPaymentClickCount({binance: 0, nequi: 0});
+      }
+    }
+  };
+
   const canProceedStep1 = formData.name && formData.invitee && formData.country && 
                           formData.phone && formData.hasMoney && 
                           formData.paymentMethod && 
@@ -497,31 +536,76 @@ export function RegistrationForm150() {
                 </div>
               </div>
 
+              {/* Double Click Mode Toggle */}
+              <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 ring-1 ring-white/10">
+                <div>
+                  <label className="text-sm font-medium text-foreground font-inter">Modo de confirmación</label>
+                  <p className="text-xs text-muted-foreground mt-0.5 font-inter">
+                    {doubleClickMode ? 'Doble clic para mayor seguridad' : 'Un clic para selección rápida'}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setDoubleClickMode(!doubleClickMode);
+                    setPaymentClickCount({binance: 0, nequi: 0});
+                  }}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+                    doubleClickMode ? 'bg-primary' : 'bg-white/20'
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                      doubleClickMode ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                  />
+                </button>
+              </div>
+
               {/* Payment Method */}
               <div>
                 <label className="block text-sm text-muted-foreground mb-2 font-inter">Selecciona tu método de pago preferido</label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <button
                     type="button"
-                    onClick={() => setFormData({...formData, paymentMethod: 'binance_pay', nequiPhone: ''})}
+                    onClick={() => handlePaymentMethodClick('binance_pay')}
                     className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
                       formData.paymentMethod === 'binance_pay' 
                         ? 'ring-primary bg-primary/10 border-primary shadow-lg shadow-primary/25' 
+                        : (doubleClickMode && paymentClickCount.binance === 1)
+                        ? 'ring-yellow-500/60 bg-yellow-500/10 border-yellow-500/60 shadow-lg shadow-yellow-500/20'
                         : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
                     }`}
                   >
                     {formData.paymentMethod === 'binance_pay' && (
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
                     )}
+                    {doubleClickMode && paymentClickCount.binance === 1 && formData.paymentMethod !== 'binance_pay' && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-transparent" />
+                    )}
                     <div className="relative flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${formData.paymentMethod === 'binance_pay' ? 'bg-primary/20' : 'bg-white/10'}`}>
-                        <Hash className={`w-5 h-5 ${formData.paymentMethod === 'binance_pay' ? 'text-primary' : 'text-muted-foreground'}`} />
+                      <div className={`p-2 rounded-lg ${
+                        formData.paymentMethod === 'binance_pay' 
+                          ? 'bg-primary/20' 
+                          : (doubleClickMode && paymentClickCount.binance === 1) 
+                          ? 'bg-yellow-500/20' 
+                          : 'bg-white/10'
+                      }`}>
+                        <Hash className={`w-5 h-5 ${
+                          formData.paymentMethod === 'binance_pay' 
+                            ? 'text-primary' 
+                            : (doubleClickMode && paymentClickCount.binance === 1) 
+                            ? 'text-yellow-400' 
+                            : 'text-muted-foreground'
+                        }`} />
                       </div>
                       <div>
                         <span className={`text-sm font-medium font-inter ${formData.paymentMethod === 'binance_pay' ? 'text-white' : 'text-foreground'}`}>
-                          Binance Pay
+                          Binance Pay {doubleClickMode && paymentClickCount.binance === 1 ? '(Haz clic de nuevo)' : ''}
                         </span>
-                        <p className="text-xs text-muted-foreground mt-0.5 font-inter">Pago directo</p>
+                        <p className="text-xs text-muted-foreground mt-0.5 font-inter">
+                          {doubleClickMode && paymentClickCount.binance === 1 ? 'Confirmar selección' : 'Pago directo'}
+                        </p>
                       </div>
                       {formData.paymentMethod === 'binance_pay' && (
                         <div className="ml-auto">
@@ -534,25 +618,44 @@ export function RegistrationForm150() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setFormData({...formData, paymentMethod: 'nequi', binanceId: ''})}
+                    onClick={() => handlePaymentMethodClick('nequi')}
                     className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
                       formData.paymentMethod === 'nequi' 
                         ? 'ring-green-500 bg-green-500/10 border-green-500 shadow-lg shadow-green-500/25' 
+                        : (doubleClickMode && paymentClickCount.nequi === 1)
+                        ? 'ring-yellow-500/60 bg-yellow-500/10 border-yellow-500/60 shadow-lg shadow-yellow-500/20'
                         : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
                     }`}
                   >
                     {formData.paymentMethod === 'nequi' && (
                       <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-transparent" />
                     )}
+                    {doubleClickMode && paymentClickCount.nequi === 1 && formData.paymentMethod !== 'nequi' && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-transparent" />
+                    )}
                     <div className="relative flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${formData.paymentMethod === 'nequi' ? 'bg-green-500/20' : 'bg-white/10'}`}>
-                        <Hash className={`w-5 h-5 ${formData.paymentMethod === 'nequi' ? 'text-green-400' : 'text-muted-foreground'}`} />
+                      <div className={`p-2 rounded-lg ${
+                        formData.paymentMethod === 'nequi' 
+                          ? 'bg-green-500/20' 
+                          : (doubleClickMode && paymentClickCount.nequi === 1) 
+                          ? 'bg-yellow-500/20' 
+                          : 'bg-white/10'
+                      }`}>
+                        <Hash className={`w-5 h-5 ${
+                          formData.paymentMethod === 'nequi' 
+                            ? 'text-green-400' 
+                            : (doubleClickMode && paymentClickCount.nequi === 1) 
+                            ? 'text-yellow-400' 
+                            : 'text-muted-foreground'
+                        }`} />
                       </div>
                       <div>
                         <span className={`text-sm font-medium font-inter ${formData.paymentMethod === 'nequi' ? 'text-white' : 'text-foreground'}`}>
-                          Nequi
+                          Nequi {doubleClickMode && paymentClickCount.nequi === 1 ? '(Haz clic de nuevo)' : ''}
                         </span>
-                        <p className="text-xs text-muted-foreground mt-0.5 font-inter">Pago móvil</p>
+                        <p className="text-xs text-muted-foreground mt-0.5 font-inter">
+                          {doubleClickMode && paymentClickCount.nequi === 1 ? 'Confirmar selección' : 'Pago móvil'}
+                        </p>
                       </div>
                       {formData.paymentMethod === 'nequi' && (
                         <div className="ml-auto">
