@@ -488,7 +488,7 @@ export function RegistrationForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <button
                     type="button"
-                    onClick={() => setFormData({...formData, paymentMethod: 'binance_pay'})}
+                    onClick={() => setFormData(prevFormData => ({...prevFormData, paymentMethod: 'binance_pay'}))}
                     className={`group rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-3 text-left ${
                       formData.paymentMethod === 'binance_pay' ? 'ring-primary/50 bg-primary/5' : ''
                     }`}
@@ -502,7 +502,7 @@ export function RegistrationForm() {
                   
                   <button
                     type="button"
-                    onClick={() => setFormData({...formData, paymentMethod: 'nequi_pay'})}
+                    onClick={() => setFormData(prevFormData => ({...prevFormData, paymentMethod: 'nequi_pay'}))}
                     className={`group rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-3 text-left ${
                       formData.paymentMethod === 'nequi_pay' ? 'ring-primary/50 bg-primary/5' : ''
                     }`}
