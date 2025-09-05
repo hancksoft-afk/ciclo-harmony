@@ -372,8 +372,7 @@ export function RegistrationForm150() {
                           formData.phone && formData.hasMoney && 
                           formData.paymentMethod && 
                           ((formData.paymentMethod === 'binance_pay' && formData.binanceId) || 
-                           (formData.paymentMethod === 'nequi' && formData.nequiPhone) ||
-                           (formData.paymentMethod === 'transferencia'));
+                           (formData.paymentMethod === 'nequi' && formData.nequiPhone));
 
   const canProceedStep2 = formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19;
   const canProceedStep3 = formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19;
@@ -549,8 +548,8 @@ export function RegistrationForm150() {
                 <label className="block text-sm text-muted-foreground mb-2 font-inter">
                   Selecciona tu método de pago preferido
                 </label>
-                {/* Para 1 botón: grid-cols-1, Para 2 botones: grid-cols-1 md:grid-cols-2, Para 3+ botones: grid-cols-1 md:grid-cols-3 */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                {/* Para más botones del mismo tipo, duplica y cambia el onClick */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <button
                     type="button"
                     onClick={() => handlePaymentMethodClick('binance_pay')}
@@ -657,54 +656,28 @@ export function RegistrationForm150() {
                     </div>
                   </button>
                   
-                  {/* Botón adicional de ejemplo */}
+                  {/* EJEMPLO: Para agregar más botones Binance Pay, copia este bloque */}
+                  {/*
                   <button
                     type="button"
-                    onClick={() => handlePaymentMethodClick('transferencia')}
-                    className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
-                      formData.paymentMethod === 'transferencia' 
-                        ? 'ring-blue-500 bg-blue-500/10 border-blue-500 shadow-lg shadow-blue-500/25' 
-                        : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
-                    }`}
+                    onClick={() => handlePaymentMethodClick('binance_pay_2')}
+                    className="group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30"
                   >
-                    {formData.paymentMethod === 'transferencia' && (
-                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-transparent" />
-                    )}
                     <div className="relative flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${
-                        formData.paymentMethod === 'transferencia' 
-                          ? 'bg-blue-500/20' 
-                          : 'bg-white/10'
-                      }`}>
-                        <Hash className={`w-5 h-5 ${
-                          formData.paymentMethod === 'transferencia' 
-                            ? 'text-blue-400' 
-                            : 'text-muted-foreground'
-                        }`} />
+                      <div className="p-2 rounded-lg bg-white/10">
+                        <Hash className="w-5 h-5 text-muted-foreground" />
                       </div>
                       <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className={`text-sm font-medium font-inter ${
-                            formData.paymentMethod === 'transferencia' 
-                              ? 'text-white' 
-                              : 'text-foreground'
-                          }`}>
-                            Transferencia
-                          </span>
-                        </div>
+                        <span className="text-sm font-medium font-inter text-foreground">
+                          Binance Pay 2
+                        </span>
                         <p className="text-xs text-muted-foreground mt-0.5 font-inter">
-                          Banco tradicional
+                          Opción alternativa
                         </p>
                       </div>
-                      {formData.paymentMethod === 'transferencia' && (
-                        <div className="ml-auto">
-                          <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
-                            <div className="w-2 h-2 bg-white rounded-full" />
-                          </div>
-                        </div>
-                      )}
                     </div>
                   </button>
+                  */}
                 </div>
               </div>
 
