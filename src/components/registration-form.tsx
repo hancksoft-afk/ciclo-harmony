@@ -565,7 +565,7 @@ export function RegistrationForm() {
               )}
 
               {/* Nequi ID */}
-              {formData.paymentMethod === 'nequi_pay' && (
+              {isNequiEnabled && formData.paymentMethod === 'nequi_pay' && (
                 <div>
                   <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID / Número de Nequi</label>
                   <div className="relative">

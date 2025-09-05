@@ -703,7 +703,7 @@ export function RegistrationForm150() {
               )}
 
               {/* Nequi Phone */}
-              {formData.paymentMethod === 'nequi' && (
+              {isNequiEnabled && formData.paymentMethod === 'nequi' && (
                 <div>
                   <label className="block text-sm text-muted-foreground mb-1.5 font-inter">Número de teléfono Nequi</label>
                   <div className="relative">
