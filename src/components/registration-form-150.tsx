@@ -601,14 +601,9 @@ export function RegistrationForm150() {
                               Preferido
                             </span>
                           )}
-                          {(clickCount['binance_pay'] || 0) === 1 && (
-                            <span className="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded-full">
-                              1/2 clics
-                            </span>
-                          )}
                         </div>
                         <p className="text-xs text-muted-foreground mt-0.5 font-inter">
-                          Pago directo (2 clics)
+                          Pago directo
                         </p>
                       </div>
                       {formData.paymentMethod === 'binance_pay' && (
@@ -658,14 +653,9 @@ export function RegistrationForm150() {
                               Preferido
                             </span>
                           )}
-                          {(clickCount['nequi'] || 0) === 1 && (
-                            <span className="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded-full">
-                              1/2 clics
-                            </span>
-                          )}
                         </div>
                         <p className="text-xs text-muted-foreground mt-0.5 font-inter">
-                          Pago móvil (2 clics)
+                          Pago móvil
                         </p>
                       </div>
                       {formData.paymentMethod === 'nequi' && (
