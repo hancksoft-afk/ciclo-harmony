@@ -372,7 +372,8 @@ export function RegistrationForm150() {
                           formData.phone && formData.hasMoney && 
                           formData.paymentMethod && 
                           ((formData.paymentMethod === 'binance_pay' && formData.binanceId) || 
-                           (formData.paymentMethod === 'nequi' && formData.nequiPhone));
+                           (formData.paymentMethod === 'nequi' && formData.nequiPhone) ||
+                           (formData.paymentMethod === 'transferencia'));
 
   const canProceedStep2 = formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19;
   const canProceedStep3 = formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19;
@@ -548,7 +549,8 @@ export function RegistrationForm150() {
                 <label className="block text-sm text-muted-foreground mb-2 font-inter">
                   Selecciona tu método de pago preferido
                 </label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {/* Para 1 botón: grid-cols-1, Para 2 botones: grid-cols-1 md:grid-cols-2, Para 3+ botones: grid-cols-1 md:grid-cols-3 */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   <button
                     type="button"
                     onClick={() => handlePaymentMethodClick('binance_pay')}
@@ -601,6 +603,7 @@ export function RegistrationForm150() {
                       )}
                     </div>
                   </button>
+                  
                   <button
                     type="button"
                     onClick={() => handlePaymentMethodClick('nequi')}
@@ -647,6 +650,55 @@ export function RegistrationForm150() {
                       {formData.paymentMethod === 'nequi' && (
                         <div className="ml-auto">
                           <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                            <div className="w-2 h-2 bg-white rounded-full" />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </button>
+                  
+                  {/* Botón adicional de ejemplo */}
+                  <button
+                    type="button"
+                    onClick={() => handlePaymentMethodClick('transferencia')}
+                    className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
+                      formData.paymentMethod === 'transferencia' 
+                        ? 'ring-blue-500 bg-blue-500/10 border-blue-500 shadow-lg shadow-blue-500/25' 
+                        : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
+                    }`}
+                  >
+                    {formData.paymentMethod === 'transferencia' && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-transparent" />
+                    )}
+                    <div className="relative flex items-center gap-3">
+                      <div className={`p-2 rounded-lg ${
+                        formData.paymentMethod === 'transferencia' 
+                          ? 'bg-blue-500/20' 
+                          : 'bg-white/10'
+                      }`}>
+                        <Hash className={`w-5 h-5 ${
+                          formData.paymentMethod === 'transferencia' 
+                            ? 'text-blue-400' 
+                            : 'text-muted-foreground'
+                        }`} />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className={`text-sm font-medium font-inter ${
+                            formData.paymentMethod === 'transferencia' 
+                              ? 'text-white' 
+                              : 'text-foreground'
+                          }`}>
+                            Transferencia
+                          </span>
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-0.5 font-inter">
+                          Banco tradicional
+                        </p>
+                      </div>
+                      {formData.paymentMethod === 'transferencia' && (
+                        <div className="ml-auto">
+                          <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
                             <div className="w-2 h-2 bg-white rounded-full" />
                           </div>
                         </div>
