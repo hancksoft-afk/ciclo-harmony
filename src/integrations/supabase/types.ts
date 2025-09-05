@@ -77,6 +77,36 @@ export type Database = {
         }
         Relationships: []
       }
+      payment_preferences: {
+        Row: {
+          country: string
+          created_at: string
+          id: string
+          is_active: boolean
+          is_preferred: boolean
+          payment_method: string
+          updated_at: string
+        }
+        Insert: {
+          country: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          is_preferred?: boolean
+          payment_method: string
+          updated_at?: string
+        }
+        Update: {
+          country?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          is_preferred?: boolean
+          payment_method?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       qr_settings: {
         Row: {
           code_id: string

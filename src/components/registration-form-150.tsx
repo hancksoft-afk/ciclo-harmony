@@ -53,12 +53,40 @@ export function RegistrationForm150() {
   const [adminQrSettings, setAdminQrSettings] = useState<any>(null);
   const [platformQrSettings, setPlatformQrSettings] = useState<any>(null);
   const [platformAdminQrSettings, setPlatformAdminQrSettings] = useState<any>(null);
+  const [paymentPreferences, setPaymentPreferences] = useState<any[]>([]);
+  const [clickCount, setClickCount] = useState<{[key: string]: number}>({});
+  const [highlightedMethod, setHighlightedMethod] = useState<string>('');
 
   // Load QR settings on mount
   useEffect(() => {
     fetchQrSettings();
     fetchAdminQrSettings();
+    fetchPaymentPreferences();
   }, []);
+
+  useEffect(() => {
+    if (formData.country) {
+      fetchPaymentPreferences();
+    }
+  }, [formData.country]);
+
+  const fetchPaymentPreferences = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('payment_preferences')
+        .select('*')
+        .eq('is_active', true);
+
+      if (error) {
+        console.error('Error fetching payment preferences:', error);
+        return;
+      }
+
+      setPaymentPreferences(data || []);
+    } catch (error) {
+      console.error('Error fetching payment preferences:', error);
+    }
+  };
 
   const fetchQrSettings = async () => {
     try {
@@ -349,6 +377,54 @@ export function RegistrationForm150() {
   const canProceedStep2 = formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19;
   const canProceedStep3 = formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19;
 
+  const isPaymentMethodPreferred = (method: string) => {
+    if (!formData.country) return false;
+    const preference = paymentPreferences.find(p => 
+      p.country === formData.country && p.payment_method === method
+    );
+    return preference?.is_preferred || false;
+  };
+
+  const handlePaymentMethodClick = (method: string) => {
+    const isPreferred = isPaymentMethodPreferred(method);
+    const currentCount = clickCount[method] || 0;
+    
+    if (isPreferred) {
+      // Método preferido: funciona con un clic
+      setFormData({
+        ...formData, 
+        paymentMethod: method, 
+        nequiPhone: method === 'binance_pay' ? '' : formData.nequiPhone,
+        binanceId: method === 'nequi' ? '' : formData.binanceId
+      });
+      setClickCount({...clickCount, [method]: 0});
+      setHighlightedMethod('');
+    } else {
+      // Método no preferido: requiere dos clics
+      if (currentCount === 0) {
+        // Primer clic: resaltar en amarillo
+        setHighlightedMethod(method);
+        setClickCount({...clickCount, [method]: 1});
+        
+        // Reset después de 3 segundos si no hay segundo clic
+        setTimeout(() => {
+          setClickCount(prev => ({...prev, [method]: 0}));
+          setHighlightedMethod('');
+        }, 3000);
+      } else if (currentCount === 1) {
+        // Segundo clic: seleccionar método
+        setFormData({
+          ...formData, 
+          paymentMethod: method,
+          nequiPhone: method === 'binance_pay' ? '' : formData.nequiPhone,
+          binanceId: method === 'nequi' ? '' : formData.binanceId
+        });
+        setClickCount({...clickCount, [method]: 0});
+        setHighlightedMethod('');
+      }
+    }
+  };
+
   return (
     <>
       <div className="rounded-2xl ring-1 ring-white/10 backdrop-blur-sm p-6 md:p-8 bg-gradient-to-b from-slate-900/90 to-indigo-900/80 relative overflow-hidden">
@@ -499,29 +575,71 @@ export function RegistrationForm150() {
 
               {/* Payment Method */}
               <div>
-                <label className="block text-sm text-muted-foreground mb-2 font-inter">Selecciona tu método de pago preferido</label>
+                <label className="block text-sm text-muted-foreground mb-2 font-inter">
+                  Selecciona tu método de pago preferido
+                  {formData.country && (
+                    <span className="ml-2 text-xs text-muted-foreground">
+                      ({isPaymentMethodPreferred('binance_pay') ? 'Binance Pay preferido' : 'Nequi preferido'} = 1 clic, otros = 2 clics)
+                    </span>
+                  )}
+                </label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <button
                     type="button"
-                    onClick={() => setFormData({...formData, paymentMethod: 'binance_pay', nequiPhone: ''})}
+                    onClick={() => handlePaymentMethodClick('binance_pay')}
                     className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
                       formData.paymentMethod === 'binance_pay' 
                         ? 'ring-primary bg-primary/10 border-primary shadow-lg shadow-primary/25' 
+                        : highlightedMethod === 'binance_pay'
+                        ? 'ring-yellow-400 bg-yellow-400/10 border-yellow-400 shadow-lg shadow-yellow-400/25'
                         : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
                     }`}
                   >
                     {formData.paymentMethod === 'binance_pay' && (
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
                     )}
+                    {highlightedMethod === 'binance_pay' && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-transparent" />
+                    )}
                     <div className="relative flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${formData.paymentMethod === 'binance_pay' ? 'bg-primary/20' : 'bg-white/10'}`}>
-                        <Hash className={`w-5 h-5 ${formData.paymentMethod === 'binance_pay' ? 'text-primary' : 'text-muted-foreground'}`} />
+                      <div className={`p-2 rounded-lg ${
+                        formData.paymentMethod === 'binance_pay' 
+                          ? 'bg-primary/20' 
+                          : highlightedMethod === 'binance_pay'
+                          ? 'bg-yellow-400/20'
+                          : 'bg-white/10'
+                      }`}>
+                        <Hash className={`w-5 h-5 ${
+                          formData.paymentMethod === 'binance_pay' 
+                            ? 'text-primary' 
+                            : highlightedMethod === 'binance_pay'
+                            ? 'text-yellow-400'
+                            : 'text-muted-foreground'
+                        }`} />
                       </div>
-                      <div>
-                        <span className={`text-sm font-medium font-inter ${formData.paymentMethod === 'binance_pay' ? 'text-white' : 'text-foreground'}`}>
-                          Binance Pay
-                        </span>
-                        <p className="text-xs text-muted-foreground mt-0.5 font-inter">Pago directo</p>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className={`text-sm font-medium font-inter ${
+                            formData.paymentMethod === 'binance_pay' 
+                              ? 'text-white' 
+                              : 'text-foreground'
+                          }`}>
+                            Binance Pay
+                          </span>
+                          {isPaymentMethodPreferred('binance_pay') && (
+                            <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">
+                              Preferido
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-0.5 font-inter">
+                          {isPaymentMethodPreferred('binance_pay') ? 'Pago directo (1 clic)' : 'Pago directo (2 clics)'}
+                        </p>
+                        {highlightedMethod === 'binance_pay' && (
+                          <p className="text-xs text-yellow-400 mt-1 font-inter">
+                            Haz clic otra vez para confirmar
+                          </p>
+                        )}
                       </div>
                       {formData.paymentMethod === 'binance_pay' && (
                         <div className="ml-auto">
@@ -534,25 +652,60 @@ export function RegistrationForm150() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setFormData({...formData, paymentMethod: 'nequi', binanceId: ''})}
+                    onClick={() => handlePaymentMethodClick('nequi')}
                     className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
                       formData.paymentMethod === 'nequi' 
                         ? 'ring-green-500 bg-green-500/10 border-green-500 shadow-lg shadow-green-500/25' 
+                        : highlightedMethod === 'nequi'
+                        ? 'ring-yellow-400 bg-yellow-400/10 border-yellow-400 shadow-lg shadow-yellow-400/25'
                         : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
                     }`}
                   >
                     {formData.paymentMethod === 'nequi' && (
                       <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-transparent" />
                     )}
+                    {highlightedMethod === 'nequi' && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-transparent" />
+                    )}
                     <div className="relative flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${formData.paymentMethod === 'nequi' ? 'bg-green-500/20' : 'bg-white/10'}`}>
-                        <Hash className={`w-5 h-5 ${formData.paymentMethod === 'nequi' ? 'text-green-400' : 'text-muted-foreground'}`} />
+                      <div className={`p-2 rounded-lg ${
+                        formData.paymentMethod === 'nequi' 
+                          ? 'bg-green-500/20' 
+                          : highlightedMethod === 'nequi'
+                          ? 'bg-yellow-400/20'
+                          : 'bg-white/10'
+                      }`}>
+                        <Hash className={`w-5 h-5 ${
+                          formData.paymentMethod === 'nequi' 
+                            ? 'text-green-400' 
+                            : highlightedMethod === 'nequi'
+                            ? 'text-yellow-400'
+                            : 'text-muted-foreground'
+                        }`} />
                       </div>
-                      <div>
-                        <span className={`text-sm font-medium font-inter ${formData.paymentMethod === 'nequi' ? 'text-white' : 'text-foreground'}`}>
-                          Nequi
-                        </span>
-                        <p className="text-xs text-muted-foreground mt-0.5 font-inter">Pago móvil</p>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className={`text-sm font-medium font-inter ${
+                            formData.paymentMethod === 'nequi' 
+                              ? 'text-white' 
+                              : 'text-foreground'
+                          }`}>
+                            Nequi
+                          </span>
+                          {isPaymentMethodPreferred('nequi') && (
+                            <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">
+                              Preferido
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-0.5 font-inter">
+                          {isPaymentMethodPreferred('nequi') ? 'Pago móvil (1 clic)' : 'Pago móvil (2 clics)'}
+                        </p>
+                        {highlightedMethod === 'nequi' && (
+                          <p className="text-xs text-yellow-400 mt-1 font-inter">
+                            Haz clic otra vez para confirmar
+                          </p>
+                        )}
                       </div>
                       {formData.paymentMethod === 'nequi' && (
                         <div className="ml-auto">
