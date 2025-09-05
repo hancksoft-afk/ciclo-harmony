@@ -53,6 +53,7 @@ export function RegistrationForm150() {
   const [adminQrSettings, setAdminQrSettings] = useState<any>(null);
   const [platformQrSettings, setPlatformQrSettings] = useState<any>(null);
   const [platformAdminQrSettings, setPlatformAdminQrSettings] = useState<any>(null);
+  const [paymentClickCount, setPaymentClickCount] = useState<{binance: number, nequi: number}>({binance: 0, nequi: 0});
 
   // Load QR settings on mount
   useEffect(() => {
@@ -340,6 +341,34 @@ export function RegistrationForm150() {
     setShowTicketModal(false);
   };
 
+  const handlePaymentMethodClick = (method: 'binance_pay' | 'nequi') => {
+    if (method === 'binance_pay') {
+      const newCount = paymentClickCount.binance + 1;
+      if (newCount === 1) {
+        setPaymentClickCount({...paymentClickCount, binance: newCount});
+        // Reset after 2 seconds if no second click
+        setTimeout(() => {
+          setPaymentClickCount(prev => ({...prev, binance: 0}));
+        }, 2000);
+      } else if (newCount === 2) {
+        setFormData({...formData, paymentMethod: 'binance_pay', nequiPhone: ''});
+        setPaymentClickCount({binance: 0, nequi: 0});
+      }
+    } else if (method === 'nequi') {
+      const newCount = paymentClickCount.nequi + 1;
+      if (newCount === 1) {
+        setPaymentClickCount({...paymentClickCount, nequi: newCount});
+        // Reset after 2 seconds if no second click
+        setTimeout(() => {
+          setPaymentClickCount(prev => ({...prev, nequi: 0}));
+        }, 2000);
+      } else if (newCount === 2) {
+        setFormData({...formData, paymentMethod: 'nequi', binanceId: ''});
+        setPaymentClickCount({binance: 0, nequi: 0});
+      }
+    }
+  };
+
   const canProceedStep1 = formData.name && formData.invitee && formData.country && 
                           formData.phone && formData.hasMoney && 
                           formData.paymentMethod && 
@@ -503,25 +532,44 @@ export function RegistrationForm150() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <button
                     type="button"
-                    onClick={() => setFormData({...formData, paymentMethod: 'binance_pay', nequiPhone: ''})}
+                    onClick={() => handlePaymentMethodClick('binance_pay')}
                     className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
                       formData.paymentMethod === 'binance_pay' 
                         ? 'ring-primary bg-primary/10 border-primary shadow-lg shadow-primary/25' 
+                        : paymentClickCount.binance === 1
+                        ? 'ring-yellow-500/60 bg-yellow-500/10 border-yellow-500/60 shadow-lg shadow-yellow-500/20'
                         : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
                     }`}
                   >
                     {formData.paymentMethod === 'binance_pay' && (
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
                     )}
+                    {paymentClickCount.binance === 1 && formData.paymentMethod !== 'binance_pay' && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-transparent" />
+                    )}
                     <div className="relative flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${formData.paymentMethod === 'binance_pay' ? 'bg-primary/20' : 'bg-white/10'}`}>
-                        <Hash className={`w-5 h-5 ${formData.paymentMethod === 'binance_pay' ? 'text-primary' : 'text-muted-foreground'}`} />
+                      <div className={`p-2 rounded-lg ${
+                        formData.paymentMethod === 'binance_pay' 
+                          ? 'bg-primary/20' 
+                          : paymentClickCount.binance === 1 
+                          ? 'bg-yellow-500/20' 
+                          : 'bg-white/10'
+                      }`}>
+                        <Hash className={`w-5 h-5 ${
+                          formData.paymentMethod === 'binance_pay' 
+                            ? 'text-primary' 
+                            : paymentClickCount.binance === 1 
+                            ? 'text-yellow-400' 
+                            : 'text-muted-foreground'
+                        }`} />
                       </div>
                       <div>
                         <span className={`text-sm font-medium font-inter ${formData.paymentMethod === 'binance_pay' ? 'text-white' : 'text-foreground'}`}>
-                          Binance Pay
+                          Binance Pay {paymentClickCount.binance === 1 ? '(Haz clic de nuevo)' : ''}
                         </span>
-                        <p className="text-xs text-muted-foreground mt-0.5 font-inter">Pago directo</p>
+                        <p className="text-xs text-muted-foreground mt-0.5 font-inter">
+                          {paymentClickCount.binance === 1 ? 'Confirmar selección' : 'Pago directo'}
+                        </p>
                       </div>
                       {formData.paymentMethod === 'binance_pay' && (
                         <div className="ml-auto">
@@ -534,25 +582,44 @@ export function RegistrationForm150() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setFormData({...formData, paymentMethod: 'nequi', binanceId: ''})}
+                    onClick={() => handlePaymentMethodClick('nequi')}
                     className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
                       formData.paymentMethod === 'nequi' 
                         ? 'ring-green-500 bg-green-500/10 border-green-500 shadow-lg shadow-green-500/25' 
+                        : paymentClickCount.nequi === 1
+                        ? 'ring-yellow-500/60 bg-yellow-500/10 border-yellow-500/60 shadow-lg shadow-yellow-500/20'
                         : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
                     }`}
                   >
                     {formData.paymentMethod === 'nequi' && (
                       <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-transparent" />
                     )}
+                    {paymentClickCount.nequi === 1 && formData.paymentMethod !== 'nequi' && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-transparent" />
+                    )}
                     <div className="relative flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${formData.paymentMethod === 'nequi' ? 'bg-green-500/20' : 'bg-white/10'}`}>
-                        <Hash className={`w-5 h-5 ${formData.paymentMethod === 'nequi' ? 'text-green-400' : 'text-muted-foreground'}`} />
+                      <div className={`p-2 rounded-lg ${
+                        formData.paymentMethod === 'nequi' 
+                          ? 'bg-green-500/20' 
+                          : paymentClickCount.nequi === 1 
+                          ? 'bg-yellow-500/20' 
+                          : 'bg-white/10'
+                      }`}>
+                        <Hash className={`w-5 h-5 ${
+                          formData.paymentMethod === 'nequi' 
+                            ? 'text-green-400' 
+                            : paymentClickCount.nequi === 1 
+                            ? 'text-yellow-400' 
+                            : 'text-muted-foreground'
+                        }`} />
                       </div>
                       <div>
                         <span className={`text-sm font-medium font-inter ${formData.paymentMethod === 'nequi' ? 'text-white' : 'text-foreground'}`}>
-                          Nequi
+                          Nequi {paymentClickCount.nequi === 1 ? '(Haz clic de nuevo)' : ''}
                         </span>
-                        <p className="text-xs text-muted-foreground mt-0.5 font-inter">Pago móvil</p>
+                        <p className="text-xs text-muted-foreground mt-0.5 font-inter">
+                          {paymentClickCount.nequi === 1 ? 'Confirmar selección' : 'Pago móvil'}
+                        </p>
                       </div>
                       {formData.paymentMethod === 'nequi' && (
                         <div className="ml-auto">
