@@ -109,10 +109,8 @@ export function AdminSettings() {
     try {
       const { error } = await supabase
         .from('system_settings')
-        .upsert({
-          setting_key: settingKey,
-          setting_value: newValue
-        });
+        .update({ setting_value: newValue })
+        .eq('setting_key', settingKey);
 
       if (error) throw error;
       
