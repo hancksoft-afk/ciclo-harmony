@@ -386,27 +386,13 @@ export function RegistrationForm150() {
   };
 
   const handlePaymentMethodClick = (method: string) => {
-    // Todos los métodos requieren dos clics
-    const currentCount = clickCount[method] || 0;
-    
-    if (currentCount === 0) {
-      // Primer clic: solo incrementar contador
-      setClickCount({...clickCount, [method]: 1});
-      
-      // Reset después de 3 segundos si no hay segundo clic
-      setTimeout(() => {
-        setClickCount(prev => ({...prev, [method]: 0}));
-      }, 3000);
-    } else if (currentCount === 1) {
-      // Segundo clic: seleccionar método
-      setFormData({
-        ...formData, 
-        paymentMethod: method,
-        nequiPhone: method === 'binance_pay' ? '' : formData.nequiPhone,
-        binanceId: method === 'nequi' ? '' : formData.binanceId
-      });
-      setClickCount({...clickCount, [method]: 0});
-    }
+    // Todos los métodos funcionan con un clic
+    setFormData({
+      ...formData, 
+      paymentMethod: method, 
+      nequiPhone: method === 'binance_pay' ? '' : formData.nequiPhone,
+      binanceId: method === 'nequi' ? '' : formData.binanceId
+    });
   };
 
   return (
@@ -560,7 +546,7 @@ export function RegistrationForm150() {
               {/* Payment Method */}
               <div>
                 <label className="block text-sm text-muted-foreground mb-2 font-inter">
-                  Selecciona tu método de pago preferido (todos requieren 2 clics)
+                  Selecciona tu método de pago preferido
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <button
