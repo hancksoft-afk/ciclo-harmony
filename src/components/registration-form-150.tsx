@@ -386,7 +386,7 @@ export function RegistrationForm150() {
   };
 
   const handlePaymentMethodClick = (method: string) => {
-    // Todos los métodos funcionan con un clic
+    // Un solo clic selecciona directamente el método
     setFormData({
       ...formData, 
       paymentMethod: method, 
