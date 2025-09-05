@@ -384,13 +384,13 @@ export function RegistrationForm150() {
   };
 
   const handlePaymentMethodClick = (method: string) => {
-    // Un solo clic selecciona directamente el método
-    setFormData({
-      ...formData, 
+    // Forzar actualización inmediata del estado con callback
+    setFormData(prevFormData => ({
+      ...prevFormData, 
       paymentMethod: method, 
-      nequiPhone: method === 'binance_pay' ? '' : formData.nequiPhone,
-      binanceId: method === 'nequi' ? '' : formData.binanceId
-    });
+      nequiPhone: method === 'binance_pay' ? '' : prevFormData.nequiPhone,
+      binanceId: method === 'nequi' ? '' : prevFormData.binanceId
+    }));
   };
 
   return (
