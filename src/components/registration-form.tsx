@@ -52,6 +52,7 @@ export function RegistrationForm() {
   const [adminNequiQrSettings, setAdminNequiQrSettings] = useState<any>(null);
   const [showPlatformModal, setShowPlatformModal] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState('');
+  const [isNequiEnabled, setIsNequiEnabled] = useState(true);
 
   // Load QR settings on mount
   useEffect(() => {
@@ -59,7 +60,27 @@ export function RegistrationForm() {
     fetchAdminQrSettings();
     fetchNequiQrSettings();
     fetchAdminNequiQrSettings();
+    fetchNequiSetting();
   }, []);
+
+  const fetchNequiSetting = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('setting_value')
+        .eq('setting_key', 'nequi_25_enabled')
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error fetching nequi setting:', error);
+        return;
+      }
+
+      setIsNequiEnabled(data?.setting_value ?? true);
+    } catch (error) {
+      console.error('Error fetching nequi setting:', error);
+    }
+  };
 
   const fetchQrSettings = async () => {
     try {
@@ -485,7 +506,7 @@ export function RegistrationForm() {
               {/* Payment Platform Selection */}
               <div>
                 <label className="block text-sm text-muted-foreground mb-2 font-inter">Selecciona tu plataforma de pago</label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className={`grid gap-3 ${isNequiEnabled ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
                   <button
                     type="button"
                     onClick={() => setFormData(prevFormData => ({...prevFormData, paymentMethod: 'binance_pay'}))}
@@ -500,19 +521,21 @@ export function RegistrationForm() {
                     <p className="text-xs text-muted-foreground mt-1 font-inter">Pago con Binance Pay</p>
                   </button>
                   
-                  <button
-                    type="button"
-                    onClick={() => setFormData(prevFormData => ({...prevFormData, paymentMethod: 'nequi_pay'}))}
-                    className={`group rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-3 text-left ${
-                      formData.paymentMethod === 'nequi_pay' ? 'ring-primary/50 bg-primary/5' : ''
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Hash className="w-4 h-4 text-green-500" />
-                      <span className="text-sm text-foreground font-inter">Nequi</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-1 font-inter">Pago con Nequi</p>
-                  </button>
+                  {isNequiEnabled && (
+                    <button
+                      type="button"
+                      onClick={() => setFormData(prevFormData => ({...prevFormData, paymentMethod: 'nequi_pay'}))}
+                      className={`group rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-3 text-left ${
+                        formData.paymentMethod === 'nequi_pay' ? 'ring-primary/50 bg-primary/5' : ''
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Hash className="w-4 h-4 text-green-500" />
+                        <span className="text-sm text-foreground font-inter">Nequi</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1 font-inter">Pago con Nequi</p>
+                    </button>
+                  )}
                 </div>
               </div>
 
@@ -1014,18 +1037,20 @@ export function RegistrationForm() {
                     </div>
                   </button>
                   
-                  <button
-                    onClick={() => handlePlatformSelect('Nequi')}
-                    className="w-full group rounded-lg ring-1 ring-green-500/50 bg-green-500/5 hover:bg-green-500/10 transition p-4 text-left"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Hash className="w-5 h-5 text-green-500" />
-                      <div>
-                        <span className="text-base font-medium text-foreground font-inter">Nequi</span>
-                        <p className="text-sm text-muted-foreground mt-1 font-inter">Pago con Nequi</p>
+                  {isNequiEnabled && (
+                    <button
+                      onClick={() => handlePlatformSelect('Nequi')}
+                      className="w-full group rounded-lg ring-1 ring-green-500/50 bg-green-500/5 hover:bg-green-500/10 transition p-4 text-left"
+                    >
+                      <div className="flex items-center gap-3">
+                        <Hash className="w-5 h-5 text-green-500" />
+                        <div>
+                          <span className="text-base font-medium text-foreground font-inter">Nequi</span>
+                          <p className="text-sm text-muted-foreground mt-1 font-inter">Pago con Nequi</p>
+                        </div>
                       </div>
-                    </div>
-                  </button>
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

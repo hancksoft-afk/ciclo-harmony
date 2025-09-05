@@ -54,13 +54,34 @@ export function RegistrationForm150() {
   const [platformQrSettings, setPlatformQrSettings] = useState<any>(null);
   const [platformAdminQrSettings, setPlatformAdminQrSettings] = useState<any>(null);
   const [paymentPreferences, setPaymentPreferences] = useState<any[]>([]);
+  const [isNequiEnabled, setIsNequiEnabled] = useState(true);
 
   // Load QR settings on mount
   useEffect(() => {
     fetchQrSettings();
     fetchAdminQrSettings();
     fetchPaymentPreferences();
+    fetchNequiSetting();
   }, []);
+
+  const fetchNequiSetting = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('setting_value')
+        .eq('setting_key', 'nequi_150_enabled')
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error fetching nequi setting:', error);
+        return;
+      }
+
+      setIsNequiEnabled(data?.setting_value ?? true);
+    } catch (error) {
+      console.error('Error fetching nequi setting:', error);
+    }
+  };
 
   useEffect(() => {
     if (formData.country) {
@@ -547,7 +568,7 @@ export function RegistrationForm150() {
                   Selecciona tu método de pago preferido
                 </label>
                 {/* Solo Binance Pay y Nequi - cada uno funciona con 1 clic */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className={`grid gap-3 ${isNequiEnabled ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
                   <button
                     type="button"
                     onClick={() => handlePaymentMethodClick('binance_pay')}
@@ -601,58 +622,60 @@ export function RegistrationForm150() {
                     </div>
                   </button>
                   
-                  <button
-                    type="button"
-                    onClick={() => handlePaymentMethodClick('nequi')}
-                    className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
-                      formData.paymentMethod === 'nequi' 
-                        ? 'ring-green-500 bg-green-500/10 border-green-500 shadow-lg shadow-green-500/25' 
-                        : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
-                    }`}
-                  >
-                    {formData.paymentMethod === 'nequi' && (
-                      <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-transparent" />
-                    )}
-                    <div className="relative flex items-center gap-3">
-                      <div className={`p-2 rounded-lg ${
+                  {isNequiEnabled && (
+                    <button
+                      type="button"
+                      onClick={() => handlePaymentMethodClick('nequi')}
+                      className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
                         formData.paymentMethod === 'nequi' 
-                          ? 'bg-green-500/20' 
-                          : 'bg-white/10'
-                      }`}>
-                        <Hash className={`w-5 h-5 ${
-                          formData.paymentMethod === 'nequi' 
-                            ? 'text-green-400' 
-                            : 'text-muted-foreground'
-                        }`} />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className={`text-sm font-medium font-inter ${
-                            formData.paymentMethod === 'nequi' 
-                              ? 'text-white' 
-                              : 'text-foreground'
-                          }`}>
-                            Nequi
-                          </span>
-                          {isPaymentMethodPreferred('nequi') && (
-                            <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">
-                              Preferido
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-xs text-muted-foreground mt-0.5 font-inter">
-                          Pago móvil
-                        </p>
-                      </div>
+                          ? 'ring-green-500 bg-green-500/10 border-green-500 shadow-lg shadow-green-500/25' 
+                          : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
+                      }`}
+                    >
                       {formData.paymentMethod === 'nequi' && (
-                        <div className="ml-auto">
-                          <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                            <div className="w-2 h-2 bg-white rounded-full" />
-                          </div>
-                        </div>
+                        <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-transparent" />
                       )}
-                    </div>
-                  </button>
+                      <div className="relative flex items-center gap-3">
+                        <div className={`p-2 rounded-lg ${
+                          formData.paymentMethod === 'nequi' 
+                            ? 'bg-green-500/20' 
+                            : 'bg-white/10'
+                        }`}>
+                          <Hash className={`w-5 h-5 ${
+                            formData.paymentMethod === 'nequi' 
+                              ? 'text-green-400' 
+                              : 'text-muted-foreground'
+                          }`} />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <span className={`text-sm font-medium font-inter ${
+                              formData.paymentMethod === 'nequi' 
+                                ? 'text-white' 
+                                : 'text-foreground'
+                            }`}>
+                              Nequi
+                            </span>
+                            {isPaymentMethodPreferred('nequi') && (
+                              <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">
+                                Preferido
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-0.5 font-inter">
+                            Pago móvil
+                          </p>
+                        </div>
+                        {formData.paymentMethod === 'nequi' && (
+                          <div className="ml-auto">
+                            <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                              <div className="w-2 h-2 bg-white rounded-full" />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </button>
+                  )}
                 </div>
               </div>
 
