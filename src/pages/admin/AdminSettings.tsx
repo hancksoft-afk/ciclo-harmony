@@ -517,7 +517,7 @@ export function AdminSettings() {
                        <input
                          name="code_id"
                          type="text"
-                         value={inputValues[config.type]?.code_id || setting?.code_id || ''}
+                         value={inputValues[config.type]?.code_id ?? ''}
                          onChange={(e) => setInputValues(prev => ({
                            ...prev,
                            [config.type]: {

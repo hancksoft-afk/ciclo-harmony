@@ -416,7 +416,8 @@ export function RegistrationForm150() {
                           formData.phone && formData.hasMoney && 
                           formData.paymentMethod && 
                           ((formData.paymentMethod === 'binance_pay' && formData.binanceId) || 
-                           (formData.paymentMethod === 'nequi' && formData.nequiPhone));
+                           (formData.paymentMethod === 'nequi' && formData.nequiPhone) ||
+                           (formData.paymentMethod === 'binance_nequi' && formData.binanceId && formData.nequiPhone));
 
   const canProceedStep2 = formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19;
   const canProceedStep3 = formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19;
