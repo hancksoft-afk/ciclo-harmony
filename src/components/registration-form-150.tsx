@@ -54,8 +54,6 @@ export function RegistrationForm150() {
   const [platformQrSettings, setPlatformQrSettings] = useState<any>(null);
   const [platformAdminQrSettings, setPlatformAdminQrSettings] = useState<any>(null);
   const [paymentPreferences, setPaymentPreferences] = useState<any[]>([]);
-  const [clickCount, setClickCount] = useState<{[key: string]: number}>({});
-  const [highlightedMethod, setHighlightedMethod] = useState<string>('');
 
   // Load QR settings on mount
   useEffect(() => {
