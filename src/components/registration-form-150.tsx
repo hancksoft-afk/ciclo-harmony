@@ -284,11 +284,15 @@ export function RegistrationForm150() {
     }
     
     
-    if (formData.paymentMethod === 'binance_pay' && (!formData.binanceId || !/^\d{9,10}$/.test(formData.binanceId))) {
+    // Validate Binance ID for binance_pay and binance_nequi
+    if ((formData.paymentMethod === 'binance_pay' || formData.paymentMethod === 'binance_nequi') && 
+        (!formData.binanceId || !/^\d{9,10}$/.test(formData.binanceId))) {
       newErrors.binanceId = true;
     }
     
-    if (formData.paymentMethod === 'nequi' && (!formData.nequiPhone || !/^\d{10}$/.test(formData.nequiPhone))) {
+    // Validate Nequi phone for nequi and binance_nequi
+    if ((formData.paymentMethod === 'nequi' || formData.paymentMethod === 'binance_nequi') && 
+        (!formData.nequiPhone || !/^\d{10}$/.test(formData.nequiPhone))) {
       newErrors.nequiPhone = true;
     }
 
@@ -624,11 +628,6 @@ export function RegistrationForm150() {
                           }`}>
                             Binance Pay
                           </span>
-                          {isPaymentMethodPreferred('binance_pay') && (
-                            <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">
-                              Preferido
-                            </span>
-                          )}
                         </div>
                         <p className="text-xs text-muted-foreground mt-0.5 font-inter">
                           Pago directo
@@ -730,11 +729,6 @@ export function RegistrationForm150() {
                             }`}>
                               Nequi
                             </span>
-                            {isPaymentMethodPreferred('nequi') && (
-                              <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">
-                                Preferido
-                              </span>
-                            )}
                           </div>
                           <p className="text-xs text-muted-foreground mt-0.5 font-inter">
                             Pago móvil

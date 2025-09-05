@@ -682,6 +682,7 @@ export function AdminSettings() {
               <Switch
                 checked={systemSettings.binance_enabled ?? true}
                 onCheckedChange={(checked) => handleToggleSystem('binance_enabled', checked)}
+                className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
               />
             </div>
             
@@ -694,6 +695,7 @@ export function AdminSettings() {
               <Switch
                 checked={systemSettings.nequi_25_enabled ?? true}
                 onCheckedChange={(checked) => handleToggleSystem('nequi_25_enabled', checked)}
+                className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
               />
             </div>
           </div>
@@ -766,6 +768,7 @@ export function AdminSettings() {
               <Switch
                 checked={systemSettings.binance_enabled ?? true}
                 onCheckedChange={(checked) => handleToggleSystem('binance_enabled', checked)}
+                className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
               />
             </div>
             
@@ -778,6 +781,7 @@ export function AdminSettings() {
               <Switch
                 checked={systemSettings.nequi_150_enabled ?? true}
                 onCheckedChange={(checked) => handleToggleSystem('nequi_150_enabled', checked)}
+                className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
               />
             </div>
           </div>
