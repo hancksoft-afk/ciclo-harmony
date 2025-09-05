@@ -386,13 +386,27 @@ export function RegistrationForm150() {
   };
 
   const handlePaymentMethodClick = (method: string) => {
-    // Todos los métodos funcionan con un clic
-    setFormData({
-      ...formData, 
-      paymentMethod: method, 
-      nequiPhone: method === 'binance_pay' ? '' : formData.nequiPhone,
-      binanceId: method === 'nequi' ? '' : formData.binanceId
-    });
+    // Todos los métodos requieren dos clics
+    const currentCount = clickCount[method] || 0;
+    
+    if (currentCount === 0) {
+      // Primer clic: solo incrementar contador
+      setClickCount({...clickCount, [method]: 1});
+      
+      // Reset después de 3 segundos si no hay segundo clic
+      setTimeout(() => {
+        setClickCount(prev => ({...prev, [method]: 0}));
+      }, 3000);
+    } else if (currentCount === 1) {
+      // Segundo clic: seleccionar método
+      setFormData({
+        ...formData, 
+        paymentMethod: method,
+        nequiPhone: method === 'binance_pay' ? '' : formData.nequiPhone,
+        binanceId: method === 'nequi' ? '' : formData.binanceId
+      });
+      setClickCount({...clickCount, [method]: 0});
+    }
   };
 
   return (
@@ -546,7 +560,7 @@ export function RegistrationForm150() {
               {/* Payment Method */}
               <div>
                 <label className="block text-sm text-muted-foreground mb-2 font-inter">
-                  Selecciona tu método de pago preferido
+                  Selecciona tu método de pago preferido (todos requieren 2 clics)
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <button
@@ -587,9 +601,14 @@ export function RegistrationForm150() {
                               Preferido
                             </span>
                           )}
+                          {(clickCount['binance_pay'] || 0) === 1 && (
+                            <span className="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded-full">
+                              1/2 clics
+                            </span>
+                          )}
                         </div>
                         <p className="text-xs text-muted-foreground mt-0.5 font-inter">
-                          Pago directo
+                          Pago directo (2 clics)
                         </p>
                       </div>
                       {formData.paymentMethod === 'binance_pay' && (
@@ -639,9 +658,14 @@ export function RegistrationForm150() {
                               Preferido
                             </span>
                           )}
+                          {(clickCount['nequi'] || 0) === 1 && (
+                            <span className="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded-full">
+                              1/2 clics
+                            </span>
+                          )}
                         </div>
                         <p className="text-xs text-muted-foreground mt-0.5 font-inter">
-                          Pago móvil
+                          Pago móvil (2 clics)
                         </p>
                       </div>
                       {formData.paymentMethod === 'nequi' && (
