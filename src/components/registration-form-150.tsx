@@ -651,22 +651,22 @@ export function RegistrationForm150() {
                       onClick={() => handlePaymentMethodClick('binance_nequi')}
                       className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
                         formData.paymentMethod === 'binance_nequi' 
-                          ? 'ring-green-500 bg-green-500/10 border-green-500 shadow-lg shadow-green-500/25' 
+                          ? 'ring-purple-500 bg-purple-500/10 border-purple-500 shadow-lg shadow-purple-500/25' 
                           : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
                       }`}
                     >
                       {formData.paymentMethod === 'binance_nequi' && (
-                        <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-transparent" />
                       )}
                       <div className="relative flex items-center gap-3">
                         <div className={`p-2 rounded-lg ${
                           formData.paymentMethod === 'binance_nequi' 
-                            ? 'bg-green-500/20' 
+                            ? 'bg-purple-500/20' 
                             : 'bg-white/10'
                         }`}>
                           <Hash className={`w-5 h-5 ${
                             formData.paymentMethod === 'binance_nequi' 
-                              ? 'text-green-400' 
+                              ? 'text-purple-400' 
                               : 'text-muted-foreground'
                           }`} />
                         </div>
@@ -686,7 +686,7 @@ export function RegistrationForm150() {
                         </div>
                         {formData.paymentMethod === 'binance_nequi' && (
                           <div className="ml-auto">
-                            <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                            <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
                               <div className="w-2 h-2 bg-white rounded-full" />
                             </div>
                           </div>
