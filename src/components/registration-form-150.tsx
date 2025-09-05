@@ -398,19 +398,16 @@ export function RegistrationForm150() {
         binanceId: method === 'nequi' ? '' : formData.binanceId
       });
       setClickCount({...clickCount, [method]: 0});
-      setHighlightedMethod('');
     } else {
-      // Método no preferido: requiere dos clics
+      // Método no preferido: requiere dos clics directos
       if (currentCount === 0) {
-        // Primer clic: resaltar en amarillo
-        setHighlightedMethod(method);
+        // Primer clic: solo incrementar contador
         setClickCount({...clickCount, [method]: 1});
         
-        // Reset después de 3 segundos si no hay segundo clic
+        // Reset después de 2 segundos si no hay segundo clic
         setTimeout(() => {
           setClickCount(prev => ({...prev, [method]: 0}));
-          setHighlightedMethod('');
-        }, 3000);
+        }, 2000);
       } else if (currentCount === 1) {
         // Segundo clic: seleccionar método
         setFormData({
@@ -420,7 +417,6 @@ export function RegistrationForm150() {
           binanceId: method === 'nequi' ? '' : formData.binanceId
         });
         setClickCount({...clickCount, [method]: 0});
-        setHighlightedMethod('');
       }
     }
   };
@@ -590,30 +586,21 @@ export function RegistrationForm150() {
                     className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
                       formData.paymentMethod === 'binance_pay' 
                         ? 'ring-primary bg-primary/10 border-primary shadow-lg shadow-primary/25' 
-                        : highlightedMethod === 'binance_pay'
-                        ? 'ring-yellow-400 bg-yellow-400/10 border-yellow-400 shadow-lg shadow-yellow-400/25'
                         : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
                     }`}
                   >
                     {formData.paymentMethod === 'binance_pay' && (
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
                     )}
-                    {highlightedMethod === 'binance_pay' && (
-                      <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-transparent" />
-                    )}
                     <div className="relative flex items-center gap-3">
                       <div className={`p-2 rounded-lg ${
                         formData.paymentMethod === 'binance_pay' 
                           ? 'bg-primary/20' 
-                          : highlightedMethod === 'binance_pay'
-                          ? 'bg-yellow-400/20'
                           : 'bg-white/10'
                       }`}>
                         <Hash className={`w-5 h-5 ${
                           formData.paymentMethod === 'binance_pay' 
                             ? 'text-primary' 
-                            : highlightedMethod === 'binance_pay'
-                            ? 'text-yellow-400'
                             : 'text-muted-foreground'
                         }`} />
                       </div>
@@ -635,11 +622,6 @@ export function RegistrationForm150() {
                         <p className="text-xs text-muted-foreground mt-0.5 font-inter">
                           {isPaymentMethodPreferred('binance_pay') ? 'Pago directo (1 clic)' : 'Pago directo (2 clics)'}
                         </p>
-                        {highlightedMethod === 'binance_pay' && (
-                          <p className="text-xs text-yellow-400 mt-1 font-inter">
-                            Haz clic otra vez para confirmar
-                          </p>
-                        )}
                       </div>
                       {formData.paymentMethod === 'binance_pay' && (
                         <div className="ml-auto">
@@ -656,30 +638,21 @@ export function RegistrationForm150() {
                     className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
                       formData.paymentMethod === 'nequi' 
                         ? 'ring-green-500 bg-green-500/10 border-green-500 shadow-lg shadow-green-500/25' 
-                        : highlightedMethod === 'nequi'
-                        ? 'ring-yellow-400 bg-yellow-400/10 border-yellow-400 shadow-lg shadow-yellow-400/25'
                         : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
                     }`}
                   >
                     {formData.paymentMethod === 'nequi' && (
                       <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-transparent" />
                     )}
-                    {highlightedMethod === 'nequi' && (
-                      <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-transparent" />
-                    )}
                     <div className="relative flex items-center gap-3">
                       <div className={`p-2 rounded-lg ${
                         formData.paymentMethod === 'nequi' 
                           ? 'bg-green-500/20' 
-                          : highlightedMethod === 'nequi'
-                          ? 'bg-yellow-400/20'
                           : 'bg-white/10'
                       }`}>
                         <Hash className={`w-5 h-5 ${
                           formData.paymentMethod === 'nequi' 
                             ? 'text-green-400' 
-                            : highlightedMethod === 'nequi'
-                            ? 'text-yellow-400'
                             : 'text-muted-foreground'
                         }`} />
                       </div>
@@ -701,11 +674,6 @@ export function RegistrationForm150() {
                         <p className="text-xs text-muted-foreground mt-0.5 font-inter">
                           {isPaymentMethodPreferred('nequi') ? 'Pago móvil (1 clic)' : 'Pago móvil (2 clics)'}
                         </p>
-                        {highlightedMethod === 'nequi' && (
-                          <p className="text-xs text-yellow-400 mt-1 font-inter">
-                            Haz clic otra vez para confirmar
-                          </p>
-                        )}
                       </div>
                       {formData.paymentMethod === 'nequi' && (
                         <div className="ml-auto">
