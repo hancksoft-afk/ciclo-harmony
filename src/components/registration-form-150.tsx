@@ -643,6 +643,55 @@ export function RegistrationForm150() {
                     </div>
                   </button>
                   )}
+                  {isNequiEnabled && (
+                    <button
+                      type="button"
+                      onClick={() => handlePaymentMethodClick('nequi')}
+                      className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
+                        formData.paymentMethod === 'nequi' 
+                          ? 'ring-green-500 bg-green-500/10 border-green-500 shadow-lg shadow-green-500/25' 
+                          : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
+                      }`}
+                    >
+                      {formData.paymentMethod === 'nequi' && (
+                        <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-transparent" />
+                      )}
+                      <div className="relative flex items-center gap-3">
+                        <div className={`p-2 rounded-lg ${
+                          formData.paymentMethod === 'nequi' 
+                            ? 'bg-green-500/20' 
+                            : 'bg-white/10'
+                        }`}>
+                          <Hash className={`w-5 h-5 ${
+                            formData.paymentMethod === 'nequi' 
+                              ? 'text-green-400' 
+                              : 'text-muted-foreground'
+                          }`} />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <span className={`text-sm font-medium font-inter ${
+                              formData.paymentMethod === 'nequi' 
+                                ? 'text-white' 
+                                : 'text-foreground'
+                            }`}>
+                              Nequi
+                            </span>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-0.5 font-inter">
+                            Pago móvil
+                          </p>
+                        </div>
+                        {formData.paymentMethod === 'nequi' && (
+                          <div className="ml-auto">
+                            <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                              <div className="w-2 h-2 bg-white rounded-full" />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </button>
+                  )}
 
                   {/* Combined Binance + Nequi option */}
                   {isBinanceEnabled && isNequiEnabled && (
@@ -687,56 +736,6 @@ export function RegistrationForm150() {
                         {formData.paymentMethod === 'binance_nequi' && (
                           <div className="ml-auto">
                             <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
-                              <div className="w-2 h-2 bg-white rounded-full" />
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </button>
-                  )}
-                  
-                  {isNequiEnabled && (
-                    <button
-                      type="button"
-                      onClick={() => handlePaymentMethodClick('nequi')}
-                      className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
-                        formData.paymentMethod === 'nequi' 
-                          ? 'ring-green-500 bg-green-500/10 border-green-500 shadow-lg shadow-green-500/25' 
-                          : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
-                      }`}
-                    >
-                      {formData.paymentMethod === 'nequi' && (
-                        <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-transparent" />
-                      )}
-                      <div className="relative flex items-center gap-3">
-                        <div className={`p-2 rounded-lg ${
-                          formData.paymentMethod === 'nequi' 
-                            ? 'bg-green-500/20' 
-                            : 'bg-white/10'
-                        }`}>
-                          <Hash className={`w-5 h-5 ${
-                            formData.paymentMethod === 'nequi' 
-                              ? 'text-green-400' 
-                              : 'text-muted-foreground'
-                          }`} />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2">
-                            <span className={`text-sm font-medium font-inter ${
-                              formData.paymentMethod === 'nequi' 
-                                ? 'text-white' 
-                                : 'text-foreground'
-                            }`}>
-                              Nequi
-                            </span>
-                          </div>
-                          <p className="text-xs text-muted-foreground mt-0.5 font-inter">
-                            Pago móvil
-                          </p>
-                        </div>
-                        {formData.paymentMethod === 'nequi' && (
-                          <div className="ml-auto">
-                            <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
                               <div className="w-2 h-2 bg-white rounded-full" />
                             </div>
                           </div>
