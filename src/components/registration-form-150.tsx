@@ -55,6 +55,7 @@ export function RegistrationForm150() {
   const [platformAdminQrSettings, setPlatformAdminQrSettings] = useState<any>(null);
   const [paymentPreferences, setPaymentPreferences] = useState<any[]>([]);
   const [isNequiEnabled, setIsNequiEnabled] = useState(true);
+  const [isBinanceEnabled, setIsBinanceEnabled] = useState(true);
 
   // Load QR settings on mount
   useEffect(() => {
@@ -62,6 +63,7 @@ export function RegistrationForm150() {
     fetchAdminQrSettings();
     fetchPaymentPreferences();
     fetchNequiSetting();
+    fetchBinanceSetting();
   }, []);
 
   const fetchNequiSetting = async () => {
@@ -80,6 +82,25 @@ export function RegistrationForm150() {
       setIsNequiEnabled(data?.setting_value ?? true);
     } catch (error) {
       console.error('Error fetching nequi setting:', error);
+    }
+  };
+
+  const fetchBinanceSetting = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('setting_value')
+        .eq('setting_key', 'binance_enabled')
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error fetching binance setting:', error);
+        return;
+      }
+
+      setIsBinanceEnabled(data?.setting_value ?? true);
+    } catch (error) {
+      console.error('Error fetching binance setting:', error);
     }
   };
 
@@ -409,8 +430,8 @@ export function RegistrationForm150() {
     setFormData(prevFormData => ({
       ...prevFormData, 
       paymentMethod: method, 
-      nequiPhone: method === 'binance_pay' ? '' : prevFormData.nequiPhone,
-      binanceId: method === 'nequi' ? '' : prevFormData.binanceId
+      nequiPhone: (method === 'binance_pay') ? '' : prevFormData.nequiPhone,
+      binanceId: (method === 'nequi') ? '' : prevFormData.binanceId
     }));
   };
 
@@ -568,8 +589,9 @@ export function RegistrationForm150() {
                   Selecciona tu método de pago preferido
                 </label>
                 {/* Solo Binance Pay y Nequi - cada uno funciona con 1 clic */}
-                <div className={`grid gap-3 ${isNequiEnabled ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
-                  <button
+                <div className={`grid gap-3 ${(isBinanceEnabled && isNequiEnabled) ? 'grid-cols-1 md:grid-cols-3' : (isBinanceEnabled || isNequiEnabled) ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
+                  {isBinanceEnabled && (
+                    <button
                     type="button"
                     onClick={() => handlePaymentMethodClick('binance_pay')}
                     className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
@@ -621,6 +643,58 @@ export function RegistrationForm150() {
                       )}
                     </div>
                   </button>
+                  )}
+
+                  {/* Combined Binance + Nequi option */}
+                  {isBinanceEnabled && isNequiEnabled && (
+                    <button
+                      type="button"
+                      onClick={() => handlePaymentMethodClick('binance_nequi')}
+                      className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
+                        formData.paymentMethod === 'binance_nequi' 
+                          ? 'ring-purple-500 bg-purple-500/10 border-purple-500 shadow-lg shadow-purple-500/25' 
+                          : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
+                      }`}
+                    >
+                      {formData.paymentMethod === 'binance_nequi' && (
+                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-transparent" />
+                      )}
+                      <div className="relative flex items-center gap-3">
+                        <div className={`p-2 rounded-lg ${
+                          formData.paymentMethod === 'binance_nequi' 
+                            ? 'bg-purple-500/20' 
+                            : 'bg-white/10'
+                        }`}>
+                          <Hash className={`w-5 h-5 ${
+                            formData.paymentMethod === 'binance_nequi' 
+                              ? 'text-purple-400' 
+                              : 'text-muted-foreground'
+                          }`} />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <span className={`text-sm font-medium font-inter ${
+                              formData.paymentMethod === 'binance_nequi' 
+                                ? 'text-white' 
+                                : 'text-foreground'
+                            }`}>
+                              Binance y Nequi
+                            </span>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-0.5 font-inter">
+                            Ambos métodos completos
+                          </p>
+                        </div>
+                        {formData.paymentMethod === 'binance_nequi' && (
+                          <div className="ml-auto">
+                            <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
+                              <div className="w-2 h-2 bg-white rounded-full" />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </button>
+                  )}
                   
                   {isNequiEnabled && (
                     <button
@@ -680,7 +754,7 @@ export function RegistrationForm150() {
               </div>
 
               {/* Binance ID */}
-              {formData.paymentMethod === 'binance_pay' && (
+              {(formData.paymentMethod === 'binance_pay' || formData.paymentMethod === 'binance_nequi') && (
                 <div>
                   <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID / Número de Binance</label>
                   <div className="relative">
@@ -703,7 +777,7 @@ export function RegistrationForm150() {
               )}
 
               {/* Nequi Phone */}
-              {isNequiEnabled && formData.paymentMethod === 'nequi' && (
+              {isNequiEnabled && (formData.paymentMethod === 'nequi' || formData.paymentMethod === 'binance_nequi') && (
                 <div>
                   <label className="block text-sm text-muted-foreground mb-1.5 font-inter">Número de teléfono Nequi</label>
                   <div className="relative">

@@ -53,6 +53,7 @@ export function RegistrationForm() {
   const [showPlatformModal, setShowPlatformModal] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState('');
   const [isNequiEnabled, setIsNequiEnabled] = useState(true);
+  const [isBinanceEnabled, setIsBinanceEnabled] = useState(true);
 
   // Load QR settings on mount
   useEffect(() => {
@@ -61,6 +62,7 @@ export function RegistrationForm() {
     fetchNequiQrSettings();
     fetchAdminNequiQrSettings();
     fetchNequiSetting();
+    fetchBinanceSetting();
   }, []);
 
   const fetchNequiSetting = async () => {
@@ -79,6 +81,25 @@ export function RegistrationForm() {
       setIsNequiEnabled(data?.setting_value ?? true);
     } catch (error) {
       console.error('Error fetching nequi setting:', error);
+    }
+  };
+
+  const fetchBinanceSetting = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('setting_value')
+        .eq('setting_key', 'binance_enabled')
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error fetching binance setting:', error);
+        return;
+      }
+
+      setIsBinanceEnabled(data?.setting_value ?? true);
+    } catch (error) {
+      console.error('Error fetching binance setting:', error);
     }
   };
 
@@ -506,8 +527,9 @@ export function RegistrationForm() {
               {/* Payment Platform Selection */}
               <div>
                 <label className="block text-sm text-muted-foreground mb-2 font-inter">Selecciona tu plataforma de pago</label>
-                <div className={`grid gap-3 ${isNequiEnabled ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
-                  <button
+                <div className={`grid gap-3 ${(isBinanceEnabled && isNequiEnabled) ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
+                  {isBinanceEnabled && (
+                    <button
                     type="button"
                     onClick={() => setFormData(prevFormData => ({...prevFormData, paymentMethod: 'binance_pay'}))}
                     className={`group rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-3 text-left ${
@@ -520,6 +542,7 @@ export function RegistrationForm() {
                     </div>
                     <p className="text-xs text-muted-foreground mt-1 font-inter">Pago con Binance Pay</p>
                   </button>
+                  )}
                   
                   {isNequiEnabled && (
                     <button
@@ -540,7 +563,7 @@ export function RegistrationForm() {
               </div>
 
               {/* Binance/Nequi ID */}
-              {formData.paymentMethod === 'binance_pay' && (
+              {isBinanceEnabled && formData.paymentMethod === 'binance_pay' && (
                 <div>
                   <label className="block text-sm text-muted-foreground mb-1.5 font-inter">
                     {formData.paymentMethod === 'binance_pay' ? 'ID / Número de Binance' : 'ID / Número de Nequi'}
