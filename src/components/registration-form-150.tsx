@@ -442,7 +442,7 @@ export function RegistrationForm150() {
 
   return (
     <>
-      <div className="rounded-2xl ring-1 ring-white/10 backdrop-blur-sm p-6 md:p-8 bg-gradient-to-b from-slate-900/90 to-indigo-900/80 relative overflow-hidden">
+      <div className="rounded-2xl ring-1 ring-white/10 p-6 md:p-8 bg-gradient-to-b from-slate-900/90 to-indigo-900/80 relative overflow-hidden">
         <div className="absolute inset-0 rounded-2xl">
           <div className="absolute -left-2 -top-2 w-[calc(100%+16px)] h-[calc(100%+16px)] rounded-2xl bg-gradient-to-r from-[#000000] to-[#77001d] bg-[length:400%_400%] opacity-75" />
           <div className="absolute -left-2 -top-2 w-[calc(100%+16px)] h-[calc(100%+16px)] rounded-2xl bg-gradient-to-r from-[#000000] to-[#77001d] bg-[length:400%_400%] opacity-50" />
@@ -1075,7 +1075,7 @@ export function RegistrationForm150() {
 
       {/* Platform Selection Modal */}
       {showPlatformModal && (
-        <div className="fixed inset-0 z-50 overflow-auto bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 overflow-auto bg-black/60 ">
           <div className="relative mx-auto w-full max-w-md px-4 py-8 min-h-full flex items-center justify-center">
             <div className="w-full rounded-2xl bg-[#0c111b] ring-1 ring-white/10 shadow-2xl p-6">
               <div className="flex items-center justify-between mb-4">
@@ -1136,7 +1136,7 @@ export function RegistrationForm150() {
 
       {/* Ticket Modal */}
       {showTicketModal && (
-        <div className="fixed inset-0 z-50 overflow-auto bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 overflow-auto bg-black/60 ">
           <div className="relative mx-auto w-full max-w-3xl px-4 py-8 min-h-full flex items-center justify-center">
             <div className="w-full rounded-2xl bg-[#0c111b] ring-1 ring-white/10 shadow-2xl overflow-hidden">
               <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
