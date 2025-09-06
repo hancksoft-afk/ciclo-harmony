@@ -251,9 +251,12 @@ export function RegistrationForm() {
     }
     
     
-    if ((formData.paymentMethod === 'binance_pay' && (!formData.binanceId || !/^\d{9,10}$/.test(formData.binanceId))) ||
-        (formData.paymentMethod === 'nequi_pay' && !formData.binanceId)) {
+    if (formData.paymentMethod === 'binance_pay' && (!formData.binanceId || !/^\d{9,10}$/.test(formData.binanceId))) {
       newErrors.binanceId = true;
+    }
+    
+    if (formData.paymentMethod === 'nequi_pay' && !formData.nequiPhone) {
+      newErrors.nequiPhone = true;
     }
 
     setErrors(newErrors);
@@ -727,7 +730,7 @@ export function RegistrationForm() {
                       className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
                     />
                   </div>
-                  {errors.binanceId && (
+                  {errors.nequiPhone && (
                     <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
                       <AlertTriangle className="w-3.5 h-3.5" />
                       <span><strong className="font-medium">ID de Nequi inválido</strong> — Por favor ingrese un ID válido.</span>
