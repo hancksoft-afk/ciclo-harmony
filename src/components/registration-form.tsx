@@ -382,7 +382,7 @@ export function RegistrationForm() {
                            (formData.paymentMethod === 'binance_pay_nequi' && formData.binanceId && formData.nequiPhone);
 
   const canProceedStep2 = formData.binanceIdStep2 && formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19;
-  const canProceedStep3 = formData.adminIdStep3 && formData.adminIdStep3.length >= 10 && formData.adminIdStep3.length <= 19;
+  const canProceedStep3 = formData.binanceIdStep3 && formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19;
 
   return (
     <>
