@@ -19,6 +19,8 @@ interface FormData {
   binanceId: string;
   binanceIdStep2: string;
   binanceIdStep3: string;
+  orderIdStep3: string;
+  adminIdStep3: string;
 }
 
 const countries = ['México', 'España', 'Colombia', 'Argentina', 'Perú', 'Chile'];
@@ -35,7 +37,9 @@ export function RegistrationForm() {
     paymentMethod: '',
     binanceId: '',
     binanceIdStep2: '',
-    binanceIdStep3: ''
+    binanceIdStep3: '',
+    orderIdStep3: '',
+    adminIdStep3: ''
   });
   const [errors, setErrors] = useState<Record<string, boolean>>({});
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
@@ -528,7 +532,7 @@ export function RegistrationForm() {
               {/* Payment Platform Selection */}
               <div>
                 <label className="block text-sm text-muted-foreground mb-2 font-inter">Selecciona tu plataforma de pago</label>
-                 <div className={`grid gap-3 ${(isBinanceEnabled && isNequiEnabled) ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
+                 <div className="grid gap-3" style={{gridTemplateColumns: 'repeat(3, minmax(0, 1fr))'}}>
                     {isBinanceEnabled && (
                       <button
                         type="button"
@@ -861,11 +865,11 @@ export function RegistrationForm() {
                     <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID de Orden (10–19 dígitos)</label>
                     <div className="relative">
                       <Hash className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                      <input
-                        type="text"
-                        placeholder={selectedPlatform === 'Binance' ? 'Ingresa tu ID de Binance' : 'Ingresa tu ID de Nequi'}
-                        value={formData.binanceIdStep3}
-                        onChange={(e) => setFormData({...formData, binanceIdStep3: e.target.value})}
+                       <input
+                         type="text"
+                         placeholder={selectedPlatform === 'Binance' ? 'Ingresa tu ID de Binance' : 'Ingresa tu ID de Nequi'}
+                         value={formData.orderIdStep3}
+                         onChange={(e) => setFormData({...formData, orderIdStep3: e.target.value})}
                         className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
                       />
                     </div>
@@ -971,11 +975,11 @@ export function RegistrationForm() {
                     <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID de Orden (10–19 dígitos)</label>
                     <div className="relative">
                       <Hash className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                      <input
-                        type="text"
-                        placeholder={selectedPlatform === 'Binance' ? 'Ingresa tu ID de Binance' : 'Ingresa tu ID de Nequi'}
-                        value={formData.binanceIdStep3}
-                        onChange={(e) => setFormData({...formData, binanceIdStep3: e.target.value})}
+                       <input
+                         type="text"
+                         placeholder={selectedPlatform === 'Binance' ? 'Ingresa tu ID de Binance' : 'Ingresa tu ID de Nequi'}
+                         value={formData.adminIdStep3}
+                         onChange={(e) => setFormData({...formData, adminIdStep3: e.target.value})}
                         className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
                       />
                     </div>
@@ -1095,11 +1099,11 @@ export function RegistrationForm() {
                           </div>
                           <div>
                             <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Orden</p>
-                            <p className="text-sm font-medium text-amber-300">{formData.binanceIdStep2}</p>
+                            <p className="text-sm font-medium text-amber-300">{formData.orderIdStep3}</p>
                           </div>
                           <div>
                             <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Administrador</p>
-                            <p className="text-sm font-medium text-amber-300">{formData.binanceIdStep3}</p>
+                            <p className="text-sm font-medium text-amber-300">{formData.adminIdStep3}</p>
                           </div>
                         </div>
                       </div>
