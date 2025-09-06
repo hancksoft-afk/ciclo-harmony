@@ -501,7 +501,7 @@ export function AdminUsers2() {
                     </div>
                     
                     {selectedUser.payment_method === 'Binance + Nequi' && (
-                      <div className="col-span-2 sm:col-span-3 grid grid-cols-2 gap-4">
+                      <>
                         <div>
                           <p className="text-xs text-blue-300 font-inter">Binance:</p>
                           <p className="font-medium text-slate-200">{selectedUser.binance_id || 'N/A'}</p>
@@ -510,7 +510,7 @@ export function AdminUsers2() {
                           <p className="text-xs text-green-300 font-inter">Nequi:</p>
                           <p className="font-medium text-slate-200">{selectedUser.nequi_phone || 'N/A'}</p>
                         </div>
-                      </div>
+                      </>
                     )}
                     
                     {selectedUser.payment_method === 'ID de Nequi' && (
