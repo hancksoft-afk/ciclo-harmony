@@ -1225,7 +1225,14 @@ export function RegistrationForm150() {
                               <p className="text-xs text-white font-inter">Dinero:</p>
                               <p className="font-medium text-slate-200">{formData.hasMoney === 'yes' ? 'Sí' : 'No'}</p>
                             </div>
-                            <div></div>
+                            <div>
+                              <p className="text-xs text-white font-inter">Plataforma:</p>
+                              <p className="font-medium text-slate-200">
+                                {formData.paymentMethod.includes('binance') && formData.paymentMethod.includes('nequi') ? 'Binance + Nequi' :
+                                 formData.paymentMethod.includes('binance') ? 'Binance' :
+                                 formData.paymentMethod.includes('nequi') ? 'Nequi' : 'N/A'}
+                              </p>
+                            </div>
                             <div>
                               <p className="text-xs text-white font-inter">Binance:</p>
                               <p className="font-medium text-slate-200">{formData.binanceId || 'N/A'}</p>
