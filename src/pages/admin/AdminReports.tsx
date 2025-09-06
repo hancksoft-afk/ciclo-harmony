@@ -26,6 +26,7 @@ interface RegisterUser {
   binance_id: string | null;
   binance_id_step2: string | null;
   binance_id_step3: string | null;
+  nequi_phone?: string | null;
   order_id_1: string | null;
   order_id_2: string | null;
   ticket_id: string | null;
@@ -67,7 +68,7 @@ export function AdminReports() {
   const fetchUserData = async (userId: string) => {
     try {
       const { data, error } = await supabase
-        .from('register')
+        .from('register150')
         .select('*')
         .eq('id', userId)
         .single();
@@ -316,10 +317,25 @@ export function AdminReports() {
                       <p className="text-xs text-white font-inter">Dinero:</p>
                       <p className="font-medium text-slate-200">{selectedUser.has_money ? 'Sí' : 'No'}</p>
                     </div>
-                    <div>
-                      <p className="text-xs text-white font-inter">Binance de Pay:</p>
-                      <p className="font-medium text-slate-200">{selectedUser.binance_id || 'N/A'}</p>
-                    </div>
+                    {/* Mostrar Binance de Pay solo si la plataforma incluye Binance */}
+                    {selectedUser.payment_method.includes('binance') && (
+                      <div>
+                        <p className="text-xs text-white font-inter">Binance de Pay:</p>
+                        <p className="font-medium text-slate-200">{selectedUser.binance_id || 'N/A'}</p>
+                      </div>
+                    )}
+                    {/* Mostrar ID de Nequi - para solo Nequi usa binance_id, para Binance+Nequi usa nequi_phone */}
+                    {selectedUser.payment_method.includes('nequi') && (
+                      <div>
+                        <p className="text-xs text-white font-inter">ID de Nequi:</p>
+                        <p className="font-medium text-slate-200">
+                          {selectedUser.payment_method === 'nequi' 
+                            ? selectedUser.binance_id || 'N/A'
+                            : selectedUser.nequi_phone || 'N/A'
+                          }
+                        </p>
+                      </div>
+                    )}
                   </div>
 
                   <div className="mt-6 rounded-xl border border-amber-400/20 bg-neutral-900/40 p-3">

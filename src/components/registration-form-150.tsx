@@ -350,10 +350,9 @@ export function RegistrationForm150() {
           has_money: formData.hasMoney === 'yes',
           payment_method: formData.paymentMethod,
           binance_id: formData.binanceId,
-          binance_id_step2: (formData.paymentMethod === 'nequi') ? formData.nequiPhone : 
-                            (formData.paymentMethod === 'binance_nequi') ? formData.nequiPhone : 
-                            formData.binanceIdStep2,
+          binance_id_step2: formData.binanceIdStep2,
           binance_id_step3: formData.binanceIdStep3,
+          nequi_phone: formData.nequiPhone,
           order_id_1: orderId1,
           order_id_2: orderId2,
           ticket_id: codes.ticketId,
