@@ -401,7 +401,14 @@ export function AdminSettings() {
               <input
                 name="code_id"
                 type="text"
-                defaultValue={setting?.code_id || ''}
+                value={inputValues[type]?.code_id || ''}
+                onChange={(e) => setInputValues(prev => ({
+                  ...prev,
+                  [type]: {
+                    ...prev[type],
+                    code_id: e.target.value
+                  }
+                }))}
                 className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
                 placeholder="Ingrese código ID"
               />
