@@ -378,8 +378,8 @@ export function RegistrationForm() {
                            (formData.paymentMethod === 'nequi_pay' && formData.binanceId) ||
                            (formData.paymentMethod === 'binance_pay_nequi' && formData.binanceId && formData.binanceIdStep2);
 
-  const canProceedStep2 = formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19;
-  const canProceedStep3 = formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19;
+  const canProceedStep2 = formData.orderIdStep3.length >= 10 && formData.orderIdStep3.length <= 19;
+  const canProceedStep3 = formData.adminIdStep3.length >= 10 && formData.adminIdStep3.length <= 19;
 
   return (
     <>
