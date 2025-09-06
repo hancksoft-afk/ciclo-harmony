@@ -261,8 +261,8 @@ export function RegistrationForm() {
   const validateStep2 = () => {
     const newErrors: Record<string, boolean> = {};
     
-    if (!formData.binanceIdStep3 || formData.binanceIdStep3.length < 10 || formData.binanceIdStep3.length > 19) {
-      newErrors.binanceIdStep3 = true;
+    if (!formData.binanceIdStep2 || formData.binanceIdStep2.length < 10 || formData.binanceIdStep2.length > 19) {
+      newErrors.binanceIdStep2 = true;
     }
 
     setErrors(newErrors);
@@ -873,7 +873,7 @@ export function RegistrationForm() {
                         className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
                       />
                     </div>
-                    {errors.binanceIdStep3 && (
+                    {errors.binanceIdStep2 && (
                       <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
                         <AlertTriangle className="w-3.5 h-3.5" />
                         <span><strong className="font-medium">ID de Binance inválido</strong> — Debe tener entre 10 y 19 dígitos numéricos.</span>
