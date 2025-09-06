@@ -497,9 +497,10 @@ export function AdminUsers2() {
                     {/* Mostrar información de plataforma de pago */}
                     <div>
                       <p className="text-xs text-white font-inter">Plataforma:</p>
-                      <p className="font-medium text-slate-200">{selectedUser.payment_method}</p>
+                      <p className="font-medium text-slate-200">{selectedUser.payment_method || 'N/A'}</p>
                     </div>
                     
+                    {/* Siempre mostrar campos Binance y Nequi basado en payment_method */}
                     {selectedUser.payment_method === 'Binance + Nequi' && (
                       <>
                         <div>
@@ -526,6 +527,11 @@ export function AdminUsers2() {
                         <p className="font-medium text-slate-200">{selectedUser.binance_id || 'N/A'}</p>
                       </div>
                     )}
+                    
+                    {/* Debug: Mostrar todos los valores para verificar */}
+                    <div className="col-span-2 sm:col-span-3 text-xs text-gray-400 mt-2">
+                      Debug: binance_id="{selectedUser.binance_id}", nequi_phone="{selectedUser.nequi_phone}", payment_method="{selectedUser.payment_method}"
+                    </div>
                   </div>
 
                   <div className="mt-6 rounded-xl border border-amber-400/20 bg-neutral-900/40 p-3">
