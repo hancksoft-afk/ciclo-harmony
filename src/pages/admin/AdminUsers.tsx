@@ -231,6 +231,7 @@ export function AdminUsers() {
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">Invita a</th>
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">Código</th>
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">Dinero</th>
+                  <th className="text-left py-4 px-6 text-slate-300 font-medium">Plataforma</th>
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">Binance de Pay</th>
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">ID Orden</th>
                   <th className="text-left py-4 px-6 text-slate-300 font-medium">ID Admin</th>
@@ -269,6 +270,13 @@ export function AdminUsers() {
                     <td className="py-4 px-6">
                       <span className={`px-2 py-1 rounded-full text-xs ${user.has_money ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
                         {user.has_money ? 'Sí' : 'No'}
+                      </span>
+                    </td>
+                    <td className="py-4 px-6">
+                      <span className="px-2 py-1 bg-blue-500/20 text-blue-400 rounded-full text-xs">
+                        {user.payment_method.includes('binance') && user.payment_method.includes('nequi') ? 'Binance + Nequi' :
+                         user.payment_method.includes('binance') ? 'Binance' :
+                         user.payment_method.includes('nequi') ? 'Nequi' : 'N/A'}
                       </span>
                     </td>
                     <td className="py-4 px-6">
@@ -416,6 +424,14 @@ export function AdminUsers() {
                               <p className="text-xs text-white font-inter">Dinero:</p>
                               <p className={`font-medium ${selectedUser.has_money ? 'text-green-400' : 'text-red-400'}`}>
                                 {selectedUser.has_money ? 'Sí' : 'No'}
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">Plataforma:</p>
+                              <p className="font-medium text-slate-200">
+                                {selectedUser.payment_method.includes('binance') && selectedUser.payment_method.includes('nequi') ? 'Binance + Nequi' :
+                                 selectedUser.payment_method.includes('binance') ? 'Binance' :
+                                 selectedUser.payment_method.includes('nequi') ? 'Nequi' : 'N/A'}
                               </p>
                             </div>
                             <div>
