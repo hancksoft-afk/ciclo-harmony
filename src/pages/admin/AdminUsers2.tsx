@@ -398,7 +398,8 @@ export function AdminUsers2() {
                     <td className="p-4">
                       <button
                         onClick={() => handleDeleteUser(user.id)}
-                        className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition"
+                        disabled={updating}
+                        className="p-2 bg-red-600 hover:bg-red-700 disabled:bg-red-400 disabled:cursor-not-allowed text-white rounded-lg transition"
                         title="Eliminar Información de Pago"
                       >
                         <Trash2 className="w-4 h-4" />
