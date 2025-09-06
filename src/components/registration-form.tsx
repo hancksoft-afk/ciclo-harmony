@@ -17,6 +17,7 @@ interface FormData {
   hasMoney: string;
   paymentMethod: string;
   binanceId: string;
+  nequiPhone: string;
   binanceIdStep2: string;
   binanceIdStep3: string;
   orderIdStep3: string;
@@ -36,6 +37,7 @@ export function RegistrationForm() {
     hasMoney: '',
     paymentMethod: '',
     binanceId: '',
+    nequiPhone: '',
     binanceIdStep2: '',
     binanceIdStep3: '',
     orderIdStep3: '',
@@ -376,7 +378,7 @@ export function RegistrationForm() {
                            (formData.paymentMethod !== 'binance_pay' && formData.paymentMethod !== 'nequi_pay' && formData.paymentMethod !== 'binance_pay_nequi') || 
                            (formData.paymentMethod === 'binance_pay' && formData.binanceId) ||
                            (formData.paymentMethod === 'nequi_pay' && formData.binanceId) ||
-                           (formData.paymentMethod === 'binance_pay_nequi' && formData.binanceId && formData.binanceIdStep2);
+                           (formData.paymentMethod === 'binance_pay_nequi' && formData.binanceId && formData.nequiPhone);
 
   const canProceedStep2 = formData.binanceIdStep2 && formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19;
   const canProceedStep3 = formData.adminIdStep3 && formData.adminIdStep3.length >= 10 && formData.adminIdStep3.length <= 19;
@@ -762,12 +764,12 @@ export function RegistrationForm() {
                       <input
                         type="text"
                         placeholder="Ingrese su número de Nequi"
-                        value={formData.binanceIdStep2}
-                        onChange={(e) => setFormData({...formData, binanceIdStep2: e.target.value})}
+                        value={formData.nequiPhone}
+                        onChange={(e) => setFormData({...formData, nequiPhone: e.target.value})}
                         className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
                       />
                     </div>
-                    {errors.binanceIdStep2 && (
+                    {errors.nequiPhone && (
                       <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
                         <AlertTriangle className="w-3.5 h-3.5" />
                         <span><strong className="font-medium">Número de Nequi inválido</strong> — Por favor ingrese un número válido.</span>
@@ -1158,10 +1160,10 @@ export function RegistrationForm() {
                                  <p className="text-xs text-white font-inter">Binance Pay:</p>
                                  <p className="font-medium text-slate-200">{formData.binanceId || 'N/A'}</p>
                                </div>
-                               <div>
-                                 <p className="text-xs text-white font-inter">Nequi:</p>
-                                 <p className="font-medium text-slate-200">{formData.binanceIdStep2 || 'N/A'}</p>
-                               </div>
+                                <div>
+                                  <p className="text-xs text-white font-inter">Nequi:</p>
+                                  <p className="font-medium text-slate-200">{formData.nequiPhone || 'N/A'}</p>
+                                </div>
                              </>
                            ) : (
                              <div>
