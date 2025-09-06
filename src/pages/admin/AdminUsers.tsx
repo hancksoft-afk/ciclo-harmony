@@ -160,6 +160,36 @@ export function AdminUsers() {
     }
   };
 
+  const handleDeleteUser = async (userId: string) => {
+    if (!confirm('¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.')) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('register')
+        .delete()
+        .eq('id', userId);
+
+      if (error) throw error;
+
+      // Remove user from local state
+      setUsers(prevUsers => prevUsers.filter(u => u.id !== userId));
+      
+      toast({
+        title: "Usuario eliminado",
+        description: "El usuario ha sido eliminado correctamente"
+      });
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo eliminar el usuario",
+        variant: "destructive"
+      });
+    }
+  };
+
   const filteredUsers = users.filter(user =>
     user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     user.phone.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -322,12 +352,7 @@ export function AdminUsers() {
                           <Receipt className="w-4 h-4" />
                         </button>
                         <button 
-                          onClick={() => {
-                            if (confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
-                              // Add delete logic here
-                              console.log('Eliminar usuario:', user.id);
-                            }
-                          }}
+                          onClick={() => handleDeleteUser(user.id)}
                           className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded transition"
                           title="Eliminar"
                         >

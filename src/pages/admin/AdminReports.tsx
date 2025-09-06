@@ -67,11 +67,30 @@ export function AdminReports() {
 
   const fetchUserData = async (userId: string) => {
     try {
-      const { data, error } = await supabase
-        .from('register150')
+      // Primero intentar en register (tabla regular)
+      let data = null;
+      let error = null;
+
+      const { data: dataRegular, error: errorRegular } = await supabase
+        .from('register')
         .select('*')
         .eq('id', userId)
         .single();
+
+      if (errorRegular && errorRegular.code === 'PGRST116') {
+        // Si no se encuentra en register, buscar en register150
+        const { data: data150, error: error150 } = await supabase
+          .from('register150')
+          .select('*')
+          .eq('id', userId)
+          .single();
+
+        data = data150;
+        error = error150;
+      } else {
+        data = dataRegular;
+        error = errorRegular;
+      }
 
       if (error) {
         toast.error('Error al cargar datos del usuario');
@@ -82,6 +101,29 @@ export function AdminReports() {
       setShowInvoiceModal(true);
     } catch (error) {
       toast.error('Error al cargar datos del usuario');
+    }
+  };
+
+  const deleteAction = async (actionId: string) => {
+    if (!confirm('¿Estás seguro de que deseas eliminar esta acción?')) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('user_actions_history')
+        .delete()
+        .eq('id', actionId);
+
+      if (error) throw error;
+
+      toast.success('Acción eliminada correctamente');
+      
+      // Refresh the list
+      fetchUserActions();
+    } catch (error) {
+      console.error('Error deleting action:', error);
+      toast.error('No se pudo eliminar la acción');
     }
   };
 
@@ -219,11 +261,7 @@ export function AdminReports() {
                       <div className="flex items-center gap-2">
                         
                         <button
-                          onClick={() => {
-                            if (confirm('¿Estás seguro de que quieres eliminar este registro?')) {
-                              console.log('Eliminar acción:', action.id);
-                            }
-                          }}
+                          onClick={() => deleteAction(action.id)}
                           className="p-1 text-red-400 hover:text-red-300 transition"
                           title="Eliminar"
                         >
