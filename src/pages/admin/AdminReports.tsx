@@ -262,9 +262,11 @@ export function AdminReports() {
                       {action.user_country}
                     </td>
                     <td className="py-4 px-6">
-                      <span className="px-2 py-1 bg-purple-500/20 text-purple-400 rounded-full text-xs">
+                       <span className="px-2 py-1 bg-purple-500/20 text-purple-400 rounded-full text-xs">
                         {action.payment_method === 'binance_nequi' ? 'Binance + Nequi' :
+                         action.payment_method === 'binance_pay_nequi' ? 'Binance + Nequi' :
                          action.payment_method === 'nequi' ? 'Nequi' :
+                         action.payment_method === 'nequi_pay' ? 'Nequi' :
                          action.payment_method === 'binance_pay' ? 'Binance Pay' :
                          action.payment_method || 'N/A'}
                       </span>
@@ -407,7 +409,9 @@ export function AdminReports() {
                       <p className="text-xs text-white font-inter">Plataforma:</p>
                       <p className="font-medium text-slate-200">
                         {selectedUser.payment_method === 'binance_nequi' ? 'Binance + Nequi' :
+                         selectedUser.payment_method === 'binance_pay_nequi' ? 'Binance + Nequi' :
                          selectedUser.payment_method === 'nequi' ? 'Nequi' :
+                         selectedUser.payment_method === 'nequi_pay' ? 'Nequi' :
                          selectedUser.payment_method === 'binance_pay' ? 'Binance Pay' :
                          selectedUser.payment_method || 'N/A'}
                       </p>
