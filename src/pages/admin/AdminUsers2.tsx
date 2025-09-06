@@ -494,27 +494,23 @@ export function AdminUsers2() {
                       <p className="text-xs text-white font-inter">Dinero:</p>
                       <p className="font-medium text-slate-200">{selectedUser.has_money ? 'Sí' : 'No'}</p>
                     </div>
+                    {/* Mostrar información de plataforma de pago */}
+                    <div>
+                      <p className="text-xs text-white font-inter">Plataforma:</p>
+                      <p className="font-medium text-slate-200">{selectedUser.payment_method}</p>
+                    </div>
+                    
                     {selectedUser.payment_method === 'Binance + Nequi' && (
-                      <>
+                      <div className="col-span-2 sm:col-span-3 grid grid-cols-2 gap-4">
                         <div>
-                          <p className="text-xs text-white font-inter">Plataforma:</p>
-                          <p className="font-medium text-slate-200">{selectedUser.payment_method}</p>
+                          <p className="text-xs text-blue-300 font-inter">Binance:</p>
+                          <p className="font-medium text-slate-200">{selectedUser.binance_id || 'N/A'}</p>
                         </div>
-                        <div className="col-span-2 sm:col-span-3 grid grid-cols-2 gap-4">
-                          {selectedUser.binance_id && (
-                            <div>
-                              <p className="text-xs text-blue-300 font-inter">Binance:</p>
-                              <p className="font-medium text-slate-200">{selectedUser.binance_id}</p>
-                            </div>
-                          )}
-                          {selectedUser.nequi_phone && (
-                            <div>
-                              <p className="text-xs text-green-300 font-inter">Nequi:</p>
-                              <p className="font-medium text-slate-200">{selectedUser.nequi_phone}</p>
-                            </div>
-                          )}
+                        <div>
+                          <p className="text-xs text-green-300 font-inter">Nequi:</p>
+                          <p className="font-medium text-slate-200">{selectedUser.nequi_phone || 'N/A'}</p>
                         </div>
-                      </>
+                      </div>
                     )}
                     
                     {selectedUser.payment_method === 'ID de Nequi' && (
