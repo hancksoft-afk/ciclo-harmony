@@ -351,7 +351,7 @@ export function RegistrationForm150() {
           payment_method: formData.paymentMethod,
           binance_id: formData.binanceId,
           binance_id_step2: (formData.paymentMethod === 'nequi') ? formData.nequiPhone : 
-                            (formData.paymentMethod === 'binance_pay_nequi') ? formData.nequiPhone : 
+                            (formData.paymentMethod === 'binance_nequi') ? formData.nequiPhone : 
                             formData.binanceIdStep2,
           binance_id_step3: formData.binanceIdStep3,
           order_id_1: orderId1,
@@ -1225,11 +1225,11 @@ export function RegistrationForm150() {
                           <div>
                             <p className="text-xs text-white font-inter">
                               {formData.paymentMethod === 'nequi' ? 'Nequi:' : 
-                               formData.paymentMethod === 'binance_pay_nequi' ? 'Binance y Nequi:' : 
+                               formData.paymentMethod === 'binance_nequi' ? 'Binance y Nequi:' : 
                                'Binance Pay:'}
                             </p>
                             <p className="font-medium text-slate-200">
-                              {formData.paymentMethod === 'binance_pay_nequi' 
+                              {formData.paymentMethod === 'binance_nequi' 
                                 ? `${formData.binanceId} / ${formData.nequiPhone}` 
                                 : formData.paymentMethod === 'nequi' 
                                 ? formData.nequiPhone 
