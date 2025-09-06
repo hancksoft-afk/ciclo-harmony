@@ -378,7 +378,7 @@ export function RegistrationForm() {
                           formData.paymentMethod && 
                            (formData.paymentMethod !== 'binance_pay' && formData.paymentMethod !== 'nequi_pay' && formData.paymentMethod !== 'binance_pay_nequi') || 
                            (formData.paymentMethod === 'binance_pay' && formData.binanceId) ||
-                           (formData.paymentMethod === 'nequi_pay' && formData.binanceId) ||
+                           (formData.paymentMethod === 'nequi_pay' && formData.nequiPhone) ||
                            (formData.paymentMethod === 'binance_pay_nequi' && formData.binanceId && formData.nequiPhone);
 
   const canProceedStep2 = formData.binanceIdStep2 && formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19;
