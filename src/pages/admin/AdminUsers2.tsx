@@ -90,7 +90,7 @@ export function AdminUsers2() {
           nequi_phone: null,
           order_id_1: null,
           order_id_2: null,
-          payment_method: null
+          payment_method: 'cleared'
         })
         .eq('id', userId);
 
