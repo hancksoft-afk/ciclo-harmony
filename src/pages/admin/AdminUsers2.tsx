@@ -500,38 +500,20 @@ export function AdminUsers2() {
                       <p className="font-medium text-slate-200">{selectedUser.payment_method || 'N/A'}</p>
                     </div>
                     
-                    {/* Siempre mostrar campos Binance y Nequi basado en payment_method */}
-                    {selectedUser.payment_method === 'Binance + Nequi' && (
-                      <>
-                        <div>
-                          <p className="text-xs text-blue-300 font-inter">Binance:</p>
-                          <p className="font-medium text-slate-200">{selectedUser.binance_id || 'N/A'}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-green-300 font-inter">Nequi:</p>
-                          <p className="font-medium text-slate-200">{selectedUser.nequi_phone || 'N/A'}</p>
-                        </div>
-                      </>
-                    )}
-                    
-                    {selectedUser.payment_method === 'ID de Nequi' && (
-                      <div>
-                        <p className="text-xs text-green-300 font-inter">Nequi:</p>
-                        <p className="font-medium text-slate-200">{selectedUser.nequi_phone || 'N/A'}</p>
-                      </div>
-                    )}
-                    
-                    {selectedUser.payment_method === 'Binance de Pay' && (
+                    {/* Siempre mostrar campos Binance y Nequi si tienen valores */}
+                    {selectedUser.binance_id && (
                       <div>
                         <p className="text-xs text-blue-300 font-inter">Binance:</p>
-                        <p className="font-medium text-slate-200">{selectedUser.binance_id || 'N/A'}</p>
+                        <p className="font-medium text-slate-200">{selectedUser.binance_id}</p>
                       </div>
                     )}
                     
-                    {/* Debug: Mostrar todos los valores para verificar */}
-                    <div className="col-span-2 sm:col-span-3 text-xs text-gray-400 mt-2">
-                      Debug: binance_id="{selectedUser.binance_id}", nequi_phone="{selectedUser.nequi_phone}", payment_method="{selectedUser.payment_method}"
-                    </div>
+                    {selectedUser.nequi_phone && (
+                      <div>
+                        <p className="text-xs text-green-300 font-inter">Nequi:</p>
+                        <p className="font-medium text-slate-200">{selectedUser.nequi_phone}</p>
+                      </div>
+                    )}
                   </div>
 
                   <div className="mt-6 rounded-xl border border-amber-400/20 bg-neutral-900/40 p-3">
