@@ -94,11 +94,30 @@ export function AdminReports2() {
 
   const viewUserInvoice = async (userId: string) => {
     try {
-      const { data, error } = await supabase
+      // Primero intentar en register150
+      let data = null;
+      let error = null;
+
+      const { data: data150, error: error150 } = await supabase
         .from('register150')
         .select('*')
         .eq('id', userId)
         .single();
+
+      if (error150 && error150.code === 'PGRST116') {
+        // Si no se encuentra en register150, buscar en register
+        const { data: dataRegular, error: errorRegular } = await supabase
+          .from('register')
+          .select('*')
+          .eq('id', userId)
+          .single();
+
+        data = dataRegular;
+        error = errorRegular;
+      } else {
+        data = data150;
+        error = error150;
+      }
 
       if (error) throw error;
       
@@ -236,8 +255,7 @@ export function AdminReports2() {
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Acción</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Admin</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Fecha</th>
-                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Ver Factura</th>
-                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Eliminar</th>
+                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -271,24 +289,24 @@ export function AdminReports2() {
                       {new Date(action.created_at).toLocaleDateString()}
                     </td>
                     <td className="p-4">
-                      <button
-                        onClick={() => viewUserInvoice(action.user_id)}
-                        className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg transition"
-                        title="Ver Factura del Usuario"
-                      >
-                        <Eye className="w-4 h-4" />
-                        Ver Factura
-                      </button>
-                    </td>
-                    <td className="p-4">
-                      <button
-                        onClick={() => deleteAction(action.id)}
-                        className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-lg transition"
-                        title="Eliminar Acción"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                        Eliminar
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => viewUserInvoice(action.user_id)}
+                          className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg transition"
+                          title="Ver Factura del Usuario"
+                        >
+                          <Eye className="w-4 h-4" />
+                          Ver Factura
+                        </button>
+                        <button
+                          onClick={() => deleteAction(action.id)}
+                          className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-lg transition"
+                          title="Eliminar Acción"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                          Eliminar
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
