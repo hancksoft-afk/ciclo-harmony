@@ -501,7 +501,18 @@ export function AdminUsers2() {
                         {selectedUser.payment_method === 'Binance + Nequi' && 'Binance + Nequi'}
                         {selectedUser.payment_method === 'ID de Nequi' && 'Nequi'}
                         {selectedUser.payment_method === 'Binance de Pay' && 'Binance'}
+                        {!selectedUser.payment_method && 'N/A'}
+                        {selectedUser.payment_method && 
+                         selectedUser.payment_method !== 'Binance + Nequi' && 
+                         selectedUser.payment_method !== 'ID de Nequi' && 
+                         selectedUser.payment_method !== 'Binance de Pay' && 
+                         selectedUser.payment_method}
                       </p>
+                    </div>
+                    
+                    {/* Debug temporal */}
+                    <div className="col-span-2 sm:col-span-3 text-xs text-gray-400">
+                      Debug payment_method: "{selectedUser.payment_method}"
                     </div>
                     
                     {/* Siempre mostrar campos Binance y Nequi si tienen valores */}
