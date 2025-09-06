@@ -978,11 +978,11 @@ export function RegistrationForm() {
                     <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID de Orden (10–19 dígitos)</label>
                     <div className="relative">
                       <Hash className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                       <input
-                         type="text"
-                         placeholder={selectedPlatform === 'Binance' ? 'Ingresa tu ID de Binance' : 'Ingresa tu ID de Nequi'}
-                         value={formData.adminIdStep3}
-                         onChange={(e) => setFormData({...formData, adminIdStep3: e.target.value})}
+                      <input
+                        type="text"
+                        placeholder={selectedPlatform === 'Binance' ? 'Ingresa tu ID de Binance' : 'Ingresa tu ID de Nequi'}
+                        value={formData.binanceIdStep3}
+                        onChange={(e) => setFormData({...formData, binanceIdStep3: e.target.value})}
                         className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
                       />
                     </div>
