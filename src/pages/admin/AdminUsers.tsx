@@ -448,7 +448,7 @@ export function AdminUsers() {
                             </div>
                             <div>
                               <p className="text-xs text-white font-inter">Dinero:</p>
-                              <p className={`font-medium ${selectedUser.has_money ? 'text-green-400' : 'text-red-400'}`}>
+                              <p className="font-medium text-white">
                                 {selectedUser.has_money ? 'Sí' : 'No'}
                               </p>
                             </div>

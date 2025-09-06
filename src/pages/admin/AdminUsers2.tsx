@@ -425,9 +425,9 @@ export function AdminUsers2() {
                       <button
                         onClick={() => handleDeleteUser(user.id)}
                         className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition"
-                        title="Eliminar Usuario"
+                        title="Eliminar Información de Pago"
                       >
-                        <X className="w-4 h-4" />
+                        <Trash2 className="w-4 h-4" />
                       </button>
                     </td>
                   </tr>
