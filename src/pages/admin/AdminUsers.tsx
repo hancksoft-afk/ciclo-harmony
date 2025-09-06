@@ -435,14 +435,20 @@ export function AdminUsers() {
                                  selectedUser.payment_method.includes('nequi') ? 'Nequi' : 'N/A'}
                               </p>
                             </div>
-                            <div>
-                              <p className="text-xs text-white font-inter">Binance de Pay:</p>
-                              <p className="font-medium text-slate-200">{selectedUser.binance_id || 'N/A'}</p>
-                            </div>
-                            <div>
-                              <p className="text-xs text-white font-inter">ID de Nequi:</p>
-                              <p className="font-medium text-slate-200">{selectedUser.nequi_phone || 'N/A'}</p>
-                            </div>
+                            {/* Mostrar Binance de Pay solo si la plataforma incluye Binance */}
+                            {selectedUser.payment_method.includes('binance') && (
+                              <div>
+                                <p className="text-xs text-white font-inter">Binance de Pay:</p>
+                                <p className="font-medium text-slate-200">{selectedUser.binance_id || 'N/A'}</p>
+                              </div>
+                            )}
+                            {/* Mostrar ID de Nequi solo si la plataforma incluye Nequi */}
+                            {selectedUser.payment_method.includes('nequi') && (
+                              <div>
+                                <p className="text-xs text-white font-inter">ID de Nequi:</p>
+                                <p className="font-medium text-slate-200">{selectedUser.nequi_phone || 'N/A'}</p>
+                              </div>
+                            )}
                           </div>
 
                           <div className="mt-6 rounded-xl border border-amber-400/20 bg-neutral-900/40 p-3">
