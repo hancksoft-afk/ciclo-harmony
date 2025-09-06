@@ -1106,7 +1106,7 @@ export function RegistrationForm() {
                           </div>
                           <div>
                             <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Administrador</p>
-                            <p className="text-sm font-medium text-amber-300">{formData.adminIdStep3}</p>
+                            <p className="text-sm font-medium text-amber-300">{formData.binanceIdStep3}</p>
                           </div>
                         </div>
                       </div>
