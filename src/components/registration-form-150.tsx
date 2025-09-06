@@ -1284,18 +1284,26 @@ export function RegistrationForm150() {
                               <p className="text-xs text-white font-inter">Dinero:</p>
                               <p className="font-medium text-slate-200">{formData.hasMoney === 'yes' ? 'Sí' : 'No'}</p>
                             </div>
-                            <div>
-                              <p className="text-xs text-white font-inter">
-                                {formData.paymentMethod === 'nequi' ? 'Nequi:' : 
-                                 formData.paymentMethod === 'binance_pay' ? 'Binance Pay:' : 
-                                 'Método de pago:'}
-                              </p>
-                              <p className="font-medium text-slate-200">
-                                {formData.paymentMethod === 'nequi' ? (formData.nequiPhone || 'N/A') : 
-                                 formData.paymentMethod === 'binance_pay' ? (formData.binanceId || 'N/A') :
-                                 'N/A'}
-                              </p>
-                            </div>
+                             <div>
+                               <p className="text-xs text-white font-inter">Plataforma:</p>
+                               <p className="font-medium text-slate-200">
+                                 {formData.paymentMethod === 'nequi' ? 'Nequi' : 
+                                  formData.paymentMethod === 'binance_pay' ? 'Binance Pay' : 
+                                  'N/A'}
+                               </p>
+                             </div>
+                             <div>
+                               <p className="text-xs text-white font-inter">
+                                 {formData.paymentMethod === 'nequi' ? 'Nequi:' : 
+                                  formData.paymentMethod === 'binance_pay' ? 'Binance Pay:' : 
+                                  'Método de pago:'}
+                               </p>
+                               <p className="font-medium text-slate-200">
+                                 {formData.paymentMethod === 'nequi' ? (formData.nequiPhone || 'N/A') : 
+                                  formData.paymentMethod === 'binance_pay' ? (formData.binanceId || 'N/A') :
+                                  'N/A'}
+                               </p>
+                             </div>
                           </div>
                         )}
 

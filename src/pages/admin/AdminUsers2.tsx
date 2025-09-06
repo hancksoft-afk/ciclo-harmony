@@ -77,22 +77,44 @@ export function AdminUsers2() {
   };
 
   const handleDeleteUser = async (userId: string) => {
-    if (!confirm('¿Estás seguro de que quieres eliminar este usuario?')) return;
+    if (!confirm('¿Estás seguro de que quieres eliminar la información de pago de este usuario?')) return;
     
     setUpdating(true);
     try {
       const { error } = await supabase
         .from('register150')
-        .delete()
+        .update({
+          binance_id: null,
+          binance_id_step2: null,
+          binance_id_step3: null,
+          nequi_phone: null,
+          order_id_1: null,
+          order_id_2: null,
+          payment_method: null
+        })
         .eq('id', userId);
 
       if (error) throw error;
 
-      setUsers(prevUsers => prevUsers.filter(u => u.id !== userId));
+      // Update the user in the local state
+      setUsers(prevUsers => prevUsers.map(user => 
+        user.id === userId 
+          ? {
+              ...user,
+              binance_id: null,
+              binance_id_step2: null,
+              binance_id_step3: null,
+              nequi_phone: null,
+              order_id_1: null,
+              order_id_2: null,
+              payment_method: null
+            }
+          : user
+      ));
       
       toast({
-        title: "Usuario eliminado",
-        description: "El usuario ha sido eliminado exitosamente",
+        title: "Información de pago eliminada",
+        description: "La información de pago del usuario ha sido eliminada exitosamente",
       });
     } catch (error) {
       console.error('Error deleting user:', error);
