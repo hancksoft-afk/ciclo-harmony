@@ -340,7 +340,25 @@ export function RegistrationForm150() {
 
   const saveToSupabase = async (codes: { codigo: string; oculto: string; ticketId: string }) => {
     try {
-      const { error } = await supabase
+      console.log('Trying to save to Supabase with data:', {
+        name: formData.name,
+        phone: formData.phone,
+        country: formData.country,
+        invitee: formData.invitee,
+        has_money: formData.hasMoney === 'yes',
+        payment_method: formData.paymentMethod,
+        binance_id: formData.binanceId || null,
+        binance_id_step2: formData.binanceIdStep2 || null,
+        binance_id_step3: formData.binanceIdStep3 || null,
+        nequi_phone: formData.nequiPhone || null,
+        order_id_1: orderId1,
+        order_id_2: orderId2,
+        ticket_id: codes.ticketId,
+        codigo_full: codes.codigo,
+        codigo_masked: codes.oculto,
+      });
+
+      const { data, error } = await supabase
         .from('register150')
         .insert({
           name: formData.name,
@@ -349,21 +367,23 @@ export function RegistrationForm150() {
           invitee: formData.invitee,
           has_money: formData.hasMoney === 'yes',
           payment_method: formData.paymentMethod,
-          binance_id: formData.binanceId,
-          binance_id_step2: formData.binanceIdStep2,
-          binance_id_step3: formData.binanceIdStep3,
-          nequi_phone: formData.nequiPhone,
+          binance_id: formData.binanceId || null,
+          binance_id_step2: formData.binanceIdStep2 || null,
+          binance_id_step3: formData.binanceIdStep3 || null,
+          nequi_phone: formData.nequiPhone || null,
           order_id_1: orderId1,
           order_id_2: orderId2,
           ticket_id: codes.ticketId,
           codigo_full: codes.codigo,
           codigo_masked: codes.oculto,
-        });
+        })
+        .select();
 
       if (error) {
         console.error('Error saving registration:', error);
+        console.error('Error details:', JSON.stringify(error, null, 2));
       } else {
-        console.log('Registration saved successfully');
+        console.log('Registration saved successfully:', data);
       }
     } catch (error) {
       console.error('Error saving to Supabase:', error);
