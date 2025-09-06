@@ -494,10 +494,14 @@ export function AdminUsers2() {
                       <p className="text-xs text-white font-inter">Dinero:</p>
                       <p className="font-medium text-slate-200">{selectedUser.has_money ? 'Sí' : 'No'}</p>
                     </div>
-                    {/* Mostrar información de plataforma de pago */}
+                    {/* Mostrar información de plataforma de pago dinámicamente */}
                     <div>
                       <p className="text-xs text-white font-inter">Plataforma:</p>
-                      <p className="font-medium text-slate-200">Binance + Nequi</p>
+                      <p className="font-medium text-slate-200">
+                        {selectedUser.payment_method === 'Binance + Nequi' && 'Binance + Nequi'}
+                        {selectedUser.payment_method === 'ID de Nequi' && 'Nequi'}
+                        {selectedUser.payment_method === 'Binance de Pay' && 'Binance'}
+                      </p>
                     </div>
                     
                     {/* Siempre mostrar campos Binance y Nequi si tienen valores */}
