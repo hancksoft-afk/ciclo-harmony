@@ -1095,9 +1095,7 @@ export function RegistrationForm150() {
                   onClick={() => {
                     setSelectedPlatform('Binance');
                     // No cambiar paymentMethod si ya era binance_nequi
-                    if (formData.paymentMethod !== 'binance_nequi') {
-                      setFormData({...formData, paymentMethod: 'binance_pay'});
-                    }
+                    // Don't change the original payment method to preserve original data
                     fetchPlatformQrSettings('Binance');
                     setShowPlatformModal(false);
                     setCurrentStep(2);
@@ -1118,9 +1116,7 @@ export function RegistrationForm150() {
                     onClick={() => {
                       setSelectedPlatform('Nequi');
                       // No cambiar paymentMethod si ya era binance_nequi
-                      if (formData.paymentMethod !== 'binance_nequi') {
-                        setFormData({...formData, paymentMethod: 'nequi'});
-                      }
+                      // Don't change the original payment method to preserve original data
                       fetchPlatformQrSettings('Nequi');
                       setShowPlatformModal(false);
                       setCurrentStep(2);
