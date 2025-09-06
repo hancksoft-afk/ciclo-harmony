@@ -497,20 +497,20 @@ export function AdminUsers2() {
                     {/* Mostrar información de plataforma de pago */}
                     <div>
                       <p className="text-xs text-white font-inter">Plataforma:</p>
-                      <p className="font-medium text-slate-200">{selectedUser.payment_method || 'N/A'}</p>
+                      <p className="font-medium text-slate-200">Binance + Nequi</p>
                     </div>
                     
                     {/* Siempre mostrar campos Binance y Nequi si tienen valores */}
                     {selectedUser.binance_id && (
                       <div>
-                        <p className="text-xs text-blue-300 font-inter">Binance:</p>
+                        <p className="text-xs text-white font-inter">Binance:</p>
                         <p className="font-medium text-slate-200">{selectedUser.binance_id}</p>
                       </div>
                     )}
                     
                     {selectedUser.nequi_phone && (
                       <div>
-                        <p className="text-xs text-green-300 font-inter">Nequi:</p>
+                        <p className="text-xs text-white font-inter">Nequi:</p>
                         <p className="font-medium text-slate-200">{selectedUser.nequi_phone}</p>
                       </div>
                     )}
