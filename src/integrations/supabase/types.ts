@@ -156,6 +156,7 @@ export type Database = {
           id: string
           invitee: string
           name: string
+          nequi_phone: string | null
           order_id_1: string | null
           order_id_2: string | null
           payment_method: string
@@ -175,6 +176,7 @@ export type Database = {
           id?: string
           invitee: string
           name: string
+          nequi_phone?: string | null
           order_id_1?: string | null
           order_id_2?: string | null
           payment_method: string
@@ -194,6 +196,7 @@ export type Database = {
           id?: string
           invitee?: string
           name?: string
+          nequi_phone?: string | null
           order_id_1?: string | null
           order_id_2?: string | null
           payment_method?: string
