@@ -1040,12 +1040,31 @@ export function RegistrationForm() {
                           </div>
                            <div>
                              <p className="text-xs text-white font-inter">Plataforma:</p>
-                             <p className="font-medium text-slate-200">{formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi'}</p>
+                             <p className="font-medium text-slate-200">
+                               {formData.paymentMethod === 'binance_pay' ? 'Binance' : 
+                                formData.paymentMethod === 'nequi_pay' ? 'Nequi' : 
+                                formData.paymentMethod === 'binance_pay_nequi' ? 'Binance + Nequi' : 'N/A'}
+                             </p>
                            </div>
-                           <div>
-                             <p className="text-xs text-white font-inter">ID de {formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi'}:</p>
-                             <p className="font-medium text-slate-200">{formData.binanceId}</p>
-                           </div>
+                           {formData.paymentMethod === 'binance_pay_nequi' ? (
+                             <>
+                               <div>
+                                 <p className="text-xs text-white font-inter">Binance Pay:</p>
+                                 <p className="font-medium text-slate-200">{formData.binanceId || 'N/A'}</p>
+                               </div>
+                               <div>
+                                 <p className="text-xs text-white font-inter">Nequi:</p>
+                                 <p className="font-medium text-slate-200">{formData.binanceIdStep2 || 'N/A'}</p>
+                               </div>
+                             </>
+                           ) : (
+                             <div>
+                               <p className="text-xs text-white font-inter">
+                                 ID de {formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi'}:
+                               </p>
+                               <p className="font-medium text-slate-200">{formData.binanceId || 'N/A'}</p>
+                             </div>
+                           )}
                         </div>
 
                         <div className="mt-6 rounded-xl border border-amber-400/20 bg-neutral-900/40 p-3">
