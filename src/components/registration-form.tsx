@@ -378,7 +378,7 @@ export function RegistrationForm() {
                            (formData.paymentMethod === 'nequi_pay' && formData.binanceId) ||
                            (formData.paymentMethod === 'binance_pay_nequi' && formData.binanceId && formData.binanceIdStep2);
 
-  const canProceedStep2 = formData.orderIdStep3 && formData.orderIdStep3.length >= 10 && formData.orderIdStep3.length <= 19;
+  const canProceedStep2 = formData.binanceIdStep2 && formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19;
   const canProceedStep3 = formData.adminIdStep3 && formData.adminIdStep3.length >= 10 && formData.adminIdStep3.length <= 19;
 
   return (
@@ -865,11 +865,11 @@ export function RegistrationForm() {
                     <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID de Orden (10–19 dígitos)</label>
                     <div className="relative">
                       <Hash className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                       <input
-                         type="text"
-                         placeholder={selectedPlatform === 'Binance' ? 'Ingresa tu ID de Binance' : 'Ingresa tu ID de Nequi'}
-                         value={formData.orderIdStep3}
-                         onChange={(e) => setFormData({...formData, orderIdStep3: e.target.value})}
+                        <input
+                          type="text"
+                          placeholder={selectedPlatform === 'Binance' ? 'Ingresa tu ID de Binance' : 'Ingresa tu ID de Nequi'}
+                          value={formData.binanceIdStep2}
+                          onChange={(e) => setFormData({...formData, binanceIdStep2: e.target.value})}
                         className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
                       />
                     </div>
