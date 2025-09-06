@@ -481,7 +481,7 @@ export function AdminUsers() {
                           </div>
 
                           <div className="mt-3 flex items-center justify-between text-xs text-slate-400">
-                            <p className="font-inter">Factura del usuario registrado.</p>
+                            <p className="font-inter">Conserva este ticket para futuras referencias.</p>
                             <div className="flex items-center gap-2">
                               <span className="text-white font-inter">Código</span>
                               <span className="font-medium text-amber-300 font-mono">{selectedUser.codigo_masked || 'xxxxxxxxxxxx'}</span>
