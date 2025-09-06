@@ -440,7 +440,7 @@ export function AdminUsers() {
                               <p className="font-medium text-slate-200">{selectedUser.binance_id || 'N/A'}</p>
                             </div>
                             <div>
-                              <p className="text-xs text-white font-inter">Nequi:</p>
+                              <p className="text-xs text-white font-inter">ID de Nequi:</p>
                               <p className="font-medium text-slate-200">{selectedUser.nequi_phone || 'N/A'}</p>
                             </div>
                           </div>
