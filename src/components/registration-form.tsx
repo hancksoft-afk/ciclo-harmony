@@ -722,8 +722,8 @@ export function RegistrationForm() {
                     <input
                       type="text"
                       placeholder="Ingrese su ID de Nequi"
-                      value={formData.binanceId}
-                      onChange={(e) => setFormData({...formData, binanceId: e.target.value})}
+                      value={formData.nequiPhone}
+                      onChange={(e) => setFormData({...formData, nequiPhone: e.target.value})}
                       className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
                     />
                   </div>
@@ -1168,10 +1168,12 @@ export function RegistrationForm() {
                              </>
                            ) : (
                              <div>
-                               <p className="text-xs text-white font-inter">
-                                 ID de {formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi'}:
-                               </p>
-                               <p className="font-medium text-slate-200">{formData.binanceId || 'N/A'}</p>
+                                <p className="text-xs text-white font-inter">
+                                  ID de {formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi'}:
+                                </p>
+                                <p className="font-medium text-slate-200">
+                                  {formData.paymentMethod === 'binance_pay' ? formData.binanceId || 'N/A' : formData.nequiPhone || 'N/A'}
+                                </p>
                              </div>
                            )}
                         </div>
