@@ -88,21 +88,8 @@ export function AdminUsers2() {
 
       if (error) throw error;
 
-      // Update the user in the local state
-      setUsers(prevUsers => prevUsers.map(user => 
-        user.id === userId 
-          ? {
-              ...user,
-              binance_id: null,
-              binance_id_step2: null,
-              binance_id_step3: null,
-              nequi_phone: null,
-              order_id_1: null,
-              order_id_2: null,
-              payment_method: null
-            }
-          : user
-      ));
+      // Remove the user from the local state since it's deleted from DB
+      setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
       
       toast({
         title: "Información de pago eliminada",
