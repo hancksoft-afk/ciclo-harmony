@@ -83,15 +83,7 @@ export function AdminUsers2() {
     try {
       const { error } = await supabase
         .from('register150')
-        .update({
-          binance_id: null,
-          binance_id_step2: null,
-          binance_id_step3: null,
-          nequi_phone: null,
-          order_id_1: null,
-          order_id_2: null,
-          payment_method: 'cleared'
-        })
+        .delete()
         .eq('id', userId);
 
       if (error) throw error;
