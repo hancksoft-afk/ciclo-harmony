@@ -16,6 +16,7 @@ interface RegisterUser {
   binance_id: string | null;
   binance_id_step2: string | null;
   binance_id_step3: string | null;
+  nequi_phone: string | null;
   ticket_id: string | null;
   created_at: string;
   payment_method: string;
@@ -437,6 +438,10 @@ export function AdminUsers() {
                             <div>
                               <p className="text-xs text-white font-inter">Binance de Pay:</p>
                               <p className="font-medium text-slate-200">{selectedUser.binance_id || 'N/A'}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">Nequi:</p>
+                              <p className="font-medium text-slate-200">{selectedUser.nequi_phone || 'N/A'}</p>
                             </div>
                           </div>
 
