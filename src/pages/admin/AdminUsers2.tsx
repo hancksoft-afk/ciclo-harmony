@@ -292,7 +292,7 @@ export function AdminUsers2() {
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Invita a</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Código</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Dinero</th>
-                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Información de Pago</th>
+                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Plataforma</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">ID Orden</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">ID Admin</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Fecha</th>
@@ -339,42 +339,16 @@ export function AdminUsers2() {
                         {user.has_money ? 'Sí' : 'No'}
                       </div>
                     </td>
-                    <td className="p-4">
-                      <div className="space-y-1">
-                        {user.payment_method === 'Binance + Nequi' && (
-                          <>
-                            {user.binance_id && (
-                              <div className="flex items-center gap-2 text-slate-300">
-                                <CreditCard className="w-4 h-4" />
-                                <span className="text-xs text-blue-300">Binance Pay:</span>
-                                <span>{user.binance_id}</span>
-                              </div>
-                            )}
-                            {user.nequi_phone && (
-                              <div className="flex items-center gap-2 text-slate-300">
-                                <Smartphone className="w-4 h-4" />
-                                <span className="text-xs text-green-300">ID Nequi:</span>
-                                <span>{user.nequi_phone}</span>
-                              </div>
-                            )}
-                          </>
-                        )}
-                        {user.payment_method === 'ID de Nequi' && (
-                          <div className="flex items-center gap-2 text-slate-300">
-                            <Smartphone className="w-4 h-4" />
-                            <span className="text-xs text-green-300">ID Nequi:</span>
-                            <span>{user.nequi_phone || 'N/A'}</span>
-                          </div>
-                        )}
-                        {user.payment_method === 'Binance de Pay' && (
-                          <div className="flex items-center gap-2 text-slate-300">
-                            <CreditCard className="w-4 h-4" />
-                            <span className="text-xs text-blue-300">Binance Pay:</span>
-                            <span>{user.binance_id || 'N/A'}</span>
-                          </div>
-                        )}
-                      </div>
-                    </td>
+                     <td className="p-4">
+                       <span className="px-2 py-1 bg-blue-500/20 text-blue-400 rounded-full text-xs">
+                         {user.payment_method === 'binance_pay_nequi' ? 'Binance + Nequi' :
+                          user.payment_method === 'binance_pay' ? 'Binance Pay' :
+                          user.payment_method === 'nequi_pay' ? 'Nequi' :
+                          user.payment_method === 'Binance + Nequi' ? 'Binance + Nequi' :
+                          user.payment_method === 'ID de Nequi' ? 'Nequi' :
+                          user.payment_method === 'Binance de Pay' ? 'Binance Pay' : 'N/A'}
+                       </span>
+                     </td>
                     <td className="p-4 text-slate-300">{user.binance_id_step2 || 'N/A'}</td>
                     <td className="p-4 text-slate-300">{user.binance_id_step3 || 'N/A'}</td>
                     <td className="p-4">
@@ -535,7 +509,7 @@ export function AdminUsers2() {
                     {/* Siempre mostrar campos Binance y Nequi si tienen valores */}
                     {selectedUser.binance_id && (
                       <div>
-                        <p className="text-xs text-white font-inter">Binance:</p>
+                        <p className="text-xs text-white font-inter">Binance Pay:</p>
                         <p className="font-medium text-slate-200">{selectedUser.binance_id}</p>
                       </div>
                     )}
