@@ -806,9 +806,9 @@ export function RegistrationForm() {
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                    Pago por QR - 25 USD (Ciclo de vida) - {selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')}
-                  </h2>
+                   <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
+                     Pago por QR - 25 USD (Ciclo de vida/Admin) - {selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')}
+                   </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el código para continuar. Tiempo restante: <span className="text-foreground">{formatTime(timer1)}</span>
                   </p>
