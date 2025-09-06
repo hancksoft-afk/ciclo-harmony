@@ -1232,11 +1232,11 @@ export function RegistrationForm150() {
                             <div></div>
                             <div>
                               <p className="text-xs text-white font-inter">Binance:</p>
-                              <p className="font-medium text-slate-200">{formData.binanceId}</p>
+                              <p className="font-medium text-slate-200">{formData.binanceId || 'N/A'}</p>
                             </div>
                             <div>
                               <p className="text-xs text-white font-inter">Nequi:</p>
-                              <p className="font-medium text-slate-200">{formData.nequiPhone}</p>
+                              <p className="font-medium text-slate-200">{formData.nequiPhone || 'N/A'}</p>
                             </div>
                             <div></div>
                           </div>
@@ -1264,10 +1264,14 @@ export function RegistrationForm150() {
                             </div>
                             <div>
                               <p className="text-xs text-white font-inter">
-                                {formData.paymentMethod === 'nequi' ? 'Nequi:' : 'Binance Pay:'}
+                                {formData.paymentMethod === 'nequi' ? 'Nequi:' : 
+                                 formData.paymentMethod === 'binance_pay' ? 'Binance Pay:' : 
+                                 'Método de pago:'}
                               </p>
                               <p className="font-medium text-slate-200">
-                                {formData.paymentMethod === 'nequi' ? formData.nequiPhone : formData.binanceId}
+                                {formData.paymentMethod === 'nequi' ? (formData.nequiPhone || 'N/A') : 
+                                 formData.paymentMethod === 'binance_pay' ? (formData.binanceId || 'N/A') :
+                                 'N/A'}
                               </p>
                             </div>
                           </div>
