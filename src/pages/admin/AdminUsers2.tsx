@@ -498,14 +498,14 @@ export function AdminUsers2() {
                     <div>
                       <p className="text-xs text-white font-inter">Plataforma:</p>
                       <p className="font-medium text-slate-200">
-                        {selectedUser.payment_method === 'Binance + Nequi' && 'BINANCE + NEQUI'}
-                        {selectedUser.payment_method === 'ID de Nequi' && 'NEQUI'}
-                        {selectedUser.payment_method === 'Binance de Pay' && 'BINANCE'}
+                        {selectedUser.payment_method === 'binance_nequi' && 'BINANCE + NEQUI'}
+                        {selectedUser.payment_method === 'nequi' && 'NEQUI'}
+                        {selectedUser.payment_method === 'binance_pay' && 'BINANCE PAY'}
                         {!selectedUser.payment_method && 'N/A'}
                         {selectedUser.payment_method && 
-                         selectedUser.payment_method !== 'Binance + Nequi' && 
-                         selectedUser.payment_method !== 'ID de Nequi' && 
-                         selectedUser.payment_method !== 'Binance de Pay' && 
+                         selectedUser.payment_method !== 'binance_nequi' && 
+                         selectedUser.payment_method !== 'nequi' && 
+                         selectedUser.payment_method !== 'binance_pay' && 
                          selectedUser.payment_method}
                       </p>
                     </div>
