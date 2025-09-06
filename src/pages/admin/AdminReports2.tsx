@@ -33,6 +33,7 @@ interface Register150User {
   created_at: string;
   updated_at: string;
   payment_method: string;
+  nequi_phone: string | null;
 }
 
 export function AdminReports2() {
@@ -372,16 +373,40 @@ export function AdminReports2() {
                       <p className="font-medium text-slate-200">{selectedUser.invitee}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-white font-inter">Binance Pay:</p>
-                      <p className="font-medium text-slate-200">{selectedUser.binance_id || 'N/A'}</p>
-                    </div>
-                    <div>
                       <p className="text-xs text-white font-inter">Dinero:</p>
                       <p className="font-medium text-slate-200">{selectedUser.has_money ? 'Sí' : 'No'}</p>
                     </div>
+                    {/* Mostrar información de plataforma de pago dinámicamente */}
+                    <div>
+                      <p className="text-xs text-white font-inter">Plataforma:</p>
+                      <p className="font-medium text-slate-200">
+                        {selectedUser.payment_method === 'binance_nequi' && 'Binance + Nequi'}
+                        {selectedUser.payment_method === 'nequi' && 'Nequi'}
+                        {selectedUser.payment_method === 'binance_pay' && 'Binance Pay'}
+                        {!selectedUser.payment_method && 'N/A'}
+                        {selectedUser.payment_method && 
+                         selectedUser.payment_method !== 'binance_nequi' && 
+                         selectedUser.payment_method !== 'nequi' && 
+                         selectedUser.payment_method !== 'binance_pay' && 
+                         selectedUser.payment_method}
+                      </p>
+                    </div>
+                    
+                    {/* Siempre mostrar campos Binance y Nequi si tienen valores */}
+                    {selectedUser.binance_id && (
+                      <div>
+                        <p className="text-xs text-white font-inter">Binance:</p>
+                        <p className="font-medium text-slate-200">{selectedUser.binance_id}</p>
+                      </div>
+                    )}
+                    
+                    {selectedUser.nequi_phone && (
+                      <div>
+                        <p className="text-xs text-white font-inter">Nequi:</p>
+                        <p className="font-medium text-slate-200">{selectedUser.nequi_phone}</p>
+                      </div>
+                    )}
                   </div>
-
-                  <div className="h-px bg-white/10 my-4" />
 
                   <div className="mt-6 rounded-xl border border-amber-400/20 bg-neutral-900/40 p-3">
                     <div className="h-16 w-full rounded-md bg-gradient-to-r from-amber-400 via-transparent to-amber-400" 
@@ -391,7 +416,7 @@ export function AdminReports2() {
                   <div className="mt-3 flex items-center justify-between text-xs text-white">
                     <p className="text-white">Conserva este ticket para futuras referencias.</p>
                     <div className="flex items-center gap-2">
-                      <span className="text-white">Código</span>
+                      <span className="text-white font-inter">Código</span>
                       <span className="font-mono text-amber-300">
                         {selectedUser.codigo_masked || `${Math.random().toString(36).substr(2, 4).toUpperCase()}xxxxxxxxxxxx`}
                       </span>
@@ -399,6 +424,15 @@ export function AdminReports2() {
                   </div>
                 </div>
               </div>
+            </div>
+
+            <div className="mt-6 text-center">
+              <button
+                onClick={() => setShowInvoiceModal(false)}
+                className="px-6 py-3 bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-white rounded-xl font-semibold transition-all duration-300 shadow-lg"
+              >
+                Confirmar
+              </button>
             </div>
           </div>
         </div>
