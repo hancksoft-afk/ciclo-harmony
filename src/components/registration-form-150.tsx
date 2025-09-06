@@ -350,7 +350,7 @@ export function RegistrationForm150() {
           has_money: formData.hasMoney === 'yes',
           payment_method: formData.paymentMethod,
           binance_id: formData.binanceId,
-          binance_id_step2: formData.binanceIdStep2,
+          binance_id_step2: formData.paymentMethod === 'binance_nequi' ? formData.nequiPhone : formData.binanceIdStep2,
           binance_id_step3: formData.binanceIdStep3,
           order_id_1: orderId1,
           order_id_2: orderId2,
@@ -1199,7 +1199,7 @@ export function RegistrationForm150() {
 
                         <div className="h-px bg-white/10 my-4" />
 
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
+                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
                           <div>
                             <p className="text-xs text-white font-inter">Nombres:</p>
                             <p className="font-medium text-slate-200">{formData.name}</p>
@@ -1221,8 +1221,16 @@ export function RegistrationForm150() {
                             <p className="font-medium text-slate-200">{formData.hasMoney === 'yes' ? 'Sí' : 'No'}</p>
                           </div>
                           <div>
-                            <p className="text-xs text-white font-inter">Binance de Pay:</p>
-                            <p className="font-medium text-slate-200">{formData.binanceId}</p>
+                            <p className="text-xs text-white font-inter">
+                              {formData.paymentMethod === 'nequi' ? 'Nequi:' : 
+                               formData.paymentMethod === 'binance_pay_nequi' ? 'Binance y Nequi:' : 
+                               'Binance de Pay:'}
+                            </p>
+                            <p className="font-medium text-slate-200">
+                              {formData.paymentMethod === 'binance_pay_nequi' 
+                                ? `${formData.binanceId} / ${formData.binanceIdStep2}` 
+                                : formData.binanceId}
+                            </p>
                           </div>
                         </div>
 
