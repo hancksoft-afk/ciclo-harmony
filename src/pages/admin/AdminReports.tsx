@@ -12,6 +12,7 @@ interface UserAction {
   action_type: string;
   admin_action_by: string;
   created_at: string;
+  payment_method?: string;
 }
 
 interface RegisterUser {
@@ -57,7 +58,45 @@ export function AdminReports() {
         return;
       }
 
-      setActions(data || []);
+      // Fetch payment method for each action
+      const actionsWithPlatform = await Promise.all(
+        (data || []).map(async (action) => {
+          try {
+            // First try register table
+            let userData = null;
+            const { data: registerData, error: registerError } = await supabase
+              .from('register')
+              .select('payment_method')
+              .eq('id', action.user_id)
+              .single();
+
+            if (registerError && registerError.code === 'PGRST116') {
+              // If not found in register, try register150
+              const { data: register150Data, error: register150Error } = await supabase
+                .from('register150')
+                .select('payment_method')
+                .eq('id', action.user_id)
+                .single();
+              
+              userData = register150Data;
+            } else {
+              userData = registerData;
+            }
+
+            return {
+              ...action,
+              payment_method: userData?.payment_method || 'N/A'
+            };
+          } catch (error) {
+            return {
+              ...action,
+              payment_method: 'N/A'
+            };
+          }
+        })
+      );
+
+      setActions(actionsWithPlatform);
     } catch (error) {
       toast.error('Error al cargar historial');
     } finally {
@@ -202,6 +241,7 @@ export function AdminReports() {
                   <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">👤 Usuario</th>
                   <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">📱 Teléfono</th>
                   <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">🌍 País</th>
+                  <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">💳 Plataforma</th>
                   <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">⚡ Acción</th>
                   <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">👨‍💼 Admin</th>
                   <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">📅 Fecha</th>
@@ -220,6 +260,14 @@ export function AdminReports() {
                     </td>
                     <td className="py-4 px-6 text-slate-300">
                       {action.user_country}
+                    </td>
+                    <td className="py-4 px-6">
+                      <span className="px-2 py-1 bg-purple-500/20 text-purple-400 rounded-full text-xs">
+                        {action.payment_method === 'binance_nequi' ? 'Binance + Nequi' :
+                         action.payment_method === 'nequi' ? 'Nequi' :
+                         action.payment_method === 'binance_pay' ? 'Binance Pay' :
+                         action.payment_method || 'N/A'}
+                      </span>
                     </td>
                     <td className="py-4 px-6">
                       <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
@@ -355,23 +403,28 @@ export function AdminReports() {
                       <p className="text-xs text-white font-inter">Dinero:</p>
                       <p className="font-medium text-slate-200">{selectedUser.has_money ? 'Sí' : 'No'}</p>
                     </div>
-                    {/* Mostrar Binance de Pay solo si la plataforma incluye Binance */}
-                    {selectedUser.payment_method.includes('binance') && (
+                    <div>
+                      <p className="text-xs text-white font-inter">Plataforma:</p>
+                      <p className="font-medium text-slate-200">
+                        {selectedUser.payment_method === 'binance_nequi' ? 'Binance + Nequi' :
+                         selectedUser.payment_method === 'nequi' ? 'Nequi' :
+                         selectedUser.payment_method === 'binance_pay' ? 'Binance Pay' :
+                         selectedUser.payment_method || 'N/A'}
+                      </p>
+                    </div>
+                    
+                    {/* Siempre mostrar campos Binance y Nequi si tienen valores */}
+                    {selectedUser.binance_id && (
                       <div>
-                        <p className="text-xs text-white font-inter">Binance de Pay:</p>
-                        <p className="font-medium text-slate-200">{selectedUser.binance_id || 'N/A'}</p>
+                        <p className="text-xs text-white font-inter">Binance:</p>
+                        <p className="font-medium text-slate-200">{selectedUser.binance_id}</p>
                       </div>
                     )}
-                    {/* Mostrar ID de Nequi - para solo Nequi usa binance_id, para Binance+Nequi usa nequi_phone */}
-                    {selectedUser.payment_method.includes('nequi') && (
+                    
+                    {selectedUser.nequi_phone && (
                       <div>
-                        <p className="text-xs text-white font-inter">ID de Nequi:</p>
-                        <p className="font-medium text-slate-200">
-                          {selectedUser.payment_method === 'nequi' 
-                            ? selectedUser.binance_id || 'N/A'
-                            : selectedUser.nequi_phone || 'N/A'
-                          }
-                        </p>
+                        <p className="text-xs text-white font-inter">Nequi:</p>
+                        <p className="font-medium text-slate-200">{selectedUser.nequi_phone}</p>
                       </div>
                     )}
                   </div>
