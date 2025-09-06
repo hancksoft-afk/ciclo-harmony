@@ -442,16 +442,11 @@ export function AdminUsers() {
                                 <p className="font-medium text-slate-200">{selectedUser.binance_id || 'N/A'}</p>
                               </div>
                             )}
-                            {/* Mostrar ID de Nequi - para solo Nequi usa binance_id, para Binance+Nequi usa nequi_phone */}
+                            {/* Mostrar ID de Nequi solo si la plataforma incluye Nequi */}
                             {selectedUser.payment_method.includes('nequi') && (
                               <div>
                                 <p className="text-xs text-white font-inter">ID de Nequi:</p>
-                                <p className="font-medium text-slate-200">
-                                  {selectedUser.payment_method === 'nequi' 
-                                    ? selectedUser.binance_id || 'N/A'
-                                    : selectedUser.nequi_phone || 'N/A'
-                                  }
-                                </p>
+                                <p className="font-medium text-slate-200">{selectedUser.nequi_phone || 'N/A'}</p>
                               </div>
                             )}
                           </div>
