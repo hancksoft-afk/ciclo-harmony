@@ -71,7 +71,17 @@ export function AdminSettings() {
         price_cop: setting.price_cop?.toString() || '100000.00'
       };
     });
-    setInputValues(newInputValues);
+    // Solo actualizar si realmente hay cambios para evitar bucles infinitos
+    setInputValues(prev => {
+      const hasChanges = Object.keys(newInputValues).some(key => 
+        !prev[key] || 
+        prev[key].code_id !== newInputValues[key].code_id ||
+        prev[key].remaining_time !== newInputValues[key].remaining_time ||
+        prev[key].price_usd !== newInputValues[key].price_usd ||
+        prev[key].price_cop !== newInputValues[key].price_cop
+      );
+      return hasChanges ? newInputValues : prev;
+    });
   }, [qrSettings]);
 
   const fetchQrSettings = async () => {
@@ -555,25 +565,8 @@ export function AdminSettings() {
                          <DollarSign className="w-4 h-4" />
                          Precio
                        </label>
-                       <div className="grid grid-cols-2 gap-2">
-                         <div>
-                           <label className="block text-xs text-slate-400 mb-1">USD (Binance)</label>
-                           <input
-                             name="price_usd"
-                             type="number"
-                             step="0.01"
-                             value={inputValues[config.type]?.price_usd || setting?.price_usd || '25.00'}
-                             onChange={(e) => setInputValues(prev => ({
-                               ...prev,
-                               [config.type]: {
-                                 ...prev[config.type],
-                                 price_usd: e.target.value
-                               }
-                             }))}
-                             className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white text-sm placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
-                             placeholder="25.00"
-                           />
-                         </div>
+                       {/* Solo USD para tipos Binance */}
+                       {config.type.includes('nequi') ? (
                          <div>
                            <label className="block text-xs text-slate-400 mb-1">COP (Nequi)</label>
                            <input
@@ -584,7 +577,9 @@ export function AdminSettings() {
                              onChange={(e) => setInputValues(prev => ({
                                ...prev,
                                [config.type]: {
-                                 ...prev[config.type],
+                                 code_id: prev[config.type]?.code_id || '',
+                                 remaining_time: prev[config.type]?.remaining_time || '1440',
+                                 price_usd: prev[config.type]?.price_usd || '25.00',
                                  price_cop: e.target.value
                                }
                              }))}
@@ -592,7 +587,28 @@ export function AdminSettings() {
                              placeholder="100000.00"
                            />
                          </div>
-                       </div>
+                       ) : (
+                         <div>
+                           <label className="block text-xs text-slate-400 mb-1">USD (Binance)</label>
+                           <input
+                             name="price_usd"
+                             type="number"
+                             step="0.01"
+                             value={inputValues[config.type]?.price_usd || setting?.price_usd || '25.00'}
+                             onChange={(e) => setInputValues(prev => ({
+                               ...prev,
+                               [config.type]: {
+                                 code_id: prev[config.type]?.code_id || '',
+                                 remaining_time: prev[config.type]?.remaining_time || '1440',
+                                 price_usd: e.target.value,
+                                 price_cop: prev[config.type]?.price_cop || '100000.00'
+                               }
+                             }))}
+                             className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white text-sm placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
+                             placeholder="25.00"
+                           />
+                         </div>
+                       )}
                      </div>
 
                       <div>

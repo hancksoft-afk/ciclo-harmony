@@ -532,6 +532,21 @@ export function RegistrationForm() {
                       No
                     </button>
                   </div>
+                  {formData.hasMoney === 'no' && (
+                    <div className="mt-3 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                      <div className="flex items-start gap-3">
+                        <div className="w-5 h-5 bg-blue-500/20 rounded-full flex items-center justify-center mt-0.5">
+                          <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-medium text-white mb-1">¡No te preocupes!</h4>
+                          <p className="text-sm text-blue-100 leading-relaxed">
+                            Puedes continuar con el registro. Te explicaremos cómo obtener los fondos necesarios durante el proceso.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
