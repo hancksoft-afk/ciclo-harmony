@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Settings, QrCode, Clock, Image, Upload, Save, X, Trash2 } from 'lucide-react';
+import { Settings, QrCode, Clock, Image, Upload, Save, X, Trash2, DollarSign } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Switch } from '@/components/ui/switch';
@@ -9,6 +9,8 @@ interface QrSetting {
   type: string;
   code_id: string;
   remaining_time: number;
+  price_usd?: number;
+  price_cop?: number;
   qr_image_url: string | null;
   qr_image_url2: string | null;
   is_active: boolean;
@@ -49,7 +51,7 @@ export function AdminSettings() {
   const [imageFiles, setImageFiles] = useState<Record<string, File>>({});
   const [imagePreviews, setImagePreviews] = useState<Record<string, string>>({});
   const [isUploading, setIsUploading] = useState(false);
-  const [inputValues, setInputValues] = useState<{ [key: string]: { code_id: string; remaining_time: string } }>({});
+  const [inputValues, setInputValues] = useState<{ [key: string]: { code_id: string; remaining_time: string; price_usd: string; price_cop: string } }>({});
   const [systemSettings, setSystemSettings] = useState<{ [key: string]: boolean }>({});
   const { toast } = useToast();
 
@@ -60,11 +62,13 @@ export function AdminSettings() {
 
   // Actualizar inputValues cuando qrSettings cambie
   useEffect(() => {
-    const newInputValues: { [key: string]: { code_id: string; remaining_time: string } } = {};
+    const newInputValues: { [key: string]: { code_id: string; remaining_time: string; price_usd: string; price_cop: string } } = {};
     qrSettings.forEach(setting => {
       newInputValues[setting.type] = {
         code_id: setting.code_id || '',
-        remaining_time: setting.remaining_time.toString() || '1440'
+        remaining_time: setting.remaining_time.toString() || '1440',
+        price_usd: setting.price_usd?.toString() || '25.00',
+        price_cop: setting.price_cop?.toString() || '100000.00'
       };
     });
     setInputValues(newInputValues);
@@ -180,6 +184,8 @@ export function AdminSettings() {
       const formData = new FormData(document.getElementById(`form-${type}`) as HTMLFormElement);
       const codeId = formData.get('code_id') as string;
       const remainingTime = parseInt(formData.get('remaining_time') as string);
+      const priceUsd = parseFloat(formData.get('price_usd') as string);
+      const priceCop = parseFloat(formData.get('price_cop') as string);
 
       const existingSetting = qrSettings.find(setting => setting.type === type);
       let qrImageUrl = existingSetting?.qr_image_url || null;
@@ -192,6 +198,8 @@ export function AdminSettings() {
         type,
         code_id: codeId,
         remaining_time: remainingTime,
+        price_usd: priceUsd,
+        price_cop: priceCop,
         qr_image_url: qrImageUrl,
         is_active: true
       };
@@ -250,6 +258,8 @@ export function AdminSettings() {
         // Usar valores del estado en lugar del DOM
         const codeId = inputValues[type]?.code_id?.trim() || '';
         const remainingTime = parseInt(inputValues[type]?.remaining_time || '1440') || 1440;
+        const priceUsd = parseFloat(inputValues[type]?.price_usd || '25.00') || 25.00;
+        const priceCop = parseFloat(inputValues[type]?.price_cop || '100000.00') || 100000.00;
 
         console.log(`Type: ${type}, Code ID: "${codeId}", Remaining Time: ${remainingTime}`);
 
@@ -279,6 +289,8 @@ export function AdminSettings() {
           type,
           code_id: codeId || '',
           remaining_time: remainingTime,
+          price_usd: priceUsd,
+          price_cop: priceCop,
           qr_image_url: qrImageUrl,
           is_active: true
         };
@@ -536,13 +548,58 @@ export function AdminSettings() {
                          placeholder={config.type.includes('admin') ? "Ingrese código admin" : "Ingrese código ID"}
                          required={config.type.includes('admin')}
                        />
-                    </div>
+                     </div>
 
                      <div>
                        <label className="block text-sm font-medium text-slate-300 mb-2 flex items-center gap-2">
-                         <Clock className="w-4 h-4" />
-                         Tiempo restante (minutos)
+                         <DollarSign className="w-4 h-4" />
+                         Precio
                        </label>
+                       <div className="grid grid-cols-2 gap-2">
+                         <div>
+                           <label className="block text-xs text-slate-400 mb-1">USD (Binance)</label>
+                           <input
+                             name="price_usd"
+                             type="number"
+                             step="0.01"
+                             value={inputValues[config.type]?.price_usd || setting?.price_usd || '25.00'}
+                             onChange={(e) => setInputValues(prev => ({
+                               ...prev,
+                               [config.type]: {
+                                 ...prev[config.type],
+                                 price_usd: e.target.value
+                               }
+                             }))}
+                             className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white text-sm placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
+                             placeholder="25.00"
+                           />
+                         </div>
+                         <div>
+                           <label className="block text-xs text-slate-400 mb-1">COP (Nequi)</label>
+                           <input
+                             name="price_cop"
+                             type="number"
+                             step="0.01"
+                             value={inputValues[config.type]?.price_cop || setting?.price_cop || '100000.00'}
+                             onChange={(e) => setInputValues(prev => ({
+                               ...prev,
+                               [config.type]: {
+                                 ...prev[config.type],
+                                 price_cop: e.target.value
+                               }
+                             }))}
+                             className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white text-sm placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
+                             placeholder="100000.00"
+                           />
+                         </div>
+                       </div>
+                     </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2 flex items-center gap-2">
+                          <Clock className="w-4 h-4" />
+                          Tiempo restante (minutos)
+                        </label>
                         <input
                           id={`time-input-${config.type}`}
                           name="remaining_time"

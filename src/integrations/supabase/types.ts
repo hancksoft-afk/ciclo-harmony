@@ -113,6 +113,8 @@ export type Database = {
           created_at: string
           id: string
           is_active: boolean
+          price_cop: number | null
+          price_usd: number | null
           qr_image_url: string | null
           qr_image_url2: string | null
           remaining_time: number
@@ -124,6 +126,8 @@ export type Database = {
           created_at?: string
           id?: string
           is_active?: boolean
+          price_cop?: number | null
+          price_usd?: number | null
           qr_image_url?: string | null
           qr_image_url2?: string | null
           remaining_time: number
@@ -135,6 +139,8 @@ export type Database = {
           created_at?: string
           id?: string
           is_active?: boolean
+          price_cop?: number | null
+          price_usd?: number | null
           qr_image_url?: string | null
           qr_image_url2?: string | null
           remaining_time?: number
