@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { CircleX } from 'lucide-react';
 import { RegistrationForm } from '@/components/registration-form';
-import cicloLogo from '@/assets/ciclo-logo.png';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -59,7 +58,7 @@ const Register = () => {
 
         <div className="relative min-h-screen flex flex-col items-center justify-center text-center px-4">
           <div className="mb-8">
-            <img src={cicloLogo} alt="Logo" className="h-20 w-auto mx-auto mb-4" />
+            <img src="/lovable-uploads/613bf353-6f02-43c1-9e77-9211224cfcde.png" alt="Logo" className="h-20 w-auto mx-auto mb-4" />
           </div>
           <div className="bg-red-500/20 backdrop-blur-sm border border-red-500/30 rounded-lg p-8 max-w-md">
             <h1 className="text-2xl font-bold text-white mb-4">Registro Cerrado</h1>
