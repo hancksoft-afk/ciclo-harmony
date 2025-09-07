@@ -532,21 +532,6 @@ export function RegistrationForm() {
                       No
                     </button>
                   </div>
-                  {formData.hasMoney === 'no' && (
-                    <div className="mt-3 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-                      <div className="flex items-start gap-3">
-                        <div className="w-5 h-5 bg-blue-500/20 rounded-full flex items-center justify-center mt-0.5">
-                          <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-medium text-white mb-1">¡No te preocupes!</h4>
-                          <p className="text-sm text-blue-100 leading-relaxed">
-                            Puedes continuar con el registro. Te explicaremos cómo obtener los fondos necesarios durante el proceso.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
                 </div>
               </div>
 
@@ -828,7 +813,7 @@ export function RegistrationForm() {
               <div className={`flex items-center justify-between p-4 rounded-lg border-2 ${(selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')) === 'Binance' ? 'bg-yellow-400/10 border-yellow-400/30' : 'bg-purple-400/10 border-purple-400/30'}`}>
                 <div>
                     <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                      Pago por QR - {selectedPlatform === 'Binance' || formData.paymentMethod === 'binance_pay' ? `${qrSettings?.price_usd || '25'} USD` : `${nequiQrSettings?.price_cop || '100000'} COP`} (Ciclo de vida) - {selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')}
+                      Pago por QR - {(selectedPlatform === 'Nequi' || formData.paymentMethod === 'nequi_pay') ? `${nequiQrSettings?.price_cop || '100000'} COP` : `${qrSettings?.price_usd || '25'} USD`} (Ciclo de vida) - {selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')}
                     </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el código para continuar. Tiempo restante: <span className="text-foreground">{formatTime(timer1)}</span>

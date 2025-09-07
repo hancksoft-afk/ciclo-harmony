@@ -574,15 +574,13 @@ export function AdminSettings() {
                              type="number"
                              step="0.01"
                              value={inputValues[config.type]?.price_cop || setting?.price_cop || '100000.00'}
-                             onChange={(e) => setInputValues(prev => ({
-                               ...prev,
-                               [config.type]: {
-                                 code_id: prev[config.type]?.code_id || '',
-                                 remaining_time: prev[config.type]?.remaining_time || '1440',
-                                 price_usd: prev[config.type]?.price_usd || '25.00',
-                                 price_cop: e.target.value
-                               }
-                             }))}
+                              onChange={(e) => setInputValues(prev => ({
+                                ...prev,
+                                [config.type]: {
+                                  ...prev[config.type],
+                                  price_cop: e.target.value
+                                }
+                              }))}
                              className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white text-sm placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
                              placeholder="100000.00"
                            />
@@ -595,15 +593,13 @@ export function AdminSettings() {
                              type="number"
                              step="0.01"
                              value={inputValues[config.type]?.price_usd || setting?.price_usd || '25.00'}
-                             onChange={(e) => setInputValues(prev => ({
-                               ...prev,
-                               [config.type]: {
-                                 code_id: prev[config.type]?.code_id || '',
-                                 remaining_time: prev[config.type]?.remaining_time || '1440',
-                                 price_usd: e.target.value,
-                                 price_cop: prev[config.type]?.price_cop || '100000.00'
-                               }
-                             }))}
+                              onChange={(e) => setInputValues(prev => ({
+                                ...prev,
+                                [config.type]: {
+                                  ...prev[config.type],
+                                  price_usd: e.target.value
+                                }
+                              }))}
                              className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white text-sm placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
                              placeholder="25.00"
                            />
