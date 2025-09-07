@@ -54,7 +54,7 @@ const Register150 = () => {
           playsInline 
           className="fixed top-0 left-0 w-full h-full object-cover -z-10"
         >
-          <source src="https://videos.pexels.com/video-files/18458403/18458403-hd_1920_1080_24fps.mp4" type="video/mp4" />
+          <source src="/lovable-uploads/vidoenajar.mp4" type="video/mp4" />
         </video>
 
         <div className="relative min-h-screen flex flex-col items-center justify-center text-center px-4">
@@ -87,7 +87,7 @@ const Register150 = () => {
         playsInline 
         className="fixed top-0 left-0 w-full h-full object-cover -z-10"
       >
-        <source src="https://videos.pexels.com/video-files/18458403/18458403-hd_1920_1080_24fps.mp4" type="video/mp4" />
+        <source src="/lovable-uploads/vidoenajar.mp4" type="video/mp4" />
       </video>
 
       <div className="relative min-h-screen">
