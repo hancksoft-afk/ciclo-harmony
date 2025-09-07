@@ -55,10 +55,10 @@ const Index = () => {
             />
             <div className="text-center">
               <h1 className="sm:text-4xl text-7xl tracking-tight font-instrument">
-                Ciclo vida
+                ¡Únete Hoy!
               </h1>
               <p className="text-sm text-slate-200/80 mt-1 font-inter font-light">
-                Mindful tea guidance for your daily practice
+               Da el primer paso hacia tu independencia financiera...
               </p>
             </div>
           </header>
@@ -69,13 +69,13 @@ const Index = () => {
               <RitualCard
                 title="Registardo 25 USD"
                 subtitle="Bienvenido"
-                description="Whisk, breathe, and be present. Today's ritual celebrated calm, bright energy."
+                description="Vamos a inscribirnos con un registro de 25 USD de energía."
                 status="Nuevo Registardo"
                 linkText="Continue ritual"
                 linkHref="/register"
                 variant="emerald"
                 videoSrc="/lovable-uploads/moneda24usd.mp4"
-                videoPoster="https://cdn.pixabay.com/video/2021/02/17/65494-514501826_tiny.jpg?w=800&q=80"
+                videoPoster="/lovable-uploads/fondo25usd.jpg"
                 icon={<Sunrise className="w-full h-full" strokeWidth={1.5} />}
                 delay={0}
               />
@@ -85,13 +85,13 @@ const Index = () => {
               <RitualCard
                 title="Registardo 150 USD"
                 subtitle="Bienvenido"
-                description="Cursos en línea y mejora tus habilidades desde cualquier lugar del mundo."
+                description="Vamos a inscribirnos con un registro de 150 USD de energía."
                 status="Nuevo Registardo"
                 linkText="Start ritual"
                 linkHref="/register150"
                 variant="cyan"
                 videoSrc="/lovable-uploads/moneda150usd.mp4"
-                videoPoster="https://cdn.pixabay.com/video/2021/02/20/65771-515379416_tiny.jpg?w=800&q=80"
+                videoPoster="/lovable-uploads/fondo150usd.jpg"
                 icon={<Wind className="w-full h-full" strokeWidth={1.5} />}
                 delay={100}
               />
@@ -101,8 +101,8 @@ const Index = () => {
               <RitualCard
                 title="Noticias"
                 subtitle=""
-                description="A curated tea-ritual library with guided ceremonies for every mood and moment."
-                status="Virutal Binance"
+                description="Noticia: información sobre el ciclo de vida."
+                status="Noticia"
                 linkText="Explore rituals"
                 variant="violet"
                 videoSrc="https://cdn.pixabay.com/video/2021/02/20/65772-515379427_large.mp4"
@@ -119,11 +119,11 @@ const Index = () => {
             </p>
             <div className="hidden sm:flex items-center gap-4 text-xs text-muted-foreground font-inter">
               <a href="#" className="hover:text-foreground transition-colors">
-                Privacy
+                Privacidad
               </a>
               <span className="text-border">|</span>
               <a href="#" className="hover:text-foreground transition-colors">
-                Terms
+                Términos
               </a>
             </div>
           </footer>
