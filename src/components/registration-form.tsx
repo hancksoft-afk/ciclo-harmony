@@ -812,7 +812,8 @@ export function RegistrationForm() {
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <div>
-                   <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
+                   <h2 className="text-xl font-semibold tracking-tight text-white font-inter flex items-center gap-2">
+                     <div className={`w-2 h-2 rounded-full ${(selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')) === 'Binance' ? 'bg-yellow-400' : 'bg-purple-400'}`}></div>
                      Pago por QR - {selectedPlatform === 'Nequi' || formData.paymentMethod === 'nequi_pay' ? `${qrSettings?.price_cop || nequiQrSettings?.price_cop || '100000'} COP` : `${qrSettings?.price_usd || '25'} USD`} (Ciclo de vida) - {selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')}
                    </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
@@ -918,7 +919,8 @@ export function RegistrationForm() {
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <div>
-                   <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
+                   <h2 className="text-xl font-semibold tracking-tight text-white font-inter flex items-center gap-2">
+                     <div className={`w-2 h-2 rounded-full ${(selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')) === 'Binance' ? 'bg-yellow-400' : 'bg-purple-400'}`}></div>
                      Pago por QR - {selectedPlatform === 'Nequi' || formData.paymentMethod === 'nequi_pay' ? `${adminQrSettings?.price_cop || adminNequiQrSettings?.price_cop || '100000'} COP` : `${adminQrSettings?.price_usd || '25'} USD`} (Admin) - {selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')}
                    </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">

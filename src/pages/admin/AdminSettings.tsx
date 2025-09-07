@@ -727,10 +727,13 @@ export function AdminSettings() {
       </p>
 
       {/* Group 1: Register $25 */}
-      <div className="mb-12">
-        <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg p-6 mb-6">
-          <h2 className="text-2xl font-semibold text-blue-400 mb-2">Registro $25 USD</h2>
-          <p className="text-muted-foreground">Configuración para el proceso de registro de $25 USD</p>
+      <div className="mb-16 border-2 border-blue-500/20 rounded-2xl p-6 bg-gradient-to-br from-blue-500/5 to-purple-500/5">
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-6 mb-6 shadow-lg">
+          <h2 className="text-3xl font-bold text-white mb-3 flex items-center gap-3">
+            <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
+            Registro $25 USD
+          </h2>
+          <p className="text-blue-100">Configuración para el proceso de registro de $25 USD</p>
         </div>
         
         {/* Toggle Settings Section for $25 */}
@@ -813,10 +816,13 @@ export function AdminSettings() {
       </div>
 
       {/* Group 2: Register $150 */}
-      <div className="mb-8">
-        <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-lg p-6 mb-6">
-          <h2 className="text-2xl font-semibold text-green-400 mb-2">Registro $150 USD</h2>
-          <p className="text-muted-foreground">Configuración para el proceso de registro de $150 USD</p>
+      <div className="mb-8 border-2 border-green-500/20 rounded-2xl p-6 bg-gradient-to-br from-green-500/5 to-emerald-500/5">
+        <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl p-6 mb-6 shadow-lg">
+          <h2 className="text-3xl font-bold text-white mb-3 flex items-center gap-3">
+            <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+            Registro $150 USD
+          </h2>
+          <p className="text-green-100">Configuración para el proceso de registro de $150 USD</p>
         </div>
         
         {/* Toggle Settings Section for $150 */}

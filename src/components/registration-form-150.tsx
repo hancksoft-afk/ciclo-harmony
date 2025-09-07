@@ -843,7 +843,8 @@ export function RegistrationForm150() {
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
+                  <h2 className="text-xl font-semibold tracking-tight text-white font-inter flex items-center gap-2">
+                    <div className={`w-2 h-2 rounded-full ${selectedPlatform === 'Binance' ? 'bg-yellow-400' : 'bg-purple-400'}`}></div>
                     Pago por QR - {selectedPlatform === 'Nequi' ? `${platformQrSettings?.price_cop || qrSettings?.price_cop || '100000'} COP` : `${platformQrSettings?.price_usd || qrSettings?.price_usd || '150'} USD`} (Ciclo de vida) - {selectedPlatform}
                   </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
@@ -951,7 +952,8 @@ export function RegistrationForm150() {
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
+                  <h2 className="text-xl font-semibold tracking-tight text-white font-inter flex items-center gap-2">
+                    <div className={`w-2 h-2 rounded-full ${selectedPlatform === 'Binance' ? 'bg-yellow-400' : 'bg-purple-400'}`}></div>
                     Pago por QR - {selectedPlatform === 'Nequi' ? `${platformAdminQrSettings?.price_cop || adminQrSettings?.price_cop || '100000'} COP` : `${platformAdminQrSettings?.price_usd || adminQrSettings?.price_usd || '150'} USD`} (Admin) - {selectedPlatform}
                   </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
