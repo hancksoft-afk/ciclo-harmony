@@ -74,7 +74,7 @@ const Index = () => {
                 linkText="Continue ritual"
                 linkHref="/register"
                 variant="emerald"
-                videoSrc="/lovable-uploads/moneda25.mp4"
+                videoSrc="/lovable-uploads/moneda25a.mp4"
                 videoPoster="https://cdn.pixabay.com/video/2021/02/17/65494-514501826_tiny.jpg?w=800&q=80"
                 icon={<Sunrise className="w-full h-full" strokeWidth={1.5} />}
                 delay={0}
