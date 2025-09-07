@@ -515,7 +515,7 @@ export function RegistrationForm() {
                       className={`px-4 py-2 text-sm rounded-md transition ${
                         formData.hasMoney === 'yes' 
                           ? 'bg-white/10 text-white' 
-                          : 'text-muted-foreground hover:text-white hover:bg-white/5'
+                          : 'text-muted-foreground hover:text-white hover:bg-[#cb00e3b8]'
                       }`}
                     >
                       Sí
@@ -526,7 +526,7 @@ export function RegistrationForm() {
                       className={`px-4 py-2 text-sm rounded-md transition ${
                         formData.hasMoney === 'no' 
                           ? 'bg-white/10 text-white' 
-                          : 'text-muted-foreground hover:text-white hover:bg-white/5'
+                          : 'text-muted-foreground hover:text-white hover:bg-[#cb00e3b8]'
                       }`}
                     >
                       No
