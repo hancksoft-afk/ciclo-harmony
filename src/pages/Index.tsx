@@ -99,7 +99,7 @@ const Index = () => {
             
             {isCardVisible('eduplatform_visible') && (
               <RitualCard
-                title="EduPlatform"
+                title="Noticias"
                 subtitle=""
                 description="A curated tea-ritual library with guided ceremonies for every mood and moment."
                 status="Virutal Binance"
