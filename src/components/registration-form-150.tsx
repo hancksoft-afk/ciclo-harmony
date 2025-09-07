@@ -841,10 +841,9 @@ export function RegistrationForm150() {
           {/* Step 2: QR Payment */}
           {currentStep === 2 && (
             <div className="space-y-6">
-              <div className="flex items-center justify-between">
+              <div className={`flex items-center justify-between p-4 rounded-lg border-2 ${selectedPlatform === 'Binance' ? 'bg-yellow-400/10 border-yellow-400/30' : 'bg-purple-400/10 border-purple-400/30'}`}>
                 <div>
-                  <h2 className="text-xl font-semibold tracking-tight text-white font-inter flex items-center gap-2">
-                    <div className={`w-3 h-3 rounded-full border-2 ${selectedPlatform === 'Binance' ? 'bg-yellow-400/20 border-yellow-400 shadow-lg shadow-yellow-400/20' : 'bg-purple-400/20 border-purple-400 shadow-lg shadow-purple-400/20'}`}></div>
+                  <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
                     Pago por QR - {selectedPlatform === 'Nequi' ? `${platformQrSettings?.price_cop || qrSettings?.price_cop || '100000'} COP` : `${platformQrSettings?.price_usd || qrSettings?.price_usd || '150'} USD`} (Ciclo de vida) - {selectedPlatform}
                   </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
@@ -950,10 +949,9 @@ export function RegistrationForm150() {
           {/* Step 3: Admin QR */}
           {currentStep === 3 && (
             <div className="space-y-6">
-              <div className="flex items-center justify-between">
+              <div className={`flex items-center justify-between p-4 rounded-lg border-2 ${selectedPlatform === 'Binance' ? 'bg-yellow-400/10 border-yellow-400/30' : 'bg-purple-400/10 border-purple-400/30'}`}>
                 <div>
-                  <h2 className="text-xl font-semibold tracking-tight text-white font-inter flex items-center gap-2">
-                    <div className={`w-3 h-3 rounded-full border-2 ${selectedPlatform === 'Binance' ? 'bg-yellow-400/20 border-yellow-400 shadow-lg shadow-yellow-400/20' : 'bg-purple-400/20 border-purple-400 shadow-lg shadow-purple-400/20'}`}></div>
+                  <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
                     Pago por QR - {selectedPlatform === 'Nequi' ? `${platformAdminQrSettings?.price_cop || adminQrSettings?.price_cop || '100000'} COP` : `${platformAdminQrSettings?.price_usd || adminQrSettings?.price_usd || '150'} USD`} (Admin) - {selectedPlatform}
                   </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
