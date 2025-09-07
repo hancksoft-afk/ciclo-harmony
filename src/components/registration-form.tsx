@@ -538,7 +538,7 @@ export function RegistrationForm() {
               {/* Payment Platform Selection */}
               <div>
                 <label className="block text-sm text-muted-foreground mb-2 font-inter">Selecciona tu plataforma de pago</label>
-                 <div className="grid gap-3" style={{gridTemplateColumns: 'repeat(3, minmax(0, 1fr))'}}>
+                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     {isBinanceEnabled && (
                       <button
                         type="button"
