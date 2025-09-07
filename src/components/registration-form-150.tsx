@@ -599,7 +599,7 @@ export function RegistrationForm150() {
                       onClick={() => setFormData({...formData, hasMoney: 'no'})}
                       className={`px-4 py-2 text-sm rounded-md transition ${
                         formData.hasMoney === 'no' 
-                          ? 'bg-white/10 text-white' 
+                          ? 'bg-[#bd6b03d4] text-white' 
                           : 'text-muted-foreground hover:text-white hover:bg-[#bd6b03d4]'
                       }`}
                     >
