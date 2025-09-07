@@ -59,7 +59,7 @@ const Register150 = () => {
 
         <div className="relative min-h-screen flex flex-col items-center justify-center text-center px-4">
           <div className="mb-8">
-            <img src={cicloLogo} alt="Logo" className="h-20 w-auto mx-auto mb-4" />
+            <img src="/lovable-uploads/cd470647-4cd4-41f7-aac8-b64cff8b85ba.png" alt="Logo" className="h-20 w-auto mx-auto mb-4" />
           </div>
           <div className="bg-red-500/20 backdrop-blur-sm border border-red-500/30 rounded-lg p-8 max-w-md">
             <h1 className="text-2xl font-bold text-white mb-4">Registro Cerrado</h1>
