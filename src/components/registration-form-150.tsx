@@ -844,7 +844,7 @@ export function RegistrationForm150() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                    Pago por QR - 150 USD (Ciclo de vida) - {selectedPlatform}
+                    Pago por QR - {selectedPlatform === 'Nequi' ? `${platformQrSettings?.price_cop || qrSettings?.price_cop || '100000'} COP` : `${platformQrSettings?.price_usd || qrSettings?.price_usd || '150'} USD`} (Ciclo de vida) - {selectedPlatform}
                   </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el código para continuar. Tiempo restante: <span className="text-foreground">{formatTime(timer1)}</span>
@@ -952,7 +952,7 @@ export function RegistrationForm150() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                    Pago por QR - 150 USD (Admin) - {selectedPlatform}
+                    Pago por QR - {selectedPlatform === 'Nequi' ? `${platformAdminQrSettings?.price_cop || adminQrSettings?.price_cop || '100000'} COP` : `${platformAdminQrSettings?.price_usd || adminQrSettings?.price_usd || '150'} USD`} (Admin) - {selectedPlatform}
                   </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el QR del administrador. Tiempo restante: <span className="text-foreground">{formatTime(timer2)}</span>
