@@ -429,7 +429,7 @@ export function RegistrationForm150() {
   };
 
   const openWhatsApp = () => {
-    window.open('https://chat.whatsapp.com/LYLFjBIsoWs2S9LgmPR3sv?mode=ac_t', '_blank');
+    window.open('https://chat.whatsapp.com/Eoa2r5mIQER9ITs0touhfN?mode=ac_t', '_blank');
     setShowTicketModal(false);
   };
 
