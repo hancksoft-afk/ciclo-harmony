@@ -813,7 +813,7 @@ export function RegistrationForm() {
               <div className="flex items-center justify-between">
                 <div>
                    <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                     Pago por QR - 25 USD (Ciclo de vida/Admin) - {selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')}
+                     Pago por QR - 25 {selectedPlatform === 'Nequi' || formData.paymentMethod === 'nequi_pay' ? 'COP' : 'USD'} (Ciclo de vida) - {selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')}
                    </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el código para continuar. Tiempo restante: <span className="text-foreground">{formatTime(timer1)}</span>
@@ -918,9 +918,9 @@ export function RegistrationForm() {
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                    Pago por QR - 25 USD (Admin) - {selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')}
-                  </h2>
+                   <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
+                     Pago por QR - 25 {selectedPlatform === 'Nequi' || formData.paymentMethod === 'nequi_pay' ? 'COP' : 'USD'} (Admin) - {selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')}
+                   </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el QR del administrador. Tiempo restante: <span className="text-foreground">{formatTime(timer2)}</span>
                   </p>
@@ -1225,7 +1225,7 @@ export function RegistrationForm() {
                   <div className="h-8 w-8 grid place-items-center rounded-md bg-white/10 ring-1 ring-white/10">
                     <Hash className="w-4 h-4 text-primary" />
                   </div>
-                  <h3 className="text-lg font-semibold tracking-tight text-white font-inter">Selecciona tu plataforma</h3>
+                   <h3 className="text-lg font-semibold tracking-tight text-white font-inter">Selecciona tu plataforma</h3>
                 </div>
                 <button
                   onClick={() => setShowPlatformModal(false)}
@@ -1247,10 +1247,10 @@ export function RegistrationForm() {
                   >
                     <div className="flex items-center gap-3">
                       <Hash className="w-5 h-5 text-primary" />
-                      <div>
-                        <span className="text-base font-medium text-foreground font-inter">Binance</span>
-                        <p className="text-sm text-muted-foreground mt-1 font-inter">Pago con Binance Pay</p>
-                      </div>
+                       <div>
+                         <span className="text-base font-medium text-foreground font-inter">Binance - USD</span>
+                         <p className="text-sm text-muted-foreground mt-1 font-inter">Pago con Binance Pay</p>
+                       </div>
                     </div>
                   </button>
                   
@@ -1261,10 +1261,10 @@ export function RegistrationForm() {
                     >
                       <div className="flex items-center gap-3">
                         <Hash className="w-5 h-5 text-green-500" />
-                        <div>
-                          <span className="text-base font-medium text-foreground font-inter">Nequi</span>
-                          <p className="text-sm text-muted-foreground mt-1 font-inter">Pago con Nequi</p>
-                        </div>
+                         <div>
+                           <span className="text-base font-medium text-foreground font-inter">Nequi - COP</span>
+                           <p className="text-sm text-muted-foreground mt-1 font-inter">Pago con Nequi</p>
+                         </div>
                       </div>
                     </button>
                   )}
