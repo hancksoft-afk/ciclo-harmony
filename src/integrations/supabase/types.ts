@@ -380,6 +380,8 @@ export type Database = {
         Args: { qr_type: string }
         Returns: {
           code_id: string
+          price_cop: number
+          price_usd: number
           qr_image_url: string
           remaining_time: number
         }[]

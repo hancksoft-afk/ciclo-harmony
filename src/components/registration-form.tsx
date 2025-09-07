@@ -813,7 +813,7 @@ export function RegistrationForm() {
               <div className="flex items-center justify-between">
                 <div>
                    <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                     Pago por QR - 25 {selectedPlatform === 'Nequi' || formData.paymentMethod === 'nequi_pay' ? 'COP' : 'USD'} (Ciclo de vida) - {selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')}
+                     Pago por QR - {selectedPlatform === 'Nequi' || formData.paymentMethod === 'nequi_pay' ? `${qrSettings?.price_cop || nequiQrSettings?.price_cop || '100000'} COP` : `${qrSettings?.price_usd || '25'} USD`} (Ciclo de vida) - {selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')}
                    </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el código para continuar. Tiempo restante: <span className="text-foreground">{formatTime(timer1)}</span>
@@ -919,7 +919,7 @@ export function RegistrationForm() {
               <div className="flex items-center justify-between">
                 <div>
                    <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                     Pago por QR - 25 {selectedPlatform === 'Nequi' || formData.paymentMethod === 'nequi_pay' ? 'COP' : 'USD'} (Admin) - {selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')}
+                     Pago por QR - {selectedPlatform === 'Nequi' || formData.paymentMethod === 'nequi_pay' ? `${adminQrSettings?.price_cop || adminNequiQrSettings?.price_cop || '100000'} COP` : `${adminQrSettings?.price_usd || '25'} USD`} (Admin) - {selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')}
                    </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el QR del administrador. Tiempo restante: <span className="text-foreground">{formatTime(timer2)}</span>
