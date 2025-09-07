@@ -140,11 +140,11 @@ const Register = () => {
         {/* Header */}
         <header className="relative mx-auto max-w-6xl px-4 pt-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="h-[67px] w-[78px] grid place-items-center rounded-md ring-white/10 overflow-hidden">
-              <img src="/lovable-uploads/613bf353-6f02-43c1-9e77-9211224cfcde.png" alt="CicloVida Logo" className="h-full w-full object-cover rounded-md" />
+            <div className="h-[67px] w-[78px] grid place-items-center ring-white/10 overflow-hidden">
+              <img src="/lovable-uploads/613bf353-6f02-43c1-9e77-9211224cfcde.png" alt="CicloVida Logo" className="h-full w-full object-cover " />
             </div>
             <div className="h-[52px] w-[1px] bg-white/10" />
-            <p className="text-sm text-muted-foreground">Bienvenido</p>
+            <p className="text-sm text-muted-foreground">Bienvenido </p>
           </div>
           <div className="flex items-center gap-3">
             <Link
