@@ -344,8 +344,14 @@ export function RegistrationForm() {
   const validateStep2 = () => {
     const newErrors: Record<string, boolean> = {};
     
-    if (!formData.binanceIdStep2 || formData.binanceIdStep2.length < 10 || formData.binanceIdStep2.length > 19) {
-      newErrors.binanceIdStep2 = true;
+    if (selectedPlatform === 'Binance') {
+      if (!formData.binanceIdStep2 || formData.binanceIdStep2.length < 10 || formData.binanceIdStep2.length > 19) {
+        newErrors.binanceIdStep2 = true;
+      }
+    } else if (selectedPlatform === 'Nequi') {
+      if (!formData.referenceIdStep2 || formData.referenceIdStep2.trim().length < 6 || formData.referenceIdStep2.trim().length > 20) {
+        newErrors.referenceIdStep2 = true;
+      }
     }
 
     setErrors(newErrors);
@@ -355,8 +361,14 @@ export function RegistrationForm() {
   const validateStep3 = () => {
     const newErrors: Record<string, boolean> = {};
     
-    if (!formData.binanceIdStep3 || formData.binanceIdStep3.length < 10 || formData.binanceIdStep3.length > 19) {
-      newErrors.binanceIdStep3 = true;
+    if (selectedPlatform === 'Binance') {
+      if (!formData.binanceIdStep3 || formData.binanceIdStep3.length < 10 || formData.binanceIdStep3.length > 19) {
+        newErrors.binanceIdStep3 = true;
+      }
+    } else if (selectedPlatform === 'Nequi') {
+      if (!formData.referenceIdStep3 || formData.referenceIdStep3.trim().length < 6 || formData.referenceIdStep3.trim().length > 20) {
+        newErrors.referenceIdStep3 = true;
+      }
     }
 
     setErrors(newErrors);
@@ -412,6 +424,8 @@ export function RegistrationForm() {
           binance_id_step2: formData.binanceIdStep2 || null,
           binance_id_step3: formData.binanceIdStep3 || null,
           nequi_phone: formData.nequiPhone || null,
+          nequi_id_step2: formData.referenceIdStep2 || null,
+          nequi_id_step3: formData.referenceIdStep3 || null,
           order_id_1: orderId1,
           order_id_2: orderId2,
           ticket_id: codes.ticketId,
@@ -491,10 +505,12 @@ export function RegistrationForm() {
                            (formData.paymentMethod === 'nequi' && formData.nequiPhone) ||
                            (formData.paymentMethod === 'binance_nequi' && formData.binanceId && formData.nequiPhone));
 
-  const canProceedStep2 = formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19 && 
-                           formData.referenceIdStep2.length >= 6 && formData.referenceIdStep2.length <= 20;
-  const canProceedStep3 = formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19 && 
-                           formData.referenceIdStep3.length >= 6 && formData.referenceIdStep3.length <= 20;
+  const canProceedStep2 = selectedPlatform === 'Binance' 
+    ? (formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19)
+    : (formData.referenceIdStep2.trim().length >= 6 && formData.referenceIdStep2.trim().length <= 20);
+  const canProceedStep3 = selectedPlatform === 'Binance' 
+    ? (formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19)
+    : (formData.referenceIdStep3.trim().length >= 6 && formData.referenceIdStep3.trim().length <= 20);
 
   const isPaymentMethodPreferred = (method: string) => {
     if (!formData.country) return false;
@@ -963,12 +979,14 @@ export function RegistrationForm() {
                         <input
                           type="text"
                           placeholder={selectedPlatform === 'Binance' ? "Ingresa tu ID de Binance" : "Ingresa tu ID de Nequi"}
-                          value={formData.binanceIdStep2}
-                          onChange={(e) => setFormData({...formData, binanceIdStep2: e.target.value})}
+                          value={selectedPlatform === 'Binance' ? formData.binanceIdStep2 : formData.referenceIdStep2}
+                          onChange={(e) => setFormData(selectedPlatform === 'Binance' 
+                            ? {...formData, binanceIdStep2: e.target.value} 
+                            : {...formData, referenceIdStep2: e.target.value})}
                           className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
                         />
                       </div>
-                      {errors.binanceIdStep2 && (
+                      {(selectedPlatform === 'Binance' ? errors.binanceIdStep2 : errors.referenceIdStep2) && (
                          <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
                            <AlertTriangle className="w-3.5 h-3.5" />
                            <span><strong className="font-medium">{selectedPlatform === 'Binance' ? 'ID de Binance inválido' : 'ID de Nequi inválido'}</strong> — {selectedPlatform === 'Binance' ? 'Debe tener entre 10 y 19 dígitos numéricos.' : 'Debe tener entre 6 y 20 caracteres alfanuméricos.'}</span>
@@ -1075,12 +1093,14 @@ export function RegistrationForm() {
                         <input
                           type="text"
                           placeholder={selectedPlatform === 'Binance' ? "Ingresa tu ID de Binance" : "Ingresa tu ID de Nequi"}
-                          value={formData.binanceIdStep3}
-                          onChange={(e) => setFormData({...formData, binanceIdStep3: e.target.value})}
+                          value={selectedPlatform === 'Binance' ? formData.binanceIdStep3 : formData.referenceIdStep3}
+                          onChange={(e) => setFormData(selectedPlatform === 'Binance' 
+                            ? {...formData, binanceIdStep3: e.target.value} 
+                            : {...formData, referenceIdStep3: e.target.value})}
                           className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
                         />
                       </div>
-                      {errors.binanceIdStep3 && (
+                      {(selectedPlatform === 'Binance' ? errors.binanceIdStep3 : errors.referenceIdStep3) && (
                          <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
                            <AlertTriangle className="w-3.5 h-3.5" />
                            <span><strong className="font-medium">{selectedPlatform === 'Binance' ? 'ID de Binance inválido' : 'ID de Nequi inválido'}</strong> — {selectedPlatform === 'Binance' ? 'Debe tener entre 10 y 19 dígitos numéricos.' : 'Debe tener entre 6 y 20 caracteres alfanuméricos.'}</span>
@@ -1258,12 +1278,18 @@ export function RegistrationForm() {
                             <p className="text-sm font-medium text-slate-200 font-mono">{generatedCodes?.ticketId || 'xxxxxxxxxxxx'}</p>
                           </div>
                           <div className="space-y-1">
-                            <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Orden</p>
-                            <p className="text-sm font-medium text-amber-300 font-mono">{formData.binanceIdStep2}</p>
+                            <p className="text-xs uppercase tracking-wider text-white font-inter">
+                              {selectedPlatform === 'Binance' ? 'ID de Orden' : 'ID de Referencia'}
+                            </p>
+                            <p className="text-sm font-medium text-amber-300 font-mono">
+                              {selectedPlatform === 'Binance' ? formData.binanceIdStep2 : formData.referenceIdStep2}
+                            </p>
                           </div>
                           <div>
                             <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Administrador</p>
-                            <p className="text-sm font-medium text-amber-300 font-mono">{formData.binanceIdStep3}</p>
+                            <p className="text-sm font-medium text-amber-300 font-mono">
+                              {selectedPlatform === 'Binance' ? formData.binanceIdStep3 : formData.referenceIdStep3}
+                            </p>
                           </div>
                         </div>
                       </div>

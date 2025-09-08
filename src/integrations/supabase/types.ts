@@ -163,6 +163,8 @@ export type Database = {
           id: string
           invitee: string
           name: string
+          nequi_id_step2: string | null
+          nequi_id_step3: string | null
           nequi_phone: string | null
           order_id_1: string | null
           order_id_2: string | null
@@ -184,6 +186,8 @@ export type Database = {
           id?: string
           invitee: string
           name: string
+          nequi_id_step2?: string | null
+          nequi_id_step3?: string | null
           nequi_phone?: string | null
           order_id_1?: string | null
           order_id_2?: string | null
@@ -205,6 +209,8 @@ export type Database = {
           id?: string
           invitee?: string
           name?: string
+          nequi_id_step2?: string | null
+          nequi_id_step3?: string | null
           nequi_phone?: string | null
           order_id_1?: string | null
           order_id_2?: string | null
