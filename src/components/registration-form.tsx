@@ -619,12 +619,12 @@ export function RegistrationForm() {
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center gap-2">
-                              <span className={`text-sm font-medium font-inter ${
+                             <span className={`text-sm font-medium font-inter ${
                                 formData.paymentMethod === 'binance_pay' 
                                   ? 'text-white' 
                                   : 'text-foreground'
                               }`}>
-                                Binance Pay
+                                Binance
                               </span>
                             </div>
                             <p className="text-xs text-muted-foreground mt-0.5 font-inter">
@@ -645,7 +645,7 @@ export function RegistrationForm() {
                     {isNequiEnabled && (
                       <button
                         type="button"
-                        onClick={() => setFormData(prevFormData => ({...prevFormData, paymentMethod: 'nequi'}))}
+        onClick={() => setFormData(prevFormData => ({...prevFormData, paymentMethod: 'nequi'}))}
                         className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
                           formData.paymentMethod === 'nequi'
                             ? 'ring-primary bg-primary/10 border-primary shadow-lg shadow-primary/25' 
@@ -1261,8 +1261,8 @@ export function RegistrationForm() {
                           </div>
                             <div>
                               <p className="text-xs text-white font-inter">Plataforma:</p>
-                              <p className="font-medium text-slate-200">
-                                 {formData.paymentMethod === 'binance_pay' ? 'Binance Pay' : 
+                               <p className="font-medium text-slate-200">
+                                 {formData.paymentMethod === 'binance_pay' ? 'Binance' : 
                                  formData.paymentMethod === 'nequi' ? 'Nequi' : 
                                  formData.paymentMethod === 'binance_nequi' ? 'Binance + Nequi' : 'N/A'}
                               </p>
