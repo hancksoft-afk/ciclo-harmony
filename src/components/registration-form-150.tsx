@@ -9,6 +9,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useAntiCheat } from '@/hooks/use-anti-cheat';
+import { useNavigate } from 'react-router-dom';
 
 interface FormData {
   name: string;
@@ -29,6 +30,7 @@ const countries = ['México', 'España', 'Colombia', 'Argentina', 'Perú', 'Chil
 export function RegistrationForm150() {
   // Enable anti-cheat protection
   useAntiCheat();
+  const navigate = useNavigate();
   
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
@@ -256,8 +258,9 @@ export function RegistrationForm150() {
       const interval = setInterval(() => {
         setTimer1(prev => {
           if (prev <= 1) {
-            // Timer expired, but don't reset form data
-            toast.error("Tiempo expirado para QR principal. Puedes continuar con el QR de administración.");
+            // Timer expired, redirect to Index
+            toast.error("Tiempo agotado. Debes volver a empezar.");
+            navigate('/');
             return 0;
           }
           return prev - 1;
@@ -272,8 +275,9 @@ export function RegistrationForm150() {
       const interval = setInterval(() => {
         setTimer2(prev => {
           if (prev <= 1) {
-            // Timer expired, but don't reset form data
-            toast.error("Tiempo expirado para QR de administración. Por favor contacta al administrador.");
+            // Timer expired, redirect to Index
+            toast.error("Tiempo agotado. Debes volver a empezar.");
+            navigate('/');
             return 0;
           }
           return prev - 1;

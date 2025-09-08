@@ -9,6 +9,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useAntiCheat } from '@/hooks/use-anti-cheat';
+import { useNavigate } from 'react-router-dom';
 
 interface FormData {
   name: string;
@@ -29,6 +30,7 @@ const countries = ['México', 'España', 'Colombia', 'Argentina', 'Perú', 'Chil
 export function RegistrationForm() {
   // Enable anti-cheat protection
   useAntiCheat();
+  const navigate = useNavigate();
   
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
@@ -270,9 +272,9 @@ export function RegistrationForm() {
       const interval = setInterval(() => {
         setTimer1(prev => {
           if (prev <= 1) {
-            // Timer expired, go back to step 1
+            // Timer expired, redirect to Index
             toast.error("Tiempo agotado. Debes volver a empezar.");
-            setCurrentStep(1);
+            navigate('/');
             return 0;
           }
           return prev - 1;
@@ -287,9 +289,9 @@ export function RegistrationForm() {
       const interval = setInterval(() => {
         setTimer2(prev => {
           if (prev <= 1) {
-            // Timer expired, go back to step 1
+            // Timer expired, redirect to Index
             toast.error("Tiempo agotado. Debes volver a empezar.");
-            setCurrentStep(1);
+            navigate('/');
             return 0;
           }
           return prev - 1;
