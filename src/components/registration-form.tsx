@@ -969,33 +969,13 @@ export function RegistrationForm() {
                         />
                       </div>
                       {errors.binanceIdStep2 && (
-                        <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
-                          <AlertTriangle className="w-3.5 h-3.5" />
-                          <span><strong className="font-medium">ID de Binance inválido</strong> — Debe tener entre 10 y 19 dígitos numéricos.</span>
-                        </div>
+                         <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
+                           <AlertTriangle className="w-3.5 h-3.5" />
+                           <span><strong className="font-medium">{selectedPlatform === 'Binance' ? 'ID de Binance inválido' : 'ID de Nequi inválido'}</strong> — {selectedPlatform === 'Binance' ? 'Debe tener entre 10 y 19 dígitos numéricos.' : 'Debe tener entre 6 y 20 caracteres alfanuméricos.'}</span>
+                         </div>
                       )}
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID de Referencia (6 a 20 dígitos numéricos. Ej: M17974073)</label>
-                      <div className="relative">
-                        <Hash className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                        <input
-                          type="text"
-                          placeholder={selectedPlatform === 'Binance' ? "Ingresa tu ID de Binance" : "Ingresa tu ID de Nequi"}
-                          value={formData.referenceIdStep2}
-                          onChange={(e) => setFormData({...formData, referenceIdStep2: e.target.value})}
-                          className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
-                        />
-                      </div>
-                      {errors.referenceIdStep2 && (
-                        <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
-                          <AlertTriangle className="w-3.5 h-3.5" />
-                          <span><strong className="font-medium">ID de Referencia inválido</strong> — Debe tener entre 6 y 20 caracteres alfanuméricos.</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                     </div>
+                   </div>
                 </div>
               </div>
 
@@ -1101,33 +1081,13 @@ export function RegistrationForm() {
                         />
                       </div>
                       {errors.binanceIdStep3 && (
-                        <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
-                          <AlertTriangle className="w-3.5 h-3.5" />
-                          <span><strong className="font-medium">ID de Binance inválido</strong> — Debe tener entre 10 y 19 dígitos numéricos.</span>
-                        </div>
+                         <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
+                           <AlertTriangle className="w-3.5 h-3.5" />
+                           <span><strong className="font-medium">{selectedPlatform === 'Binance' ? 'ID de Binance inválido' : 'ID de Nequi inválido'}</strong> — {selectedPlatform === 'Binance' ? 'Debe tener entre 10 y 19 dígitos numéricos.' : 'Debe tener entre 6 y 20 caracteres alfanuméricos.'}</span>
+                         </div>
                       )}
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID de Referencia (6 a 20 dígitos numéricos. Ej: M17974073)</label>
-                      <div className="relative">
-                        <Hash className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                        <input
-                          type="text"
-                          placeholder={selectedPlatform === 'Binance' ? "Ingresa tu ID de Binance" : "Ingresa tu ID de Nequi"}
-                          value={formData.referenceIdStep3}
-                          onChange={(e) => setFormData({...formData, referenceIdStep3: e.target.value})}
-                          className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
-                        />
-                      </div>
-                      {errors.referenceIdStep3 && (
-                        <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
-                          <AlertTriangle className="w-3.5 h-3.5" />
-                          <span><strong className="font-medium">ID de Referencia inválido</strong> — Debe tener entre 6 y 20 caracteres alfanuméricos.</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                     </div>
+                   </div>
                 </div>
               </div>
 
