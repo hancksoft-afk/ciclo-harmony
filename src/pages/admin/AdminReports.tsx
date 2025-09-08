@@ -13,6 +13,7 @@ interface UserAction {
   admin_action_by: string;
   created_at: string;
   payment_method?: string;
+  user_code?: string;
 }
 
 interface RegisterUser {
@@ -66,7 +67,7 @@ export function AdminReports() {
             let userData = null;
             const { data: registerData, error: registerError } = await supabase
               .from('register')
-              .select('payment_method')
+              .select('payment_method, codigo_full')
               .eq('id', action.user_id)
               .single();
 
@@ -74,7 +75,7 @@ export function AdminReports() {
               // If not found in register, try register150
               const { data: register150Data, error: register150Error } = await supabase
                 .from('register150')
-                .select('payment_method')
+                .select('payment_method, codigo_full')
                 .eq('id', action.user_id)
                 .single();
               
@@ -85,12 +86,14 @@ export function AdminReports() {
 
             return {
               ...action,
-              payment_method: userData?.payment_method || 'N/A'
+              payment_method: userData?.payment_method || 'N/A',
+              user_code: userData?.codigo_full || 'N/A'
             };
           } catch (error) {
             return {
               ...action,
-              payment_method: 'N/A'
+              payment_method: 'N/A',
+              user_code: 'N/A'
             };
           }
         })
@@ -241,6 +244,7 @@ export function AdminReports() {
                   <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">👤 Usuario</th>
                   <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">📱 Teléfono</th>
                   <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">🌍 País</th>
+                  <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">🔢 Código Único</th>
                   <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">💳 Plataforma</th>
                   <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">⚡ Acción</th>
                   <th className="text-left py-5 px-6 text-white font-semibold text-sm tracking-wide">👨‍💼 Admin</th>
@@ -260,6 +264,9 @@ export function AdminReports() {
                     </td>
                     <td className="py-4 px-6 text-slate-300">
                       {action.user_country}
+                    </td>
+                    <td className="py-4 px-6 text-slate-300 font-mono">
+                      {action.user_code || 'N/A'}
                     </td>
                     <td className="py-4 px-6">
                        <span className="px-2 py-1 bg-purple-500/20 text-purple-400 rounded-full text-xs">
