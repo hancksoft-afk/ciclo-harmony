@@ -250,6 +250,25 @@ export function RegistrationForm() {
       newErrors.invitee = true;
     }
     
+    // Validar campo país obligatorio
+    if (!formData.country) {
+      newErrors.country = true;
+    }
+    
+    // Validar campo teléfono obligatorio
+    if (!formData.phone) {
+      newErrors.phone = true;
+    }
+    
+    // Validar campo "¿Tienes dinero?" obligatorio
+    if (!formData.hasMoney) {
+      newErrors.hasMoney = true;
+    }
+    
+    // Validar método de pago obligatorio
+    if (!formData.paymentMethod) {
+      newErrors.paymentMethod = true;
+    }
     
     if (formData.paymentMethod === 'binance_pay' && (!formData.binanceId || !/^\d{9,10}$/.test(formData.binanceId))) {
       newErrors.binanceId = true;
@@ -384,10 +403,10 @@ export function RegistrationForm() {
   const canProceedStep1 = formData.name && formData.invitee && formData.country && 
                           formData.phone && formData.hasMoney && 
                           formData.paymentMethod && 
-                           (formData.paymentMethod !== 'binance_pay' && formData.paymentMethod !== 'nequi_pay' && formData.paymentMethod !== 'binance_pay_nequi') || 
+                          ((formData.paymentMethod !== 'binance_pay' && formData.paymentMethod !== 'nequi_pay' && formData.paymentMethod !== 'binance_pay_nequi') || 
                            (formData.paymentMethod === 'binance_pay' && formData.binanceId) ||
                            (formData.paymentMethod === 'nequi_pay' && formData.nequiPhone) ||
-                           (formData.paymentMethod === 'binance_pay_nequi' && formData.binanceId && formData.nequiPhone);
+                           (formData.paymentMethod === 'binance_pay_nequi' && formData.binanceId && formData.nequiPhone));
 
   const canProceedStep2 = formData.binanceIdStep2 && formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19;
   const canProceedStep3 = formData.binanceIdStep3 && formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19;
