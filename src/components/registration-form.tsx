@@ -353,45 +353,6 @@ export function RegistrationForm() {
     }
   };
 
-  // Timer effects with improved handling
-  useEffect(() => {
-    if (currentStep === 2 && timer1 > 0) {
-      const interval = setInterval(() => {
-        setTimer1(prev => {
-          if (prev <= 1) {
-            // Timer expired, but don't reset form data
-            toast.error("Tiempo expirado para QR principal. Puedes continuar con el QR de administración.");
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-      return () => clearInterval(interval);
-    }
-  }, [currentStep, timer1]);
-
-  useEffect(() => {
-    if (currentStep === 3 && timer2 > 0) {
-      const interval = setInterval(() => {
-        setTimer2(prev => {
-          if (prev <= 1) {
-            // Timer expired, but don't reset form data
-            toast.error("Tiempo expirado para QR de administración. Por favor contacta al administrador.");
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-      return () => clearInterval(interval);
-    }
-  }, [currentStep, timer2]);
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
-
   const validateStep1 = () => {
     const newErrors: Record<string, boolean> = {};
     
