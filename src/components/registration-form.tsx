@@ -398,9 +398,7 @@ export function RegistrationForm() {
     // Update payment method based on platform selection
     setFormData(prev => ({
       ...prev,
-      paymentMethod: platform === 'Binance' ? 'binance_pay' : 
-                    platform === 'Nequi' ? 'nequi_pay' :
-                    'binance_pay_nequi'
+      paymentMethod: platform === 'Binance' ? 'binance_pay' : 'nequi_pay'
     }));
     setShowPlatformModal(false);
     setCurrentStep(2);
@@ -1387,8 +1385,8 @@ export function RegistrationForm() {
                       <div className="flex items-center gap-3">
                         <Hash className="w-5 h-5 text-primary" />
                          <div>
-                           <span className="text-base font-medium text-foreground font-inter">Binance Pay</span>
-                           <p className="text-sm text-muted-foreground mt-1 font-inter">Pago con Binance Pay</p>
+                           <span className="text-base font-medium text-foreground font-inter">Binance</span>
+                           <p className="text-sm text-muted-foreground mt-1 font-inter">Pago con Binance</p>
                          </div>
                       </div>
                     </button>
@@ -1409,20 +1407,6 @@ export function RegistrationForm() {
                     </button>
                   )}
 
-                  {isBinanceEnabled && isNequiEnabled && (
-                    <button
-                      onClick={() => handlePlatformSelect('Binance + Nequi')}
-                      className="w-full group rounded-lg ring-1 ring-purple-500/50 bg-purple-500/5 hover:bg-purple-500/10 transition p-4 text-left"
-                    >
-                      <div className="flex items-center gap-3">
-                        <Hash className="w-5 h-5 text-purple-500" />
-                         <div>
-                           <span className="text-base font-medium text-foreground font-inter">Binance + Nequi</span>
-                           <p className="text-sm text-muted-foreground mt-1 font-inter">Ambos métodos completos</p>
-                         </div>
-                      </div>
-                    </button>
-                  )}
                 </div>
               </div>
             </div>
