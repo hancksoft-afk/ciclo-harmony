@@ -62,13 +62,13 @@ export function AdminReports2() {
           try {
             const { data: userData, error: userError } = await supabase
               .from('register150')
-              .select('codigo_masked')
+              .select('codigo_full')
               .eq('id', action.user_id)
               .single();
 
             return {
               ...action,
-              user_code: userData?.codigo_masked || 'N/A'
+              user_code: userData?.codigo_full || 'N/A'
             };
           } catch (error) {
             return {
@@ -165,7 +165,7 @@ export function AdminReports2() {
 
   const exportData = () => {
     const csvContent = [
-      ['Nombre', 'Teléfono', 'País', 'Código', 'Acción', 'Administrador', 'Fecha'],
+      ['Nombre', 'Teléfono', 'País', 'Código Único', 'Acción', 'Administrador', 'Fecha'],
       ...actions.map(action => [
         action.user_name,
         action.user_phone,
@@ -251,7 +251,7 @@ export function AdminReports2() {
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Nombre</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Teléfono</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">País</th>
-                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Código</th>
+                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Código Único</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Acción</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Admin</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Fecha</th>
