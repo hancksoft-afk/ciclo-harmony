@@ -878,7 +878,7 @@ export function RegistrationForm() {
               <div className={`flex items-center justify-between p-4 rounded-lg border-2 ${selectedPlatform === 'Binance' ? 'bg-yellow-400/10 border-yellow-400/30' : 'bg-purple-400/10 border-purple-400/30'}`}>
                 <div>
                   <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                    Pago por QR - {selectedPlatform === 'Nequi' ? `${formatCOPPrice(platformQrSettings?.price_cop || qrSettings?.price_cop || '100000')} COP` : `${platformQrSettings?.price_usd || qrSettings?.price_usd || '150'} USD`} (Ciclo de vida) - {selectedPlatform}
+                    Pago por QR - {selectedPlatform === 'Nequi' ? `${formatCOPPrice(qrSettings?.price_cop || '100000')} COP` : `${qrSettings?.price_usd || '25'} USD`} (Ciclo de vida) - {selectedPlatform}
                   </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el código para continuar. Tiempo restante: <span className="text-foreground">{formatTime(timer1)}</span>
@@ -893,9 +893,9 @@ export function RegistrationForm() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="rounded-xl bg-[#0f1522] ring-1 ring-white/10 p-4 grid place-items-center">
                   <div className="rounded-lg bg-white p-3">
-                    {(platformQrSettings?.qr_image_url || qrSettings?.qr_image_url) ? (
+                    {qrSettings?.qr_image_url ? (
                       <img 
-                        src={platformQrSettings?.qr_image_url || qrSettings?.qr_image_url} 
+                        src={qrSettings.qr_image_url} 
                         alt="QR Code" 
                         className="h-48 w-48 object-contain rounded"
                       />
@@ -986,7 +986,7 @@ export function RegistrationForm() {
               <div className={`flex items-center justify-between p-4 rounded-lg border-2 ${selectedPlatform === 'Binance' ? 'bg-yellow-400/10 border-yellow-400/30' : 'bg-purple-400/10 border-purple-400/30'}`}>
                 <div>
                   <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                    Pago por QR - {selectedPlatform === 'Nequi' ? `${formatCOPPrice(platformAdminQrSettings?.price_cop || adminQrSettings?.price_cop || '100000')} COP` : `${platformAdminQrSettings?.price_usd || adminQrSettings?.price_usd || '150'} USD`} (Admin) - {selectedPlatform}
+                    Pago por QR - {selectedPlatform === 'Nequi' ? `${formatCOPPrice(adminQrSettings?.price_cop || '100000')} COP` : `${adminQrSettings?.price_usd || '25'} USD`} (Admin) - {selectedPlatform}
                   </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el QR del administrador. Tiempo restante: <span className="text-foreground">{formatTime(timer2)}</span>
@@ -1001,9 +1001,9 @@ export function RegistrationForm() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="rounded-xl bg-[#0f1522] ring-1 ring-white/10 p-4 grid place-items-center">
                   <div className="rounded-lg bg-white p-3">
-                    {(platformAdminQrSettings?.qr_image_url || adminQrSettings?.qr_image_url) ? (
+                    {adminQrSettings?.qr_image_url ? (
                       <img 
-                        src={platformAdminQrSettings?.qr_image_url || adminQrSettings?.qr_image_url} 
+                        src={adminQrSettings.qr_image_url} 
                         alt="QR Code Admin" 
                         className="h-48 w-48 object-contain rounded"
                       />
