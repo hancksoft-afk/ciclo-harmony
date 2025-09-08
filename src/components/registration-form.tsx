@@ -153,7 +153,7 @@ export function RegistrationForm() {
 
   const fetchAdminQrSettings = async () => {
     try {
-      console.log('Fetching QR settings for register150 and register150_admin...');
+      console.log('Fetching QR settings for register25 and register25_admin...');
       
       // Fetch register25 settings (for orderId1)
       const { data: register25Data, error: register25Error } = await supabase
@@ -186,7 +186,7 @@ export function RegistrationForm() {
       if (adminError) {
         console.error('Error fetching register150_admin settings:', adminError);
       } else if (adminData) {
-        console.log('Register150_admin settings result:', adminData);
+        console.log('Register25_admin settings result:', adminData);
         setAdminQrSettings(adminData);
         if (adminData.code_id) {
           console.log('Setting orderId2 to admin code_id:', adminData.code_id);
@@ -210,7 +210,7 @@ export function RegistrationForm() {
         adminType = 'register25_admin_nequi';
       }
       
-      // Fetch platform-specific register150 settings
+      // Fetch platform-specific register25 settings
       const { data: platformData, error: platformError } = await supabase
         .from('qr_settings')
         .select('*')
