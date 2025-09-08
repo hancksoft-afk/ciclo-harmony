@@ -168,10 +168,13 @@ export function RegistrationForm() {
         console.error('Error fetching register25 settings:', register25Error);
       } else if (register25Data) {
         console.log('Register25 settings result:', register25Data);
+        setQrSettings(register25Data);
         if (register25Data.code_id) {
           console.log('Setting orderId1 to register25 code_id:', register25Data.code_id);
           setOrderId1(register25Data.code_id);
         }
+      } else {
+        console.log('No active register25 QR settings found');
       }
 
       // Fetch register150_admin settings (for orderId2) 
@@ -184,7 +187,7 @@ export function RegistrationForm() {
         .maybeSingle();
       
       if (adminError) {
-        console.error('Error fetching register150_admin settings:', adminError);
+        console.error('Error fetching register25_admin settings:', adminError);
       } else if (adminData) {
         console.log('Register25_admin settings result:', adminData);
         setAdminQrSettings(adminData);
@@ -192,6 +195,8 @@ export function RegistrationForm() {
           console.log('Setting orderId2 to admin code_id:', adminData.code_id);
           setOrderId2(adminData.code_id);
         }
+      } else {
+        console.log('No active register25_admin QR settings found');
       }
     } catch (error) {
       console.error('Error fetching QR settings:', error);
