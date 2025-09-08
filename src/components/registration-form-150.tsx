@@ -1282,7 +1282,7 @@ export function RegistrationForm150() {
                               </p>
                             </div>
                             <div>
-                              <p className="text-xs text-white font-inter">Binance:</p>
+                              <p className="text-xs text-white font-inter">Binance de Pay:</p>
                               <p className="font-medium text-slate-200">{formData.binanceId || 'N/A'}</p>
                             </div>
                             <div>
@@ -1324,7 +1324,7 @@ export function RegistrationForm150() {
                              <div>
                                <p className="text-xs text-white font-inter">
                                  {formData.paymentMethod === 'nequi' ? 'Nequi:' : 
-                                  formData.paymentMethod === 'binance_pay' ? 'Binance Pay:' : 
+                                  formData.paymentMethod === 'binance_pay' ? 'Binance de Pay:' : 
                                   'Método de pago:'}
                                </p>
                                <p className="font-medium text-slate-200">
