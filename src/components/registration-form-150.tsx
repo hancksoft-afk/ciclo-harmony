@@ -410,6 +410,8 @@ export function RegistrationForm150() {
           binance_id_step2: formData.binanceIdStep2 || null,
           binance_id_step3: formData.binanceIdStep3 || null,
           nequi_phone: formData.nequiPhone || null,
+          nequi_id_step2: formData.referenceIdStep2 || null,
+          nequi_id_step3: formData.referenceIdStep3 || null,
           order_id_1: orderId1,
           order_id_2: orderId2,
           ticket_id: codes.ticketId,
@@ -1277,12 +1279,18 @@ export function RegistrationForm150() {
                             <p className="text-sm font-medium text-slate-200 font-mono">{generatedCodes?.ticketId || 'xxxxxxxxxxxx'}</p>
                           </div>
                           <div className="space-y-1">
-                            <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Orden</p>
-                            <p className="text-sm font-medium text-amber-300 font-mono">{formData.binanceIdStep2}</p>
+                            <p className="text-xs uppercase tracking-wider text-white font-inter">
+                              {selectedPlatform === 'Binance' ? 'ID de Orden' : 'ID de Referencia'}
+                            </p>
+                            <p className="text-sm font-medium text-amber-300 font-mono">
+                              {selectedPlatform === 'Binance' ? formData.binanceIdStep2 : formData.referenceIdStep2}
+                            </p>
                           </div>
                           <div>
                             <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Administrador</p>
-                            <p className="text-sm font-medium text-amber-300 font-mono">{formData.binanceIdStep3}</p>
+                            <p className="text-sm font-medium text-amber-300 font-mono">
+                              {selectedPlatform === 'Binance' ? formData.binanceIdStep3 : formData.referenceIdStep3}
+                            </p>
                           </div>
                         </div>
                       </div>
