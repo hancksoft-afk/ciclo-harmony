@@ -51,18 +51,20 @@ export function RegistrationForm() {
   const [errors, setErrors] = useState<Record<string, boolean>>({});
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [showTicketModal, setShowTicketModal] = useState(false);
+  const [showPlatformModal, setShowPlatformModal] = useState(false);
+  const [selectedPlatform, setSelectedPlatform] = useState<string>('');
   const [timer1, setTimer1] = useState(30 * 60); // 30 minutes
   const [timer2, setTimer2] = useState(30 * 60);
-  const [orderId1] = useState(Math.random().toString(36).substr(2, 9).toUpperCase());
-  const [orderId2] = useState(Math.random().toString(36).substr(2, 9).toUpperCase());
-  const [ticketId] = useState(Math.random().toString(36).substr(2, 9).toUpperCase());
-  const [generatedCodes, setGeneratedCodes] = useState<{codigo: string, oculto: string} | null>(null);
+  const [orderId1, setOrderId1] = useState(Math.random().toString(36).substr(2, 9).toUpperCase());
+  const [orderId2, setOrderId2] = useState(Math.random().toString(36).substr(2, 9).toUpperCase());
+  const [generatedCodes, setGeneratedCodes] = useState<{codigo: string, oculto: string, ticketId: string} | null>(null);
   const [qrSettings, setQrSettings] = useState<any>(null);
   const [adminQrSettings, setAdminQrSettings] = useState<any>(null);
   const [nequiQrSettings, setNequiQrSettings] = useState<any>(null);
   const [adminNequiQrSettings, setAdminNequiQrSettings] = useState<any>(null);
-  const [showPlatformModal, setShowPlatformModal] = useState(false);
-  const [selectedPlatform, setSelectedPlatform] = useState('');
+  const [platformQrSettings, setPlatformQrSettings] = useState<any>(null);
+  const [platformAdminQrSettings, setPlatformAdminQrSettings] = useState<any>(null);
+  const [paymentPreferences, setPaymentPreferences] = useState<any[]>([]);
   const [isNequiEnabled, setIsNequiEnabled] = useState(true);
   const [isBinanceEnabled, setIsBinanceEnabled] = useState(true);
 
@@ -72,9 +74,34 @@ export function RegistrationForm() {
     fetchAdminQrSettings();
     fetchNequiQrSettings();
     fetchAdminNequiQrSettings();
+    fetchPaymentPreferences();
     fetchNequiSetting();
     fetchBinanceSetting();
   }, []);
+
+  useEffect(() => {
+    if (formData.country) {
+      fetchPaymentPreferences();
+    }
+  }, [formData.country]);
+
+  const fetchPaymentPreferences = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('payment_preferences')
+        .select('*')
+        .eq('is_active', true);
+
+      if (error) {
+        console.error('Error fetching payment preferences:', error);
+        return;
+      }
+
+      setPaymentPreferences(data || []);
+    } catch (error) {
+      console.error('Error fetching payment preferences:', error);
+    }
+  };
 
   const fetchNequiSetting = async () => {
     try {
@@ -94,6 +121,24 @@ export function RegistrationForm() {
       console.error('Error fetching nequi setting:', error);
     }
   };
+
+  const fetchBinanceSetting = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('setting_value')
+        .eq('setting_key', 'binance_enabled')
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error fetching binance setting:', error);
+        return;
+      }
+
+      setIsBinanceEnabled(data?.setting_value ?? true);
+    } catch (error) {
+      console.error('Error fetching binance setting:', error);
+    }
 
   const fetchBinanceSetting = async () => {
     try {
@@ -197,6 +242,97 @@ export function RegistrationForm() {
     } catch (error) {
       console.error('Error fetching Nequi QR settings:', error);
     }
+  };
+
+  const fetchPlatformQrSettings = async (platform: string) => {
+    try {
+      let mainType, adminType;
+      
+      if (platform === 'Binance') {
+        mainType = 'register';
+        adminType = 'register_admin';
+      } else if (platform === 'Nequi') {
+        mainType = 'register_nequi';
+        adminType = 'register_admin_nequi';
+      }
+      
+      // Fetch platform-specific register settings
+      const { data: platformData, error: platformError } = await supabase
+        .from('qr_settings')
+        .select('*')
+        .eq('type', mainType)
+        .eq('is_active', true)
+        .order('updated_at', { ascending: false })
+        .maybeSingle();
+      
+      if (platformError) {
+        console.error(`Error fetching ${mainType} settings:`, platformError);
+      } else if (platformData) {
+        setPlatformQrSettings(platformData);
+        if (platformData.code_id) {
+          setOrderId1(platformData.code_id);
+        }
+      }
+
+      // Fetch platform-specific admin settings
+      const { data: platformAdminData, error: platformAdminError } = await supabase
+        .from('qr_settings')
+        .select('*')
+        .eq('type', adminType)
+        .eq('is_active', true)
+        .order('updated_at', { ascending: false })
+        .maybeSingle();
+      
+      if (platformAdminError) {
+        console.error(`Error fetching ${adminType} settings:`, platformAdminError);
+      } else if (platformAdminData) {
+        setPlatformAdminQrSettings(platformAdminData);
+        if (platformAdminData.code_id) {
+          setOrderId2(platformAdminData.code_id);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching platform-specific QR settings:', error);
+    }
+  };
+
+  // Timer effects with improved handling
+  useEffect(() => {
+    if (currentStep === 2 && timer1 > 0) {
+      const interval = setInterval(() => {
+        setTimer1(prev => {
+          if (prev <= 1) {
+            // Timer expired, but don't reset form data
+            toast.error("Tiempo expirado para QR principal. Puedes continuar con el QR de administración.");
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [currentStep, timer1]);
+
+  useEffect(() => {
+    if (currentStep === 3 && timer2 > 0) {
+      const interval = setInterval(() => {
+        setTimer2(prev => {
+          if (prev <= 1) {
+            // Timer expired, but don't reset form data
+            toast.error("Tiempo expirado para QR de administración. Por favor contacta al administrador.");
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [currentStep, timer2]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
   const fetchAdminNequiQrSettings = async () => {
@@ -330,12 +466,36 @@ export function RegistrationForm() {
 
   const generarCodigoNumeroYOculto = () => {
     const codigo = generarCodigoNumero();
-    return { codigo, oculto: codigo.slice(0, 4) + 'x'.repeat(codigo.length - 4) };
+    const oculto = codigo.slice(0, 4) + 'x'.repeat(codigo.length - 4);
+    // Generate alphanumeric ticket ID like KBY0Z40CN
+    const ticketId = Array.from({ length: 9 }, () => {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      return chars.charAt(Math.floor(Math.random() * chars.length));
+    }).join('');
+    return { codigo, oculto, ticketId };
   };
 
-  const saveToSupabase = async (codes: { codigo: string; oculto: string }) => {
+  const saveToSupabase = async (codes: { codigo: string; oculto: string; ticketId: string }) => {
     try {
-      const { error } = await supabase
+      console.log('Trying to save to Supabase with data:', {
+        name: formData.name,
+        phone: formData.phone,
+        country: formData.country,
+        invitee: formData.invitee,
+        has_money: formData.hasMoney === 'yes',
+        payment_method: formData.paymentMethod,
+        binance_id: formData.binanceId || null,
+        binance_id_step2: formData.binanceIdStep2 || null,
+        binance_id_step3: formData.binanceIdStep3 || null,
+        nequi_phone: formData.nequiPhone || null,
+        order_id_1: orderId1,
+        order_id_2: orderId2,
+        ticket_id: codes.ticketId,
+        codigo_full: codes.codigo,
+        codigo_masked: codes.oculto,
+      });
+
+      const { data, error } = await supabase
         .from('register')
         .insert({
           name: formData.name,
@@ -344,21 +504,23 @@ export function RegistrationForm() {
           invitee: formData.invitee,
           has_money: formData.hasMoney === 'yes',
           payment_method: formData.paymentMethod,
-          binance_id: formData.binanceId,
-          nequi_phone: formData.nequiPhone,
-          binance_id_step2: formData.binanceIdStep2,
-          binance_id_step3: formData.binanceIdStep3,
+          binance_id: formData.binanceId || null,
+          binance_id_step2: formData.binanceIdStep2 || null,
+          binance_id_step3: formData.binanceIdStep3 || null,
+          nequi_phone: formData.nequiPhone || null,
           order_id_1: orderId1,
           order_id_2: orderId2,
-          ticket_id: ticketId,
+          ticket_id: codes.ticketId,
           codigo_full: codes.codigo,
           codigo_masked: codes.oculto,
-        });
+        })
+        .select();
 
       if (error) {
         console.error('Error saving registration:', error);
+        console.error('Error details:', JSON.stringify(error, null, 2));
       } else {
-        console.log('Registration saved successfully');
+        console.log('Registration saved successfully:', data);
       }
     } catch (error) {
       console.error('Error saving to Supabase:', error);
@@ -439,6 +601,24 @@ export function RegistrationForm() {
 
   const canProceedStep2 = formData.binanceIdStep2 && formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19;
   const canProceedStep3 = formData.binanceIdStep3 && formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19;
+
+  const isPaymentMethodPreferred = (method: string) => {
+    if (!formData.country) return false;
+    const preference = paymentPreferences.find(p => 
+      p.country === formData.country && p.payment_method === method
+    );
+    return preference?.is_preferred || false;
+  };
+
+  const handlePaymentMethodClick = (method: string) => {
+    // Forzar actualización inmediata del estado con callback
+    setFormData(prevFormData => ({
+      ...prevFormData, 
+      paymentMethod: method, 
+      nequiPhone: (method === 'binance_pay') ? '' : prevFormData.nequiPhone,
+      binanceId: (method === 'nequi') ? '' : prevFormData.binanceId
+    }));
+  };
 
   return (
     <>
@@ -1194,7 +1374,7 @@ export function RegistrationForm() {
                           <div>
                             <p className="text-xs tracking-wider text-white font-inter"># ADMIT ONE</p>
                             <p className="mt-3 text-xs text-white font-inter">ID</p>
-                            <p className="text-sm font-medium text-slate-200">{ticketId}</p>
+                            <p className="text-sm font-medium text-slate-200">{generatedCodes?.ticketId}</p>
                           </div>
                           <div>
                             <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Orden</p>
