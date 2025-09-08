@@ -433,10 +433,8 @@ export function RegistrationForm() {
   const canProceedStep1 = formData.name && formData.invitee && formData.country && 
                           formData.phone && formData.hasMoney && 
                           formData.paymentMethod && 
-                          ((formData.paymentMethod !== 'binance_pay' && formData.paymentMethod !== 'nequi_pay' && formData.paymentMethod !== 'binance_pay_nequi') || 
-                           (formData.paymentMethod === 'binance_pay' && formData.binanceId) ||
-                           (formData.paymentMethod === 'nequi_pay' && formData.nequiPhone) ||
-                           (formData.paymentMethod === 'binance_pay_nequi' && formData.binanceId && formData.nequiPhone));
+                          ((formData.paymentMethod === 'binance_pay' && formData.binanceId) || 
+                           (formData.paymentMethod === 'nequi_pay' && formData.nequiPhone));
 
   const canProceedStep2 = formData.binanceIdStep2 && formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19;
   const canProceedStep3 = formData.binanceIdStep3 && formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19;
