@@ -136,7 +136,7 @@ export function RegistrationForm150() {
   const fetchQrSettings = async () => {
     try {
       const { data, error } = await supabase
-        .rpc('get_active_qr_setting', { qr_type: 'register25' });
+        .rpc('get_active_qr_setting', { qr_type: 'register150' });
 
       if (error) {
         console.error('Error fetching QR settings:', error);
@@ -156,10 +156,10 @@ export function RegistrationForm150() {
       console.log('Fetching QR settings for register150 and register150_admin...');
       
       // Fetch register150 settings (for orderId1)
-      const { data: register25Data, error: register25Error } = await supabase
+      const { data: register150Data, error: register150Error } = await supabase
         .from('qr_settings')
         .select('*')
-        .eq('type', 'register25')
+        .eq('type', 'register150')
         .eq('is_active', true)
         .order('updated_at', { ascending: false })
         .maybeSingle();
@@ -178,13 +178,13 @@ export function RegistrationForm150() {
       const { data: adminData, error: adminError } = await supabase
         .from('qr_settings')
         .select('*')
-        .eq('type', 'register25_admin')
+        .eq('type', 'register150_admin')
         .eq('is_active', true)
         .order('updated_at', { ascending: false })
         .maybeSingle();
       
       if (adminError) {
-        console.error('Error fetching register25_admin settings:', adminError);
+        console.error('Error fetching register150_admin settings:', adminError);
       } else if (adminData) {
         console.log('Register150_admin settings result:', adminData);
         setAdminQrSettings(adminData);
@@ -203,11 +203,11 @@ export function RegistrationForm150() {
       let mainType, adminType;
       
       if (platform === 'Binance') {
-        mainType = 'register25';
-        adminType = 'register25_admin';
+        mainType = 'register150';
+        adminType = 'register150_admin';
       } else if (platform === 'Nequi') {
-        mainType = 'register25_nequi';
-        adminType = 'register25_admin_nequi';
+        mainType = 'register150_nequi';
+        adminType = 'register150_admin_nequi';
       }
       
       // Fetch platform-specific register150 settings
@@ -378,7 +378,7 @@ export function RegistrationForm150() {
       });
 
       const { data, error } = await supabase
-        .from('register')
+        .from('register150')
         .insert({
           name: formData.name,
           phone: formData.phone,
