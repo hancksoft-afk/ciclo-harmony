@@ -798,7 +798,7 @@ export function RegistrationForm150() {
               </div>
 
               {/* Binance ID */}
-              {(formData.paymentMethod === 'binance_pay' || formData.paymentMethod === 'binance_nequi') && (
+              {isBinanceEnabled && formData.paymentMethod === 'binance_pay' && (
                 <div>
                   <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID / Número de Binance</label>
                   <div className="relative">
@@ -814,21 +814,21 @@ export function RegistrationForm150() {
                   {errors.binanceId && (
                     <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
                       <AlertTriangle className="w-3.5 h-3.5" />
-                      <span><strong className="font-medium">ID de Binance inválido</strong> — Debe tener 9 Y 10 numéricos.</span>
+                      <span><strong className="font-medium">ID inválido</strong> — Debe tener 9 y 10 dígitos numéricos.</span>
                     </div>
                   )}
                 </div>
               )}
 
-              {/* Nequi Phone */}
-              {isNequiEnabled && (formData.paymentMethod === 'nequi' || formData.paymentMethod === 'binance_nequi') && (
+              {/* Nequi ID */}
+              {isNequiEnabled && formData.paymentMethod === 'nequi' && (
                 <div>
-                  <label className="block text-sm text-muted-foreground mb-1.5 font-inter">Número de teléfono Nequi</label>
+                  <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID / Número de Nequi</label>
                   <div className="relative">
-                    <Phone className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                    <Fingerprint className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                     <input
                       type="text"
-                      placeholder="Ej: 3001234567"
+                      placeholder="Ingrese su ID de Nequi"
                       value={formData.nequiPhone}
                       onChange={(e) => setFormData({...formData, nequiPhone: e.target.value})}
                       className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
@@ -837,9 +837,53 @@ export function RegistrationForm150() {
                   {errors.nequiPhone && (
                     <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
                       <AlertTriangle className="w-3.5 h-3.5" />
-                      <span><strong className="font-medium">Número de Nequi inválido</strong> — Debe ser un número de teléfono válido.</span>
+                      <span><strong className="font-medium">ID de Nequi inválido</strong> — Por favor ingrese un ID válido.</span>
                     </div>
                   )}
+                </div>
+              )}
+
+              {/* Binance Pay + Nequi Combined */}
+              {formData.paymentMethod === 'binance_nequi' && (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID / Número de Binance Pay</label>
+                    <div className="relative">
+                      <Fingerprint className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                      <input
+                        type="text"
+                        placeholder="9 o 10 dígitos"
+                        value={formData.binanceId}
+                        onChange={(e) => setFormData({...formData, binanceId: e.target.value})}
+                        className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
+                      />
+                    </div>
+                    {errors.binanceId && (
+                      <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
+                        <AlertTriangle className="w-3.5 h-3.5" />
+                        <span><strong className="font-medium">ID inválido</strong> — Debe tener 9 y 10 dígitos numéricos.</span>
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-sm text-muted-foreground mb-1.5 font-inter">Número de teléfono Nequi</label>
+                    <div className="relative">
+                      <Phone className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                      <input
+                        type="text"
+                        placeholder="Ingrese su número de Nequi"
+                        value={formData.nequiPhone}
+                        onChange={(e) => setFormData({...formData, nequiPhone: e.target.value})}
+                        className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
+                      />
+                    </div>
+                    {errors.nequiPhone && (
+                      <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
+                        <AlertTriangle className="w-3.5 h-3.5" />
+                        <span><strong className="font-medium">Número de Nequi inválido</strong> — Por favor ingrese un número válido.</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
 
@@ -1337,7 +1381,33 @@ export function RegistrationForm150() {
                         )}
 
                         <div className="mt-6 rounded-xl border border-amber-400/20 bg-neutral-900/40 p-3">
-                          <div className="h-16 w-full rounded-md bg-[repeating-linear-gradient(90deg,rgba(251,191,36,1)_0_8px,transparent_8px_16px)]" />
+                          {formData.paymentMethod === 'binance_nequi' ? (
+                            <div className="space-y-3">
+                              <div className="grid grid-cols-2 gap-3">
+                                <div className="text-center">
+                                  <div className="h-12 w-full rounded-md bg-[repeating-linear-gradient(90deg,rgba(251,191,36,1)_0_4px,transparent_4px_8px)]" />
+                                  <p className="text-xs text-yellow-400 mt-1 font-inter">Binance Pay</p>
+                                </div>
+                                <div className="text-center">
+                                  <div className="h-12 w-full rounded-md bg-[repeating-linear-gradient(90deg,rgba(168,85,247,1)_0_4px,transparent_4px_8px)]" />
+                                  <p className="text-xs text-purple-400 mt-1 font-inter">Nequi</p>
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="text-center">
+                              <div className={`h-16 w-full rounded-md ${
+                                formData.paymentMethod === 'binance_pay' 
+                                  ? 'bg-[repeating-linear-gradient(90deg,rgba(251,191,36,1)_0_8px,transparent_8px_16px)]'
+                                  : 'bg-[repeating-linear-gradient(90deg,rgba(168,85,247,1)_0_8px,transparent_8px_16px)]'
+                              }`} />
+                              <p className={`text-xs mt-1 font-inter ${
+                                formData.paymentMethod === 'binance_pay' ? 'text-yellow-400' : 'text-purple-400'
+                              }`}>
+                                {formData.paymentMethod === 'binance_pay' ? 'Binance Pay' : 'Nequi'}
+                              </p>
+                            </div>
+                          )}
                         </div>
 
                         <div className="mt-3 flex items-center justify-between text-xs text-white">
