@@ -270,8 +270,9 @@ export function RegistrationForm() {
       const interval = setInterval(() => {
         setTimer1(prev => {
           if (prev <= 1) {
-            // Timer expired, but don't reset form data
-            toast.error("Tiempo expirado para QR principal. Puedes continuar con el QR de administración.");
+            // Timer expired, go back to step 1
+            toast.error("Tiempo agotado. Debes volver a empezar.");
+            setCurrentStep(1);
             return 0;
           }
           return prev - 1;
@@ -286,8 +287,9 @@ export function RegistrationForm() {
       const interval = setInterval(() => {
         setTimer2(prev => {
           if (prev <= 1) {
-            // Timer expired, but don't reset form data
-            toast.error("Tiempo expirado para QR de administración. Por favor contacta al administrador.");
+            // Timer expired, go back to step 1
+            toast.error("Tiempo agotado. Debes volver a empezar.");
+            setCurrentStep(1);
             return 0;
           }
           return prev - 1;
