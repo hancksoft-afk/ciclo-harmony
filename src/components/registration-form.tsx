@@ -209,11 +209,11 @@ export function RegistrationForm() {
       let mainType, adminType;
       
       if (platform === 'Binance') {
-        mainType = 'register25';
-        adminType = 'register25_admin';
+        mainType = 'register';
+        adminType = 'register_admin';
       } else if (platform === 'Nequi') {
-        mainType = 'register25_nequi';
-        adminType = 'register25_admin_nequi';
+        mainType = 'register_nequi';
+        adminType = 'register_admin_nequi';
       }
       
       console.log('Using types:', mainType, adminType);
