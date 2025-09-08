@@ -26,7 +26,7 @@ interface FormData {
 
 const countries = ['México', 'España', 'Colombia', 'Argentina', 'Perú', 'Chile'];
 
-export function RegistrationForm() {
+export function RegistrationForm150() {
   // Enable anti-cheat protection
   useAntiCheat();
   
@@ -76,7 +76,7 @@ export function RegistrationForm() {
       const { data, error } = await supabase
         .from('system_settings')
         .select('setting_value')
-        .eq('setting_key', 'nequi_25_enabled')
+        .eq('setting_key', 'nequi_150_enabled')
         .single();
 
       if (error && error.code !== 'PGRST116') {
@@ -136,7 +136,7 @@ export function RegistrationForm() {
   const fetchQrSettings = async () => {
     try {
       const { data, error } = await supabase
-        .rpc('get_active_qr_setting', { qr_type: 'register' });
+        .rpc('get_active_qr_setting', { qr_type: 'register25' });
 
       if (error) {
         console.error('Error fetching QR settings:', error);
@@ -153,40 +153,40 @@ export function RegistrationForm() {
 
   const fetchAdminQrSettings = async () => {
     try {
-      console.log('Fetching QR settings for register and register_admin...');
+      console.log('Fetching QR settings for register150 and register150_admin...');
       
-      // Fetch register settings (for orderId1)
-      const { data: registerData, error: registerError } = await supabase
+      // Fetch register150 settings (for orderId1)
+      const { data: register25Data, error: register25Error } = await supabase
         .from('qr_settings')
         .select('*')
-        .eq('type', 'register')
+        .eq('type', 'register25')
         .eq('is_active', true)
         .order('updated_at', { ascending: false })
         .maybeSingle();
       
-      if (registerError) {
-        console.error('Error fetching register settings:', registerError);
-      } else if (registerData) {
-        console.log('Register settings result:', registerData);
-        if (registerData.code_id) {
-          console.log('Setting orderId1 to register code_id:', registerData.code_id);
-          setOrderId1(registerData.code_id);
+      if (register150Error) {
+        console.error('Error fetching register150 settings:', register150Error);
+      } else if (register150Data) {
+        console.log('Register150 settings result:', register150Data);
+        if (register150Data.code_id) {
+          console.log('Setting orderId1 to register150 code_id:', register150Data.code_id);
+          setOrderId1(register150Data.code_id);
         }
       }
 
-      // Fetch register_admin settings (for orderId2) 
+      // Fetch register150_admin settings (for orderId2) 
       const { data: adminData, error: adminError } = await supabase
         .from('qr_settings')
         .select('*')
-        .eq('type', 'register_admin')
+        .eq('type', 'register25_admin')
         .eq('is_active', true)
         .order('updated_at', { ascending: false })
         .maybeSingle();
       
       if (adminError) {
-        console.error('Error fetching register_admin settings:', adminError);
+        console.error('Error fetching register25_admin settings:', adminError);
       } else if (adminData) {
-        console.log('Register_admin settings result:', adminData);
+        console.log('Register150_admin settings result:', adminData);
         setAdminQrSettings(adminData);
         if (adminData.code_id) {
           console.log('Setting orderId2 to admin code_id:', adminData.code_id);
@@ -203,14 +203,14 @@ export function RegistrationForm() {
       let mainType, adminType;
       
       if (platform === 'Binance') {
-        mainType = 'register';
-        adminType = 'register_admin';
+        mainType = 'register25';
+        adminType = 'register25_admin';
       } else if (platform === 'Nequi') {
-        mainType = 'register_nequi';
-        adminType = 'register_admin_nequi';
+        mainType = 'register25_nequi';
+        adminType = 'register25_admin_nequi';
       }
       
-      // Fetch platform-specific register settings
+      // Fetch platform-specific register150 settings
       const { data: platformData, error: platformError } = await supabase
         .from('qr_settings')
         .select('*')
@@ -362,7 +362,6 @@ export function RegistrationForm() {
       console.log('Trying to save to Supabase with data:', {
         name: formData.name,
         phone: formData.phone,
-        email: formData.email,
         country: formData.country,
         invitee: formData.invitee,
         has_money: formData.hasMoney === 'yes',
@@ -383,7 +382,6 @@ export function RegistrationForm() {
         .insert({
           name: formData.name,
           phone: formData.phone,
-          email: formData.email,
           country: formData.country,
           invitee: formData.invitee,
           has_money: formData.hasMoney === 'yes',
@@ -460,7 +458,7 @@ export function RegistrationForm() {
   };
 
   const openWhatsApp = () => {
-    window.open('https://chat.whatsapp.com/LYLFjBIsoWs2S9LgmPR3sv?mode=ac_t', '_blank');
+    window.open('https://chat.whatsapp.com/Eoa2r5mIQER9ITs0touhfN?mode=ac_t', '_blank');
     setShowTicketModal(false);
   };
 
@@ -513,517 +511,612 @@ export function RegistrationForm() {
           {/* Step 1: Personal Info */}
           {currentStep === 1 && (
             <div className="space-y-6">
-              <div className="text-center">
-                <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                  Registro $25 USD
-                </h2>
-                <p className="text-sm text-muted-foreground mt-1 font-inter">
-                  Completa tu información personal
-                </p>
-              </div>
-
-              <form className="space-y-4">
-                {/* Name Field */}
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 z-10" />
-                  <input
-                    type="text"
-                    placeholder="Nombre completo (3-4 palabras)"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className={`w-full pl-10 pr-4 py-3 bg-white/5 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
-                      errors.name ? 'border-red-500 focus:ring-red-500' : 'border-gray-600'
-                    }`}
-                  />
-                  {errors.name && (
-                    <p className="text-red-500 text-xs mt-1 flex items-center">
-                      <AlertTriangle className="h-3 w-3 mr-1" />
-                      Debe tener entre 3 y 4 palabras
-                    </p>
-                  )}
-                </div>
-
-                {/* Invitee Field */}
-                <div className="relative">
-                  <UserPlus className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 z-10" />
-                  <input
-                    type="text"
-                    placeholder="¿Quién te invitó? (3-4 palabras)"
-                    value={formData.invitee}
-                    onChange={(e) => setFormData({ ...formData, invitee: e.target.value })}
-                    className={`w-full pl-10 pr-4 py-3 bg-white/5 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
-                      errors.invitee ? 'border-red-500 focus:ring-red-500' : 'border-gray-600'
-                    }`}
-                  />
-                  {errors.invitee && (
-                    <p className="text-red-500 text-xs mt-1 flex items-center">
-                      <AlertTriangle className="h-3 w-3 mr-1" />
-                      Debe tener entre 3 y 4 palabras
-                    </p>
-                  )}
-                </div>
-
-                {/* Country Field */}
-                <div className="relative">
-                  <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 z-10" />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Name */}
+                <div>
+                  <label className="block text-sm text-muted-foreground mb-1.5 font-inter">Nombres</label>
                   <div className="relative">
-                    <button
-                      type="button"
-                      onClick={() => setShowCountryDropdown(!showCountryDropdown)}
-                      className={`w-full pl-10 pr-10 py-3 bg-white/5 border rounded-lg text-left transition-all duration-200 ${
-                        errors.country ? 'border-red-500 focus:ring-red-500' : 'border-gray-600'
-                      } ${formData.country ? 'text-white' : 'text-gray-400'}`}
-                    >
-                      {formData.country || 'Selecciona tu país'}
-                    </button>
-                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                    
-                    {showCountryDropdown && (
-                      <div className="absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-600 rounded-lg shadow-lg z-20">
+                    <User className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                    <input
+                      type="text"
+                      placeholder="Tu nombre completo"
+                      value={formData.name}
+                      onChange={(e) => setFormData({...formData, name: e.target.value})}
+                      className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
+                    />
+                  </div>
+                  {errors.name && (
+                    <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
+                      <AlertTriangle className="w-3.5 h-3.5" />
+                      <span><strong className="font-medium">Nombre inválido</strong> — Debe tener entre 3 y 4 palabras.</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Invitee */}
+                <div>
+                  <label className="block text-sm text-muted-foreground mb-1.5 font-inter">¿A quién estás invitando?</label>
+                  <div className="relative">
+                    <UserPlus className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                    <input
+                      type="text"
+                      placeholder="Nombre de la persona"
+                      value={formData.invitee}
+                      onChange={(e) => setFormData({...formData, invitee: e.target.value})}
+                      className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
+                    />
+                  </div>
+                  {errors.invitee && (
+                    <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
+                      <AlertTriangle className="w-3.5 h-3.5" />
+                      <span><strong className="font-medium">Invitando a inválida</strong> — Debe tener entre 3 y 4 palabras.</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Country */}
+                <div className="relative">
+                  <label className="block text-sm text-muted-foreground mb-1.5 font-inter">País</label>
+                  <button
+                    type="button"
+                    onClick={() => setShowCountryDropdown(!showCountryDropdown)}
+                    className="w-full flex items-center justify-between rounded-md bg-white/5 ring-1 ring-white/10 hover:ring-white/20 focus:ring-2 focus:ring-primary/60 outline-none px-3.5 py-2.5 text-sm text-foreground transition"
+                  >
+                    <span className="flex items-center gap-2">
+                      <Globe className="w-4 h-4 text-muted-foreground" />
+                      <span className={formData.country ? "text-foreground" : "text-muted-foreground"}>
+                        {formData.country || "Selecciona un país"}
+                      </span>
+                    </span>
+                    <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                  </button>
+                  {showCountryDropdown && (
+                    <div className="absolute z-20 mt-2 w-full rounded-lg bg-[#0f1522] ring-1 ring-white/10 shadow-xl p-2">
+                      <div className="max-h-56 overflow-auto">
                         {countries.map((country) => (
                           <button
                             key={country}
-                            type="button"
                             onClick={() => {
-                              setFormData({ ...formData, country });
+                              setFormData({...formData, country});
                               setShowCountryDropdown(false);
                             }}
-                            className="w-full px-4 py-2 text-left text-white hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg transition-colors"
+                            className="w-full text-left px-3 py-2 rounded-md text-sm text-foreground hover:bg-white/5 transition"
                           >
                             {country}
                           </button>
                         ))}
                       </div>
-                    )}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Phone */}
+                <div>
+                  <label className="block text-sm text-muted-foreground mb-1.5 font-inter">Número de celular (WhatsApp)</label>
+                  <div className="relative">
+                    <Phone className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                    <input
+                      type="tel"
+                      placeholder="+52 55 0000 0000"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                      className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
+                    />
                   </div>
                 </div>
 
-                {/* Phone Field */}
-                <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 z-10" />
-                  <input
-                    type="tel"
-                    placeholder="Número de teléfono"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className={`w-full pl-10 pr-4 py-3 bg-white/5 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
-                      errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-600'
-                    }`}
-                  />
-                </div>
 
-                {/* Email Field */}
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 z-10" />
-                  <input
-                    type="email"
-                    placeholder="Correo electrónico"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className={`w-full pl-10 pr-4 py-3 bg-white/5 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
-                      errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-600'
-                    }`}
-                  />
-                </div>
-
-                {/* Has Money Question */}
-                <div className="space-y-3">
-                  <p className="text-white font-inter">¿Tienes los $25 USD para invertir?</p>
-                  <div className="flex space-x-4">
+                {/* Money */}
+                <div>
+                  <label className="block text-sm text-muted-foreground mb-2 font-inter">¿Tienes dinero?</label>
+                  <div className="inline-flex rounded-lg ring-1 ring-white/10 p-1 bg-white/5">
                     <button
                       type="button"
-                      onClick={() => setFormData({ ...formData, hasMoney: 'yes' })}
-                      className={`flex-1 py-3 px-4 rounded-lg border transition-all duration-200 ${
-                        formData.hasMoney === 'yes'
-                          ? 'bg-green-600 border-green-500 text-white'
-                          : 'bg-white/5 border-gray-600 text-gray-300 hover:bg-white/10'
+                      onClick={() => setFormData({...formData, hasMoney: 'yes'})}
+                      className={`px-4 py-2 text-sm rounded-md transition ${
+                        formData.hasMoney === 'yes' 
+                          ? 'bg-[#bd6b03d4] text-white' 
+                          : 'text-muted-foreground hover:text-white hover:bg-[#bd6b03d4]'
                       }`}
                     >
                       Sí
                     </button>
                     <button
                       type="button"
-                      onClick={() => setFormData({ ...formData, hasMoney: 'no' })}
-                      className={`flex-1 py-3 px-4 rounded-lg border transition-all duration-200 ${
-                        formData.hasMoney === 'no'
-                          ? 'bg-red-600 border-red-500 text-white'
-                          : 'bg-white/5 border-gray-600 text-gray-300 hover:bg-white/10'
+                      onClick={() => setFormData({...formData, hasMoney: 'no'})}
+                      className={`px-4 py-2 text-sm rounded-md transition ${
+                        formData.hasMoney === 'no' 
+                          ? 'bg-[#bd6b03d4] text-white' 
+                          : 'text-muted-foreground hover:text-white hover:bg-[#bd6b03d4]'
                       }`}
                     >
                       No
                     </button>
                   </div>
                 </div>
+              </div>
 
-                {/* Payment Method Selection */}
-                {formData.hasMoney === 'yes' && formData.country && (
-                  <div className="space-y-3">
-                    <p className="text-white font-inter">Método de pago preferido:</p>
-                    <div className="grid grid-cols-1 gap-3">
-                      {/* Binance Pay Option */}
-                      {isBinanceEnabled && (
-                        <button
-                          type="button"
-                          onClick={() => handlePaymentMethodClick('binance_pay')}
-                          className={`w-full p-4 rounded-lg border transition-all duration-200 text-left ${
-                            formData.paymentMethod === 'binance_pay'
-                              ? 'bg-yellow-600/20 border-yellow-500 text-yellow-100'
-                              : 'bg-white/5 border-gray-600 text-gray-300 hover:bg-white/10'
-                          } ${isPaymentMethodPreferred('binance_pay') ? 'ring-2 ring-green-500' : ''}`}
-                        >
-                          <div className="flex items-center justify-between">
-                            <span className="font-medium">Binance Pay</span>
-                            {isPaymentMethodPreferred('binance_pay') && (
-                              <span className="text-green-400 text-xs bg-green-500/20 px-2 py-1 rounded">
-                                Recomendado
-                              </span>
-                            )}
-                          </div>
-                        </button>
-                      )}
-
-                      {/* Nequi Option */}
-                      {isNequiEnabled && formData.country === 'Colombia' && (
-                        <button
-                          type="button"
-                          onClick={() => handlePaymentMethodClick('nequi')}
-                          className={`w-full p-4 rounded-lg border transition-all duration-200 text-left ${
-                            formData.paymentMethod === 'nequi'
-                              ? 'bg-purple-600/20 border-purple-500 text-purple-100'
-                              : 'bg-white/5 border-gray-600 text-gray-300 hover:bg-white/10'
-                          } ${isPaymentMethodPreferred('nequi') ? 'ring-2 ring-green-500' : ''}`}
-                        >
-                          <div className="flex items-center justify-between">
-                            <span className="font-medium">Nequi</span>
-                            {isPaymentMethodPreferred('nequi') && (
-                              <span className="text-green-400 text-xs bg-green-500/20 px-2 py-1 rounded">
-                                Recomendado
-                              </span>
-                            )}
-                          </div>
-                        </button>
-                      )}
-
-                      {/* Binance + Nequi Option */}
-                      {isBinanceEnabled && isNequiEnabled && formData.country === 'Colombia' && (
-                        <button
-                          type="button"
-                          onClick={() => handlePaymentMethodClick('binance_nequi')}
-                          className={`w-full p-4 rounded-lg border transition-all duration-200 text-left ${
-                            formData.paymentMethod === 'binance_nequi'
-                              ? 'bg-indigo-600/20 border-indigo-500 text-indigo-100'
-                              : 'bg-white/5 border-gray-600 text-gray-300 hover:bg-white/10'
-                          } ${isPaymentMethodPreferred('binance_nequi') ? 'ring-2 ring-green-500' : ''}`}
-                        >
-                          <div className="flex items-center justify-between">
-                            <span className="font-medium">Binance + Nequi</span>
-                            {isPaymentMethodPreferred('binance_nequi') && (
-                              <span className="text-green-400 text-xs bg-green-500/20 px-2 py-1 rounded">
-                                Recomendado
-                              </span>
-                            )}
-                          </div>
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                {/* Payment Method Specific Fields */}
-                {formData.paymentMethod && (
-                  <div className="space-y-4">
-                    {/* Binance ID for binance_pay and binance_nequi */}
-                    {(formData.paymentMethod === 'binance_pay' || formData.paymentMethod === 'binance_nequi') && (
-                      <div className="relative">
-                        <Fingerprint className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 z-10" />
-                        <input
-                          type="text"
-                          placeholder="ID de Binance (9-10 dígitos)"
-                          value={formData.binanceId}
-                          onChange={(e) => setFormData({ ...formData, binanceId: e.target.value.replace(/\D/g, '') })}
-                          className={`w-full pl-10 pr-4 py-3 bg-white/5 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
-                            errors.binanceId ? 'border-red-500 focus:ring-red-500' : 'border-gray-600'
-                          }`}
-                          maxLength={10}
-                        />
-                        {errors.binanceId && (
-                          <p className="text-red-500 text-xs mt-1 flex items-center">
-                            <AlertTriangle className="h-3 w-3 mr-1" />
-                            Debe tener entre 9 y 10 dígitos
-                          </p>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Nequi Phone for nequi and binance_nequi */}
-                    {(formData.paymentMethod === 'nequi' || formData.paymentMethod === 'binance_nequi') && (
-                      <div className="relative">
-                        <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 z-10" />
-                        <input
-                          type="tel"
-                          placeholder="Teléfono Nequi (10 dígitos)"
-                          value={formData.nequiPhone}
-                          onChange={(e) => setFormData({ ...formData, nequiPhone: e.target.value.replace(/\D/g, '') })}
-                          className={`w-full pl-10 pr-4 py-3 bg-white/5 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
-                            errors.nequiPhone ? 'border-red-500 focus:ring-red-500' : 'border-gray-600'
-                          }`}
-                          maxLength={10}
-                        />
-                        {errors.nequiPhone && (
-                          <p className="text-red-500 text-xs mt-1 flex items-center">
-                            <AlertTriangle className="h-3 w-3 mr-1" />
-                            Debe tener exactamente 10 dígitos
-                          </p>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Navigation Buttons */}
-                <div className="flex justify-between pt-6">
-                  <div></div>
-                  <button
+              {/* Payment Method */}
+              <div>
+                <label className="block text-sm text-muted-foreground mb-2 font-inter">
+                  Selecciona tu método de pago preferido
+                </label>
+                {/* Solo Binance Pay y Nequi - cada uno funciona con 1 clic */}
+                <div className={`grid gap-3 ${(isBinanceEnabled && isNequiEnabled) ? 'grid-cols-1 md:grid-cols-3' : (isBinanceEnabled || isNequiEnabled) ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
+                  {isBinanceEnabled && (
+                    <button
                     type="button"
-                    onClick={handleNext}
-                    disabled={!canProceedStep1}
-                    className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 ${
-                      canProceedStep1
-                        ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                        : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                    onClick={() => handlePaymentMethodClick('binance_pay')}
+                    className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
+                      formData.paymentMethod === 'binance_pay' 
+                        ? 'ring-primary bg-primary/10 border-primary shadow-lg shadow-primary/25' 
+                        : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
                     }`}
                   >
-                    <span>Continuar</span>
-                    <ArrowRight className="h-4 w-4" />
+                    {formData.paymentMethod === 'binance_pay' && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
+                    )}
+                    <div className="relative flex items-center gap-3">
+                      <div className={`p-2 rounded-lg ${
+                        formData.paymentMethod === 'binance_pay' 
+                          ? 'bg-primary/20' 
+                          : 'bg-white/10'
+                      }`}>
+                        <Hash className={`w-5 h-5 ${
+                          formData.paymentMethod === 'binance_pay' 
+                            ? 'text-primary' 
+                            : 'text-muted-foreground'
+                        }`} />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className={`text-sm font-medium font-inter ${
+                            formData.paymentMethod === 'binance_pay' 
+                              ? 'text-white' 
+                              : 'text-foreground'
+                          }`}>
+                            Binance Pay
+                          </span>
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-0.5 font-inter">
+                          Pago directo
+                        </p>
+                      </div>
+                      {formData.paymentMethod === 'binance_pay' && (
+                        <div className="ml-auto">
+                          <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                            <div className="w-2 h-2 bg-white rounded-full" />
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </button>
+                  )}
+                  {isNequiEnabled && (
+                    <button
+                      type="button"
+                      onClick={() => handlePaymentMethodClick('nequi')}
+                      className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
+                        formData.paymentMethod === 'nequi' 
+                          ? 'ring-green-500 bg-green-500/10 border-green-500 shadow-lg shadow-green-500/25' 
+                          : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
+                      }`}
+                    >
+                      {formData.paymentMethod === 'nequi' && (
+                        <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-transparent" />
+                      )}
+                      <div className="relative flex items-center gap-3">
+                        <div className={`p-2 rounded-lg ${
+                          formData.paymentMethod === 'nequi' 
+                            ? 'bg-green-500/20' 
+                            : 'bg-white/10'
+                        }`}>
+                          <Hash className={`w-5 h-5 ${
+                            formData.paymentMethod === 'nequi' 
+                              ? 'text-green-400' 
+                              : 'text-muted-foreground'
+                          }`} />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <span className={`text-sm font-medium font-inter ${
+                              formData.paymentMethod === 'nequi' 
+                                ? 'text-white' 
+                                : 'text-foreground'
+                            }`}>
+                              Nequi
+                            </span>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-0.5 font-inter">
+                            Pago móvil
+                          </p>
+                        </div>
+                        {formData.paymentMethod === 'nequi' && (
+                          <div className="ml-auto">
+                            <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                              <div className="w-2 h-2 bg-white rounded-full" />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </button>
+                  )}
+
+                  {/* Combined Binance + Nequi option */}
+                  {isBinanceEnabled && isNequiEnabled && (
+                    <button
+                      type="button"
+                      onClick={() => handlePaymentMethodClick('binance_nequi')}
+                      className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
+                        formData.paymentMethod === 'binance_nequi' 
+                          ? 'ring-purple-500 bg-purple-500/10 border-purple-500 shadow-lg shadow-purple-500/25' 
+                          : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
+                      }`}
+                    >
+                      {formData.paymentMethod === 'binance_nequi' && (
+                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-transparent" />
+                      )}
+                      <div className="relative flex items-center gap-3">
+                        <div className={`p-2 rounded-lg ${
+                          formData.paymentMethod === 'binance_nequi' 
+                            ? 'bg-purple-500/20' 
+                            : 'bg-white/10'
+                        }`}>
+                          <Hash className={`w-5 h-5 ${
+                            formData.paymentMethod === 'binance_nequi' 
+                              ? 'text-purple-400' 
+                              : 'text-muted-foreground'
+                          }`} />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <span className={`text-sm font-medium font-inter ${
+                              formData.paymentMethod === 'binance_nequi' 
+                                ? 'text-white' 
+                                : 'text-foreground'
+                            }`}>
+                              Binance y Nequi
+                            </span>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-0.5 font-inter">
+                            Ambos métodos completos
+                          </p>
+                        </div>
+                        {formData.paymentMethod === 'binance_nequi' && (
+                          <div className="ml-auto">
+                            <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
+                              <div className="w-2 h-2 bg-white rounded-full" />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </button>
+                  )}
                 </div>
-              </form>
+              </div>
+
+              {/* Binance ID */}
+              {(formData.paymentMethod === 'binance_pay' || formData.paymentMethod === 'binance_nequi') && (
+                <div>
+                  <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID / Número de Binance</label>
+                  <div className="relative">
+                    <Fingerprint className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                    <input
+                      type="text"
+                      placeholder="9 o 10 dígitos"
+                      value={formData.binanceId}
+                      onChange={(e) => setFormData({...formData, binanceId: e.target.value})}
+                      className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
+                    />
+                  </div>
+                  {errors.binanceId && (
+                    <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
+                      <AlertTriangle className="w-3.5 h-3.5" />
+                      <span><strong className="font-medium">ID de Binance inválido</strong> — Debe tener 9 Y 10 numéricos.</span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Nequi Phone */}
+              {isNequiEnabled && (formData.paymentMethod === 'nequi' || formData.paymentMethod === 'binance_nequi') && (
+                <div>
+                  <label className="block text-sm text-muted-foreground mb-1.5 font-inter">Número de teléfono Nequi</label>
+                  <div className="relative">
+                    <Phone className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                    <input
+                      type="text"
+                      placeholder="Ej: 3001234567"
+                      value={formData.nequiPhone}
+                      onChange={(e) => setFormData({...formData, nequiPhone: e.target.value})}
+                      className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
+                    />
+                  </div>
+                  {errors.nequiPhone && (
+                    <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
+                      <AlertTriangle className="w-3.5 h-3.5" />
+                      <span><strong className="font-medium">Número de Nequi inválido</strong> — Debe ser un número de teléfono válido.</span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className="h-px bg-white/10" />
+
+              <div className="flex items-center justify-between">
+                <button
+                  type="button"
+                  disabled
+                  className="inline-flex items-center gap-2 rounded-md px-3.5 py-2 text-sm text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  Atrás
+                </button>
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  disabled={!canProceedStep1}
+                  className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-white bg-primary hover:bg-primary/80 ring-1 ring-primary/50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                >
+                  Continuar
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           )}
 
           {/* Step 2: QR Payment */}
           {currentStep === 2 && (
             <div className="space-y-6">
-              <div className="text-center">
-                <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                  Realizar Pago - $25 USD
-                </h2>
-                <p className="text-sm text-muted-foreground mt-1 font-inter">
-                  Escanea el código QR y realiza el pago
-                </p>
-              </div>
-
-              {/* Timer */}
-              <div className="flex items-center justify-center space-x-2 text-orange-400">
-                <Timer className="h-5 w-5" />
-                <span className="text-lg font-mono">{formatTime(timer1)}</span>
-              </div>
-
-              {/* QR Code Display */}
-              <div className="text-center space-y-4">
-                {platformQrSettings && platformQrSettings.qr_image_url ? (
-                  <div className="inline-block p-4 bg-white rounded-lg">
-                    <img 
-                      src={platformQrSettings.qr_image_url} 
-                      alt="QR Code para pago" 
-                      className="w-64 h-64 mx-auto"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-64 h-64 mx-auto bg-gray-700 rounded-lg flex items-center justify-center">
-                    <p className="text-gray-400">Cargando QR...</p>
-                  </div>
-                )}
-
-                <div className="space-y-2">
-                  <p className="text-white font-medium">Monto a pagar:</p>
-                  <div className="text-3xl font-bold text-green-400">$25 USD</div>
-                  {platformQrSettings && platformQrSettings.price_cop && (
-                    <div className="text-lg text-gray-300">
-                      ${formatCOPPrice(platformQrSettings.price_cop)} COP
-                    </div>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <p className="text-white font-medium">ID de la orden:</p>
-                  <div className="flex items-center justify-center space-x-2">
-                    <code className="bg-gray-800 px-4 py-2 rounded text-blue-400 font-mono">
-                      {orderId1}
-                    </code>
-                    <button
-                      onClick={() => copyToClipboard(orderId1)}
-                      className="p-2 bg-blue-600 hover:bg-blue-700 rounded transition-colors"
-                    >
-                      <Copy className="h-4 w-4 text-white" />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
-                  <p className="text-yellow-400 text-sm">
-                    <strong>Importante:</strong> Copia el ID de la orden y úsalo como concepto del pago. 
-                    Después de realizar el pago, agrega tu información en el siguiente paso.
+              <div className={`flex items-center justify-between p-4 rounded-lg border-2 ${selectedPlatform === 'Binance' ? 'bg-yellow-400/10 border-yellow-400/30' : 'bg-purple-400/10 border-purple-400/30'}`}>
+                <div>
+                  <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
+                    Pago por QR - {selectedPlatform === 'Nequi' ? `${formatCOPPrice(platformQrSettings?.price_cop || qrSettings?.price_cop || '100000')} COP` : `${platformQrSettings?.price_usd || qrSettings?.price_usd || '150'} USD`} (Ciclo de vida) - {selectedPlatform}
+                  </h2>
+                  <p className="text-sm text-muted-foreground mt-1 font-inter">
+                    Escanea el código para continuar. Tiempo restante: <span className="text-foreground">{formatTime(timer1)}</span>
                   </p>
                 </div>
+                <div className="rounded-md px-3 py-2 bg-white/5 ring-1 ring-white/10 text-sm text-muted-foreground flex items-center gap-2">
+                  <Timer className="w-4 h-4 text-primary" />
+                  <span>30 minutos</span>
+                </div>
               </div>
 
-              {/* Navigation Buttons */}
-              <div className="flex justify-between pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="rounded-xl bg-[#0f1522] ring-1 ring-white/10 p-4 grid place-items-center">
+                  <div className="rounded-lg bg-white p-3">
+                    {(platformQrSettings?.qr_image_url || qrSettings?.qr_image_url) ? (
+                      <img 
+                        src={platformQrSettings?.qr_image_url || qrSettings?.qr_image_url} 
+                        alt="QR Code" 
+                        className="h-48 w-48 object-contain rounded"
+                      />
+                    ) : (
+                      <div className="h-48 w-48 bg-gray-200 rounded flex items-center justify-center">
+                        <span className="text-gray-500 text-sm">QR Code</span>
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-3 font-inter">Usa tu app para escanear</p>
+                </div>
+
+                <div className="rounded-xl bg-white/5 ring-1 ring-white/10 p-4 space-y-4 bg-cover bg-center" 
+                     style={{backgroundImage: "url('https://img.freepik.com/fotos-premium/cupula-vidrio-transparente-maqueta-cubierta-domo_46370-3637.jpg?w=2000')"}}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground font-inter">Codigo ID</span>
+                    <div className="flex items-center gap-2">
+                      <code className="text-sm text-foreground font-mono">{orderId1}</code>
+                      <button
+                        onClick={() => copyToClipboard(orderId1)}
+                        className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
+                      >
+                        <Copy className="w-3.5 h-3.5" />
+                        Copiar
+                      </button>
+                    </div>
+                  </div>
+                  <div className="h-px bg-white/10" />
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground font-inter">Estado</span>
+                      <span className="text-blue-300">Pendiente</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground font-inter">Método</span>
+                      <span className="text-foreground">Ciclo vida</span>
+                    </div>
+                  </div>
+                  <div className="pt-2">
+                    <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID de Orden (10–19 dígitos)</label>
+                    <div className="relative">
+                      <Hash className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                      <input
+                        type="text"
+                        placeholder={selectedPlatform === 'Binance' ? "Ingresa tu ID de Binance" : "Ingresa tu ID de Nequi"}
+                        value={formData.binanceIdStep2}
+                        onChange={(e) => setFormData({...formData, binanceIdStep2: e.target.value})}
+                        className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
+                      />
+                    </div>
+                    {errors.binanceIdStep2 && (
+                      <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
+                        <AlertTriangle className="w-3.5 h-3.5" />
+                        <span><strong className="font-medium">ID de Binance inválido</strong> — Debe tener entre 10 y 19 dígitos numéricos.</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="h-px bg-white/10" />
+
+              <div className="flex items-center justify-between">
                 <button
+                  type="button"
                   onClick={handlePrev}
-                  className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium transition-colors flex items-center space-x-2"
+                  className="inline-flex items-center gap-2 rounded-md px-3.5 py-2 text-sm text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
                 >
-                  <ArrowLeft className="h-4 w-4" />
-                  <span>Anterior</span>
+                  <ArrowLeft className="w-4 h-4" />
+                  Atrás
                 </button>
                 <button
+                  type="button"
                   onClick={handleNext}
-                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex items-center space-x-2"
+                  disabled={!canProceedStep2}
+                  className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-white bg-primary hover:bg-primary/80 ring-1 ring-primary/50 disabled:opacity-40 disabled:cursor-not-allowed transition"
                 >
-                  <span>Ya pagué, continuar</span>
-                  <ArrowRight className="h-4 w-4" />
+                  Continuar
+                  <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             </div>
           )}
 
-          {/* Step 3: Admin Verification */}
+          {/* Step 3: Admin QR */}
           {currentStep === 3 && (
             <div className="space-y-6">
-              <div className="text-center">
-                <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                  Verificación de Administrador
-                </h2>
-                <p className="text-sm text-muted-foreground mt-1 font-inter">
-                  Ingresa tu ID de Binance para la verificación
-                </p>
-              </div>
-
-              {/* Timer */}
-              <div className="flex items-center justify-center space-x-2 text-orange-400">
-                <Timer className="h-5 w-5" />
-                <span className="text-lg font-mono">{formatTime(timer2)}</span>
-              </div>
-
-              <form className="space-y-4">
-                <div className="relative">
-                  <Fingerprint className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 z-10" />
-                  <input
-                    type="text"
-                    placeholder="ID de Binance para verificación (10-19 caracteres)"
-                    value={formData.binanceIdStep3}
-                    onChange={(e) => setFormData({ ...formData, binanceIdStep3: e.target.value })}
-                    className={`w-full pl-10 pr-4 py-3 bg-white/5 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
-                      errors.binanceIdStep3 ? 'border-red-500 focus:ring-red-500' : 'border-gray-600'
-                    }`}
-                    maxLength={19}
-                  />
-                  {errors.binanceIdStep3 && (
-                    <p className="text-red-500 text-xs mt-1 flex items-center">
-                      <AlertTriangle className="h-3 w-3 mr-1" />
-                      Debe tener entre 10 y 19 caracteres
-                    </p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <p className="text-white font-medium">ID de Orden Admin:</p>
-                  <div className="flex items-center justify-center space-x-2">
-                    <code className="bg-gray-800 px-4 py-2 rounded text-purple-400 font-mono">
-                      {orderId2}
-                    </code>
-                    <button
-                      type="button"
-                      onClick={() => copyToClipboard(orderId2)}
-                      className="p-2 bg-purple-600 hover:bg-purple-700 rounded transition-colors"
-                    >
-                      <Copy className="h-4 w-4 text-white" />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
-                  <p className="text-blue-400 text-sm">
-                    El administrador verificará tu pago y completará el proceso de registro.
+              <div className={`flex items-center justify-between p-4 rounded-lg border-2 ${selectedPlatform === 'Binance' ? 'bg-yellow-400/10 border-yellow-400/30' : 'bg-purple-400/10 border-purple-400/30'}`}>
+                <div>
+                  <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
+                    Pago por QR - {selectedPlatform === 'Nequi' ? `${formatCOPPrice(platformAdminQrSettings?.price_cop || adminQrSettings?.price_cop || '100000')} COP` : `${platformAdminQrSettings?.price_usd || adminQrSettings?.price_usd || '150'} USD`} (Admin) - {selectedPlatform}
+                  </h2>
+                  <p className="text-sm text-muted-foreground mt-1 font-inter">
+                    Escanea el QR del administrador. Tiempo restante: <span className="text-foreground">{formatTime(timer2)}</span>
                   </p>
                 </div>
-              </form>
+                <div className="rounded-md px-3 py-2 bg-white/5 ring-1 ring-white/10 text-sm text-muted-foreground flex items-center gap-2">
+                  <Timer className="w-4 h-4 text-primary" />
+                  <span>30 minutos</span>
+                </div>
+              </div>
 
-              {/* Navigation Buttons */}
-              <div className="flex justify-between pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="rounded-xl bg-[#0f1522] ring-1 ring-white/10 p-4 grid place-items-center">
+                  <div className="rounded-lg bg-white p-3">
+                    {(platformAdminQrSettings?.qr_image_url || adminQrSettings?.qr_image_url) ? (
+                      <img 
+                        src={platformAdminQrSettings?.qr_image_url || adminQrSettings?.qr_image_url} 
+                        alt="QR Code Admin" 
+                        className="h-48 w-48 object-contain rounded"
+                      />
+                    ) : (
+                      <div className="h-48 w-48 bg-gray-200 rounded flex items-center justify-center">
+                        <span className="text-gray-500 text-sm">QR Code Admin</span>
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-3 font-inter">Solicita el QR del administrador</p>
+                </div>
+
+                <div className="rounded-xl bg-white/5 ring-1 ring-white/10 p-4 space-y-4 bg-cover bg-center"
+                     style={{backgroundImage: "url('https://img.freepik.com/fotos-premium/fondo-abstracto-simple-minimalista-hexagonal-ilustracion-bola-3d_531600-417.jpg?w=2000')"}}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground font-inter">Codigo ID</span>
+                    <div className="flex items-center gap-2">
+                      <code className="text-sm text-foreground font-mono">{orderId2}</code>
+                      <button
+                        onClick={() => copyToClipboard(orderId2)}
+                        className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
+                      >
+                        <Copy className="w-3.5 h-3.5" />
+                        Copiar
+                      </button>
+                    </div>
+                  </div>
+                  <div className="h-px bg-white/10" />
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground font-inter">Estado</span>
+                      <span className="text-blue-300">Pendiente</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground font-inter">Asignado por</span>
+                      <span className="text-foreground">Administrador</span>
+                    </div>
+                  </div>
+                  <div className="pt-2">
+                    <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID de Orden (10–19 dígitos)</label>
+                    <div className="relative">
+                      <Hash className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                      <input
+                        type="text"
+                        placeholder={selectedPlatform === 'Binance' ? "Ingresa tu ID de Binance" : "Ingresa tu ID de Nequi"}
+                        value={formData.binanceIdStep3}
+                        onChange={(e) => setFormData({...formData, binanceIdStep3: e.target.value})}
+                        className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
+                      />
+                    </div>
+                    {errors.binanceIdStep3 && (
+                      <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
+                        <AlertTriangle className="w-3.5 h-3.5" />
+                        <span><strong className="font-medium">ID de Binance inválido</strong> — Debe tener entre 10 y 19 dígitos numéricos.</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="h-px bg-white/10" />
+
+              <div className="flex items-center justify-between">
                 <button
+                  type="button"
                   onClick={handlePrev}
-                  className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium transition-colors flex items-center space-x-2"
+                  className="inline-flex items-center gap-2 rounded-md px-3.5 py-2 text-sm text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
                 >
-                  <ArrowLeft className="h-4 w-4" />
-                  <span>Anterior</span>
+                  <ArrowLeft className="w-4 h-4" />
+                  Atrás
                 </button>
                 <button
+                  type="button"
                   onClick={handleNext}
                   disabled={!canProceedStep3}
-                  className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 ${
-                    canProceedStep3
-                      ? 'bg-green-600 hover:bg-green-700 text-white'
-                      : 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                  }`}
+                  className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-white bg-primary hover:bg-primary/80 ring-1 ring-primary/50 disabled:opacity-40 disabled:cursor-not-allowed transition"
                 >
-                  <span>Completar Registro</span>
-                  <CheckCircle2 className="h-4 w-4" />
+                  Continuar
+                  <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             </div>
           )}
 
-          {/* Step 4: Registration Complete */}
-          {currentStep === 4 && generatedCodes && (
-            <div className="space-y-6 text-center">
-              <div className="text-center">
-                <CheckCircle2 className="h-16 w-16 text-green-500 mx-auto mb-4" />
-                <h2 className="text-2xl font-semibold tracking-tight text-white font-inter">
-                  ¡Registro Completado!
-                </h2>
-                <p className="text-sm text-muted-foreground mt-2 font-inter">
-                  Tu registro de $25 USD ha sido procesado exitosamente
-                </p>
+          {/* Step 4: Completed */}
+          {currentStep === 4 && (
+            <div className="space-y-6">
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="w-6 h-6 text-green-400" />
+                <h2 className="text-xl font-semibold tracking-tight text-white font-inter">¡Completado! Felicidades</h2>
               </div>
+              <p className="text-sm text-muted-foreground -mt-2 font-inter">Tu cuenta está lista. Se abrió el ticket en un modal.</p>
 
-              <div className="bg-white/5 rounded-lg p-6 space-y-4">
-                <div className="space-y-2">
-                  <p className="text-white font-medium">Tu código de registro:</p>
-                  <div className="flex items-center justify-center space-x-2">
-                    <code className="bg-gray-800 px-4 py-2 rounded text-green-400 font-mono text-lg">
-                      {generatedCodes.oculto}
-                    </code>
-                    <button
-                      onClick={() => copyToClipboard(generatedCodes.codigo)}
-                      className="p-2 bg-blue-600 hover:bg-blue-700 rounded transition-colors"
-                    >
-                      <Copy className="h-4 w-4 text-white" />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <p className="text-white font-medium">Ticket ID:</p>
-                  <div className="flex items-center justify-center space-x-2">
-                    <code className="bg-gray-800 px-4 py-2 rounded text-blue-400 font-mono">
-                      {generatedCodes.ticketId}
-                    </code>
-                    <button
-                      onClick={() => copyToClipboard(generatedCodes.ticketId)}
-                      className="p-2 bg-blue-600 hover:bg-blue-700 rounded transition-colors"
-                    >
-                      <Copy className="h-4 w-4 text-white" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <p className="text-white">
-                  Guarda estos códigos en un lugar seguro. Los necesitarás para acceder a tu cuenta.
-                </p>
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  onClick={() => {
+                    setShowTicketModal(true);
+                    // Trigger confetti when ticket modal opens
+                    setTimeout(() => {
+                      confetti({
+                        particleCount: 150,
+                        spread: 100,
+                        origin: { y: 0.6 },
+                        colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff']
+                      });
+                    }, 300);
+                  }}
+                  className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-white bg-primary hover:bg-primary/80 ring-1 ring-primary/50 transition"
+                >
+                  <Ticket className="w-4 h-4" />
+                  Mostrar ticket
+                </button>
+                <button
+                  onClick={openWhatsApp}
+                  className="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm text-white bg-green-600 hover:bg-green-500 transition"
+                >
+                  👉 Únete al Grupo WhatsApp 👈
+                </button>
               </div>
             </div>
           )}
@@ -1032,48 +1125,59 @@ export function RegistrationForm() {
 
       {/* Platform Selection Modal */}
       {showPlatformModal && (
-        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-gradient-to-b from-slate-900 to-indigo-900 rounded-2xl p-8 max-w-md w-full relative border border-white/10">
-            <button
-              onClick={() => setShowPlatformModal(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
-            >
-              <X className="h-6 w-6" />
-            </button>
-
-            <div className="text-center space-y-6">
-              <h3 className="text-2xl font-bold text-white mb-4">
-                Selecciona la plataforma de pago
-              </h3>
-
+        <div className="fixed inset-0 z-50 overflow-auto bg-black/60 ">
+          <div className="relative mx-auto w-full max-w-md px-4 py-8 min-h-full flex items-center justify-center">
+            <div className="w-full rounded-2xl bg-[#0c111b] ring-1 ring-white/10 shadow-2xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-white">Selecciona plataforma de pago</h3>
+                <button
+                  onClick={() => setShowPlatformModal(false)}
+                  className="text-muted-foreground hover:text-white transition"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              
               <div className="space-y-3">
-                {isBinanceEnabled && (
-                  <button
-                    onClick={() => {
-                      setSelectedPlatform('Binance');
-                      fetchPlatformQrSettings('Binance');
-                      setCurrentStep(2);
-                      setShowPlatformModal(false);
-                    }}
-                    className="w-full p-4 bg-yellow-600/20 border border-yellow-500 rounded-lg text-yellow-100 hover:bg-yellow-600/30 transition-colors"
-                  >
-                    <div className="font-medium">Binance Pay</div>
-                    <div className="text-sm text-yellow-200">Pago con criptomonedas</div>
-                  </button>
-                )}
-
-                {isNequiEnabled && formData.country === 'Colombia' && (
+                <button
+                  onClick={() => {
+                    setSelectedPlatform('Binance');
+                    // No cambiar paymentMethod si ya era binance_nequi
+                    // Don't change the original payment method to preserve original data
+                    fetchPlatformQrSettings('Binance');
+                    setShowPlatformModal(false);
+                    setCurrentStep(2);
+                  }}
+                  className="w-full rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-4 text-left"
+                >
+                  <div className="flex items-center gap-3">
+                    <Hash className="w-5 h-5 text-yellow-400" />
+                    <div>
+                      <div className="text-sm font-medium text-white">Binance</div>
+                      <div className="text-xs text-muted-foreground">Plataforma de criptomonedas</div>
+                    </div>
+                  </div>
+                </button>
+                
+                {isNequiEnabled && (
                   <button
                     onClick={() => {
                       setSelectedPlatform('Nequi');
+                      // No cambiar paymentMethod si ya era binance_nequi
+                      // Don't change the original payment method to preserve original data
                       fetchPlatformQrSettings('Nequi');
-                      setCurrentStep(2);
                       setShowPlatformModal(false);
+                      setCurrentStep(2);
                     }}
-                    className="w-full p-4 bg-purple-600/20 border border-purple-500 rounded-lg text-purple-100 hover:bg-purple-600/30 transition-colors"
+                    className="w-full rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-4 text-left"
                   >
-                    <div className="font-medium">Nequi</div>
-                    <div className="text-sm text-purple-200">Pago con Nequi</div>
+                    <div className="flex items-center gap-3">
+                      <Hash className="w-5 h-5 text-green-400" />
+                      <div>
+                        <div className="text-sm font-medium text-white">Nequi</div>
+                        <div className="text-xs text-muted-foreground">Aplicación móvil de pagos</div>
+                      </div>
+                    </div>
                   </button>
                 )}
               </div>
@@ -1083,66 +1187,182 @@ export function RegistrationForm() {
       )}
 
       {/* Ticket Modal */}
-      {showTicketModal && generatedCodes && (
-        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-gradient-to-b from-slate-900 to-indigo-900 rounded-2xl p-8 max-w-md w-full relative border border-white/10">
-            <button
-              onClick={() => setShowTicketModal(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
-            >
-              <X className="h-6 w-6" />
-            </button>
-
-            <div className="text-center space-y-6">
-              <div>
-                <TicketCheck className="h-16 w-16 text-green-500 mx-auto mb-4" />
-                <h3 className="text-2xl font-bold text-white mb-2">
-                  ¡Bienvenido!
-                </h3>
-                <p className="text-gray-300">
-                  Tu registro de $25 USD ha sido completado exitosamente.
-                </p>
-              </div>
-
-              <div className="bg-white/5 rounded-lg p-4 space-y-3">
-                <div>
-                  <p className="text-sm text-gray-400 mb-1">Código de Registro</p>
-                  <div className="flex items-center justify-between bg-gray-800 rounded px-3 py-2">
-                    <code className="text-green-400 font-mono">{generatedCodes.oculto}</code>
-                    <button
-                      onClick={() => copyToClipboard(generatedCodes.codigo)}
-                      className="text-blue-400 hover:text-blue-300 transition-colors"
-                    >
-                      <Copy className="h-4 w-4" />
-                    </button>
+      {showTicketModal && (
+        <div className="fixed inset-0 z-50 overflow-auto bg-black/60 ">
+          <div className="relative mx-auto w-full max-w-3xl px-4 py-8 min-h-full flex items-center justify-center">
+            <div className="w-full rounded-2xl bg-[#0c111b] ring-1 ring-white/10 shadow-2xl overflow-hidden">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+                <div className="flex items-center gap-2">
+                  <div className="h-8 w-8 grid place-items-center rounded-md bg-white/10 ring-1 ring-white/10">
+                    <span className="text-sm font-semibold tracking-tight text-white">CV</span>
                   </div>
+                  <h3 className="text-lg font-semibold tracking-tight text-white font-inter">Tu ticket</h3>
                 </div>
-
-                <div>
-                  <p className="text-sm text-gray-400 mb-1">Ticket ID</p>
-                  <div className="flex items-center justify-between bg-gray-800 rounded px-3 py-2">
-                    <code className="text-blue-400 font-mono">{generatedCodes.ticketId}</code>
-                    <button
-                      onClick={() => copyToClipboard(generatedCodes.ticketId)}
-                      className="text-blue-400 hover:text-blue-300 transition-colors"
-                    >
-                      <Copy className="h-4 w-4" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <p className="text-sm text-gray-300">
-                  Únete a nuestro grupo de WhatsApp para recibir más información y comenzar tu inversión.
-                </p>
-                
                 <button
-                  onClick={openWhatsApp}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2"
+                  onClick={() => setShowTicketModal(false)}
+                  className="rounded-md p-2 text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
                 >
-                  <span>Unirse al Grupo de WhatsApp</span>
+                  <X className="w-4 h-4" />
                 </button>
+              </div>
+
+              <div className="p-6 md:p-8">
+                <div className="space-y-5">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xl sm:text-2xl font-semibold tracking-tight text-white flex items-center gap-2 font-inter">
+                      <TicketCheck className="w-5 h-5 text-rose-300" />
+                      Tu Ticket
+                    </h3>
+                    <span className="text-xs text-slate-300/80 font-inter">finalizado</span>
+                  </div>
+
+                  <div className="rounded-2xl bg-gradient-to-b from-[#c14500] to-[#5b0101] border-white/10 overflow-hidden shadow-2xl">
+                    <div className="flex flex-col sm:flex-row">
+                      <div className="sm:w-48 p-5 bg-gradient-to-b from-[#5b0101] to-[#c14500] relative">
+                        <div className="flex flex-col h-full justify-between">
+                          <div>
+                            <p className="text-xs tracking-wider text-white font-inter"># ADMIT ONE</p>
+                            <p className="mt-3 text-xs text-white font-inter">ID</p>
+                            <p className="text-sm font-medium text-slate-200 font-mono">{generatedCodes?.ticketId || 'xxxxxxxxxxxx'}</p>
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Orden</p>
+                            <p className="text-sm font-medium text-amber-300 font-mono">{formData.binanceIdStep2}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Administrador</p>
+                            <p className="text-sm font-medium text-amber-300 font-mono">{formData.binanceIdStep3}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex-1 p-6">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h4 className="text-lg sm:text-xl font-semibold tracking-tight text-[#f9ff01] font-inter">
+                              Detalles del registro
+                            </h4>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-xs uppercase tracking-wider text-white font-inter">Titular</p>
+                            <p className="text-sm font-medium text-slate-200">{formData.name}</p>
+                          </div>
+                        </div>
+
+                        <div className="h-px bg-white/10 my-4" />
+
+                        {formData.paymentMethod === 'binance_nequi' ? (
+                          <div className="grid grid-cols-3 gap-4 text-sm">
+                            <div>
+                              <p className="text-xs text-white font-inter">Nombres:</p>
+                              <p className="font-medium text-slate-200">{formData.name}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">WhatsApp:</p>
+                              <p className="font-medium text-slate-200">{formData.phone}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">País:</p>
+                              <p className="font-medium text-slate-200">{formData.country}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">Invita a:</p>
+                              <p className="font-medium text-slate-200">{formData.invitee}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">Dinero:</p>
+                              <p className="font-medium text-slate-200">{formData.hasMoney === 'yes' ? 'Sí' : 'No'}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">Plataforma:</p>
+                              <p className="font-medium text-slate-200">
+                                {formData.paymentMethod.includes('binance') && formData.paymentMethod.includes('nequi') ? 'Binance + Nequi' :
+                                 formData.paymentMethod.includes('binance') ? 'Binance' :
+                                 formData.paymentMethod.includes('nequi') ? 'Nequi' : 'N/A'}
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">Binance:</p>
+                              <p className="font-medium text-slate-200">{formData.binanceId || 'N/A'}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">Nequi:</p>
+                              <p className="font-medium text-slate-200">{formData.nequiPhone || 'N/A'}</p>
+                            </div>
+                            <div></div>
+                          </div>
+                        ) : (
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
+                            <div>
+                              <p className="text-xs text-white font-inter">Nombres:</p>
+                              <p className="font-medium text-slate-200">{formData.name}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">WhatsApp:</p>
+                              <p className="font-medium text-slate-200">{formData.phone}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">País:</p>
+                              <p className="font-medium text-slate-200">{formData.country}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">Invita a:</p>
+                              <p className="font-medium text-slate-200">{formData.invitee}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">Dinero:</p>
+                              <p className="font-medium text-slate-200">{formData.hasMoney === 'yes' ? 'Sí' : 'No'}</p>
+                            </div>
+                             <div>
+                               <p className="text-xs text-white font-inter">Plataforma:</p>
+                               <p className="font-medium text-slate-200">
+                                 {formData.paymentMethod === 'nequi' ? 'Nequi' : 
+                                  formData.paymentMethod === 'binance_pay' ? 'Binance Pay' : 
+                                  'N/A'}
+                               </p>
+                             </div>
+                             <div>
+                               <p className="text-xs text-white font-inter">
+                                 {formData.paymentMethod === 'nequi' ? 'Nequi:' : 
+                                  formData.paymentMethod === 'binance_pay' ? 'Binance Pay:' : 
+                                  'Método de pago:'}
+                               </p>
+                               <p className="font-medium text-slate-200">
+                                 {formData.paymentMethod === 'nequi' ? (formData.nequiPhone || 'N/A') : 
+                                  formData.paymentMethod === 'binance_pay' ? (formData.binanceId || 'N/A') :
+                                  'N/A'}
+                               </p>
+                             </div>
+                          </div>
+                        )}
+
+                        <div className="mt-6 rounded-xl border border-amber-400/20 bg-neutral-900/40 p-3">
+                          <div className="h-16 w-full rounded-md bg-[repeating-linear-gradient(90deg,rgba(251,191,36,1)_0_8px,transparent_8px_16px)]" />
+                        </div>
+
+                        <div className="mt-3 flex items-center justify-between text-xs text-white">
+                          <p className="font-inter">Conserva este ticket para futuras referencias.</p>
+                          <div className="flex items-center gap-2">
+                            <span className="text-white font-inter">Código</span>
+                            <span className="font-medium text-amber-300 font-mono">{generatedCodes?.oculto || 'xxxxxxxxxxxx'}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setShowTicketModal(false)}
+                        className="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 bg-gradient-to-r from-cyan-500/20 to-violet-500/20 hover:from-cyan-500/30 hover:to-violet-500/30 border border-white/10 text-slate-100 transition"
+                      >
+                        <CheckCircle2 className="w-4 h-4" />
+                        Confirmar
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
