@@ -330,12 +330,14 @@ export function RegistrationForm150() {
   const validateStep2 = () => {
     const newErrors: Record<string, boolean> = {};
     
-    if (!formData.binanceIdStep2 || formData.binanceIdStep2.length < 10 || formData.binanceIdStep2.length > 19) {
-      newErrors.binanceIdStep2 = true;
-    }
-
-    if (!formData.referenceIdStep2 || formData.referenceIdStep2.length < 6 || formData.referenceIdStep2.length > 20) {
-      newErrors.referenceIdStep2 = true;
+    if (selectedPlatform === 'Binance') {
+      if (!formData.binanceIdStep2 || formData.binanceIdStep2.length < 10 || formData.binanceIdStep2.length > 19) {
+        newErrors.binanceIdStep2 = true;
+      }
+    } else if (selectedPlatform === 'Nequi') {
+      if (!formData.referenceIdStep2 || formData.referenceIdStep2.length < 6 || formData.referenceIdStep2.length > 20) {
+        newErrors.referenceIdStep2 = true;
+      }
     }
 
     setErrors(newErrors);
@@ -345,12 +347,14 @@ export function RegistrationForm150() {
   const validateStep3 = () => {
     const newErrors: Record<string, boolean> = {};
     
-    if (!formData.binanceIdStep3 || formData.binanceIdStep3.length < 10 || formData.binanceIdStep3.length > 19) {
-      newErrors.binanceIdStep3 = true;
-    }
-
-    if (!formData.referenceIdStep3 || formData.referenceIdStep3.length < 6 || formData.referenceIdStep3.length > 20) {
-      newErrors.referenceIdStep3 = true;
+    if (selectedPlatform === 'Binance') {
+      if (!formData.binanceIdStep3 || formData.binanceIdStep3.length < 10 || formData.binanceIdStep3.length > 19) {
+        newErrors.binanceIdStep3 = true;
+      }
+    } else if (selectedPlatform === 'Nequi') {
+      if (!formData.referenceIdStep3 || formData.referenceIdStep3.length < 6 || formData.referenceIdStep3.length > 20) {
+        newErrors.referenceIdStep3 = true;
+      }
     }
 
     setErrors(newErrors);
@@ -485,10 +489,13 @@ export function RegistrationForm150() {
                            (formData.paymentMethod === 'nequi' && formData.nequiPhone) ||
                            (formData.paymentMethod === 'binance_nequi' && formData.binanceId && formData.nequiPhone));
 
-  const canProceedStep2 = formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19 && 
-                           formData.referenceIdStep2.length >= 6 && formData.referenceIdStep2.length <= 20;
-  const canProceedStep3 = formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19 && 
-                           formData.referenceIdStep3.length >= 6 && formData.referenceIdStep3.length <= 20;
+  const canProceedStep2 = selectedPlatform === 'Binance' 
+    ? (formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19)
+    : (formData.referenceIdStep2.length >= 6 && formData.referenceIdStep2.length <= 20);
+    
+  const canProceedStep3 = selectedPlatform === 'Binance'
+    ? (formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19)
+    : (formData.referenceIdStep3.length >= 6 && formData.referenceIdStep3.length <= 20);
 
   const isPaymentMethodPreferred = (method: string) => {
     if (!formData.country) return false;
