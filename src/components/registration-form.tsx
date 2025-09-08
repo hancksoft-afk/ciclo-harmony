@@ -289,11 +289,11 @@ export function RegistrationForm() {
       newErrors.paymentMethod = true;
     }
     
-    if (formData.paymentMethod === 'binance_pay' && (!formData.binanceId || !/^\d{9,10}$/.test(formData.binanceId))) {
+    if ((formData.paymentMethod === 'binance_pay' || formData.paymentMethod === 'binance_pay_nequi') && (!formData.binanceId || !/^\d{9,10}$/.test(formData.binanceId))) {
       newErrors.binanceId = true;
     }
     
-    if (formData.paymentMethod === 'nequi_pay' && !formData.nequiPhone) {
+    if ((formData.paymentMethod === 'nequi_pay' || formData.paymentMethod === 'binance_pay_nequi') && !formData.nequiPhone) {
       newErrors.nequiPhone = true;
     }
 
@@ -863,10 +863,18 @@ export function RegistrationForm() {
           {/* Step 2: QR Payment */}
           {currentStep === 2 && (
             <div className="space-y-6">
-              <div className={`flex items-center justify-between p-4 rounded-lg border-2 ${(selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')) === 'Binance' ? 'bg-yellow-400/10 border-yellow-400/30' : 'bg-purple-400/10 border-purple-400/30'}`}>
+              <div className={`flex items-center justify-between p-4 rounded-lg border-2 ${
+                formData.paymentMethod === 'binance_pay' ? 'bg-yellow-400/10 border-yellow-400/30' : 
+                formData.paymentMethod === 'nequi_pay' ? 'bg-purple-400/10 border-purple-400/30' :
+                'bg-gradient-to-r from-yellow-400/10 to-purple-400/10 border-yellow-400/30 border-r-purple-400/30'
+              }`}>
                 <div>
                     <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                      Pago por QR - {selectedPlatform === 'Binance' ? `${qrSettings?.price_usd || '25'} USD` : `${formatCOPPrice(nequiQrSettings?.price_cop || '100000')} COP`} (Ciclo de vida) - {selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')}
+                      Pago por QR - {
+                        formData.paymentMethod === 'binance_pay' ? `${qrSettings?.price_usd || '25'} USD (Ciclo de vida) - Binance Pay` :
+                        formData.paymentMethod === 'nequi_pay' ? `${formatCOPPrice(nequiQrSettings?.price_cop || '100000')} COP (Ciclo de vida) - Nequi` :
+                        `${qrSettings?.price_usd || '25'} USD (Ciclo de vida) - Binance + Nequi`
+                      }
                     </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el código para continuar. Tiempo restante: <span className="text-foreground">{formatTime(timer1)}</span>
@@ -878,69 +886,117 @@ export function RegistrationForm() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="rounded-xl bg-[#0f1522] ring-1 ring-white/10 p-4 grid place-items-center">
-                  <div className="rounded-lg bg-white p-3">
-                    {(selectedPlatform === 'Binance' ? qrSettings : nequiQrSettings)?.qr_image_url ? (
-                      <img 
-                        src={(selectedPlatform === 'Binance' ? qrSettings : nequiQrSettings)?.qr_image_url} 
-                        alt="QR Code" 
-                        className="h-48 w-48 object-contain rounded"
-                      />
-                    ) : (
-                      <div className="h-48 w-48 bg-gray-200 rounded flex items-center justify-center">
-                        <span className="text-gray-500 text-sm">QR Code</span>
-                      </div>
-                    )}
+              {formData.paymentMethod === 'binance_pay_nequi' ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Binance QR */}
+                  <div className="rounded-xl bg-[#0f1522] ring-1 ring-white/10 p-4 grid place-items-center">
+                    <div className="text-center mb-2">
+                      <h3 className="text-sm font-medium text-white mb-1">Binance Pay</h3>
+                      <p className="text-xs text-yellow-400">{qrSettings?.price_usd || '25'} USD</p>
+                    </div>
+                    <div className="rounded-lg bg-white p-3">
+                      {qrSettings?.qr_image_url ? (
+                        <img 
+                          src={qrSettings?.qr_image_url} 
+                          alt="Binance QR Code" 
+                          className="h-48 w-48 object-contain rounded"
+                        />
+                      ) : (
+                        <div className="h-48 w-48 bg-gray-200 rounded flex items-center justify-center">
+                          <span className="text-gray-500 text-sm">Binance QR</span>
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-3 font-inter">Usa Binance Pay para escanear</p>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-3 font-inter">Usa tu app para escanear</p>
-                </div>
 
-                <div className="rounded-xl bg-white/5 ring-1 ring-white/10 p-4 space-y-4">
+                  {/* Nequi QR */}
+                  <div className="rounded-xl bg-[#0f1522] ring-1 ring-white/10 p-4 grid place-items-center">
+                    <div className="text-center mb-2">
+                      <h3 className="text-sm font-medium text-white mb-1">Nequi</h3>
+                      <p className="text-xs text-purple-400">{formatCOPPrice(nequiQrSettings?.price_cop || '100000')} COP</p>
+                    </div>
+                    <div className="rounded-lg bg-white p-3">
+                      {nequiQrSettings?.qr_image_url ? (
+                        <img 
+                          src={nequiQrSettings?.qr_image_url} 
+                          alt="Nequi QR Code" 
+                          className="h-48 w-48 object-contain rounded"
+                        />
+                      ) : (
+                        <div className="h-48 w-48 bg-gray-200 rounded flex items-center justify-center">
+                          <span className="text-gray-500 text-sm">Nequi QR</span>
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-3 font-inter">Usa Nequi para escanear</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="rounded-xl bg-[#0f1522] ring-1 ring-white/10 p-4 grid place-items-center">
+                    <div className="rounded-lg bg-white p-3">
+                      {(formData.paymentMethod === 'binance_pay' ? qrSettings : nequiQrSettings)?.qr_image_url ? (
+                        <img 
+                          src={(formData.paymentMethod === 'binance_pay' ? qrSettings : nequiQrSettings)?.qr_image_url} 
+                          alt="QR Code" 
+                          className="h-48 w-48 object-contain rounded"
+                        />
+                      ) : (
+                        <div className="h-48 w-48 bg-gray-200 rounded flex items-center justify-center">
+                          <span className="text-gray-500 text-sm">QR Code</span>
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-3 font-inter">Usa tu app para escanear</p>
+                  </div>
+
+                  <div className="rounded-xl bg-white/5 ring-1 ring-white/10 p-4 space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-muted-foreground font-inter">Codigo ID</span>
                       <div className="flex items-center gap-2">
-                        <code className="text-sm text-foreground font-mono">{(selectedPlatform === 'Binance' ? qrSettings : nequiQrSettings)?.code_id || 'N/A'}</code>
+                        <code className="text-sm text-foreground font-mono">{(formData.paymentMethod === 'binance_pay' ? qrSettings : nequiQrSettings)?.code_id || 'N/A'}</code>
                         <button
-                          onClick={() => copyToClipboard((selectedPlatform === 'Binance' ? qrSettings : nequiQrSettings)?.code_id || '')}
+                          onClick={() => copyToClipboard((formData.paymentMethod === 'binance_pay' ? qrSettings : nequiQrSettings)?.code_id || '')}
                           className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
                         >
                           <Copy className="w-3.5 h-3.5" /> Copiar
                         </button>
                       </div>
                     </div>
-                  <div className="h-px bg-white/10" />
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground font-inter">Estado</span>
-                      <span className="text-blue-300">Pendiente</span>
+                    <div className="h-px bg-white/10" />
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground font-inter">Estado</span>
+                        <span className="text-blue-300">Pendiente</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground font-inter">Método</span>
+                        <span className="text-foreground">Ciclo vida</span>
+                      </div>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground font-inter">Método</span>
-                      <span className="text-foreground">Ciclo vida</span>
-                    </div>
-                  </div>
-                  <div className="pt-2">
-                    <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID de Orden (10–19 dígitos)</label>
-                    <div className="relative">
-                      <Hash className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                    <div className="pt-2">
+                      <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID de Orden (10–19 dígitos)</label>
+                      <div className="relative">
+                        <Hash className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                         <input
                           type="text"
-                          placeholder={selectedPlatform === 'Binance' ? 'Ingresa tu ID de Binance' : 'Ingresa tu ID de Nequi'}
+                          placeholder={formData.paymentMethod === 'binance_pay' ? 'Ingresa tu ID de Binance' : 'Ingresa tu ID de Nequi'}
                           value={formData.binanceIdStep2}
                           onChange={(e) => setFormData({...formData, binanceIdStep2: e.target.value})}
-                        className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
-                      />
-                    </div>
-                    {errors.binanceIdStep2 && (
-                      <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
-                        <AlertTriangle className="w-3.5 h-3.5" />
-                        <span><strong className="font-medium">ID de Binance inválido</strong> — Debe tener entre 10 y 19 dígitos numéricos.</span>
+                          className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
+                        />
                       </div>
-                    )}
+                      {errors.binanceIdStep2 && (
+                        <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
+                          <AlertTriangle className="w-3.5 h-3.5" />
+                          <span><strong className="font-medium">ID de Binance inválido</strong> — Debe tener entre 10 y 19 dígitos numéricos.</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
               <div className="h-px bg-white/10" />
 
