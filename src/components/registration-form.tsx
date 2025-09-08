@@ -68,23 +68,6 @@ export function RegistrationForm() {
   const [isNequiEnabled, setIsNequiEnabled] = useState(true);
   const [isBinanceEnabled, setIsBinanceEnabled] = useState(true);
 
-  // Load QR settings on mount
-  useEffect(() => {
-    fetchQrSettings();
-    fetchAdminQrSettings();
-    fetchNequiQrSettings();
-    fetchAdminNequiQrSettings();
-    fetchPaymentPreferences();
-    fetchNequiSetting();
-    fetchBinanceSetting();
-  }, []);
-
-  useEffect(() => {
-    if (formData.country) {
-      fetchPaymentPreferences();
-    }
-  }, [formData.country]);
-
   const fetchPaymentPreferences = async () => {
     try {
       const { data, error } = await supabase
@@ -251,6 +234,23 @@ export function RegistrationForm() {
       console.error('Error fetching binance setting:', error);
     }
   };
+
+  // Load QR settings on mount
+  useEffect(() => {
+    fetchQrSettings();
+    fetchAdminQrSettings();
+    fetchNequiQrSettings();
+    fetchAdminNequiQrSettings();
+    fetchPaymentPreferences();
+    fetchNequiSetting();
+    fetchBinanceSetting();
+  }, []);
+
+  useEffect(() => {
+    if (formData.country) {
+      fetchPaymentPreferences();
+    }
+  }, [formData.country]);
 
   const openWhatsApp = () => {
     window.open('https://chat.whatsapp.com/LYLFjBIsoWs2S9LgmPR3sv?mode=ac_t', '_blank');
