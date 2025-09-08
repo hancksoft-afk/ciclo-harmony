@@ -491,11 +491,25 @@ export function RegistrationForm150() {
 
   const canProceedStep2 = selectedPlatform === 'Binance' 
     ? (formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19)
-    : (formData.referenceIdStep2.length >= 6 && formData.referenceIdStep2.length <= 20);
+    : (formData.referenceIdStep2.trim().length >= 6 && formData.referenceIdStep2.trim().length <= 20);
+    
+  console.log('Step 2 Debug:', {
+    selectedPlatform,
+    referenceIdStep2: formData.referenceIdStep2,
+    referenceLength: formData.referenceIdStep2.trim().length,
+    canProceed: canProceedStep2
+  });
     
   const canProceedStep3 = selectedPlatform === 'Binance'
     ? (formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19)
-    : (formData.referenceIdStep3.length >= 6 && formData.referenceIdStep3.length <= 20);
+    : (formData.referenceIdStep3.trim().length >= 6 && formData.referenceIdStep3.trim().length <= 20);
+    
+  console.log('Step 3 Debug:', {
+    selectedPlatform,
+    referenceIdStep3: formData.referenceIdStep3,
+    referenceLength: formData.referenceIdStep3.trim().length,
+    canProceed: canProceedStep3
+  });
 
   const isPaymentMethodPreferred = (method: string) => {
     if (!formData.country) return false;
