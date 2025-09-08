@@ -334,6 +334,10 @@ export function RegistrationForm150() {
       newErrors.binanceIdStep2 = true;
     }
 
+    if (!formData.referenceIdStep2 || formData.referenceIdStep2.length < 6 || formData.referenceIdStep2.length > 20) {
+      newErrors.referenceIdStep2 = true;
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -343,6 +347,10 @@ export function RegistrationForm150() {
     
     if (!formData.binanceIdStep3 || formData.binanceIdStep3.length < 10 || formData.binanceIdStep3.length > 19) {
       newErrors.binanceIdStep3 = true;
+    }
+
+    if (!formData.referenceIdStep3 || formData.referenceIdStep3.length < 6 || formData.referenceIdStep3.length > 20) {
+      newErrors.referenceIdStep3 = true;
     }
 
     setErrors(newErrors);
