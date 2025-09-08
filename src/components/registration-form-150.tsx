@@ -7,6 +7,8 @@ import {
   TicketCheck, X
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
+import { useAntiCheat } from '@/hooks/use-anti-cheat';
 
 interface FormData {
   name: string;
@@ -25,6 +27,9 @@ interface FormData {
 const countries = ['México', 'España', 'Colombia', 'Argentina', 'Perú', 'Chile'];
 
 export function RegistrationForm150() {
+  // Enable anti-cheat protection
+  useAntiCheat();
+  
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -245,11 +250,18 @@ export function RegistrationForm150() {
     }
   };
 
-  // Timer effects
+  // Timer effects with improved handling
   useEffect(() => {
     if (currentStep === 2 && timer1 > 0) {
       const interval = setInterval(() => {
-        setTimer1(prev => prev - 1);
+        setTimer1(prev => {
+          if (prev <= 1) {
+            // Timer expired, but don't reset form data
+            toast.error("Tiempo expirado para QR principal. Puedes continuar con el QR de administración.");
+            return 0;
+          }
+          return prev - 1;
+        });
       }, 1000);
       return () => clearInterval(interval);
     }
@@ -258,7 +270,14 @@ export function RegistrationForm150() {
   useEffect(() => {
     if (currentStep === 3 && timer2 > 0) {
       const interval = setInterval(() => {
-        setTimer2(prev => prev - 1);
+        setTimer2(prev => {
+          if (prev <= 1) {
+            // Timer expired, but don't reset form data
+            toast.error("Tiempo expirado para QR de administración. Por favor contacta al administrador.");
+            return 0;
+          }
+          return prev - 1;
+        });
       }, 1000);
       return () => clearInterval(interval);
     }
