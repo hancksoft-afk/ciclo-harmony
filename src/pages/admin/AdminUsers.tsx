@@ -456,7 +456,7 @@ export function AdminUsers() {
                               <p className="text-xs text-white font-inter">Plataforma:</p>
                               <p className="font-medium text-slate-200">
                                 {selectedUser.payment_method.includes('binance') && selectedUser.payment_method.includes('nequi') ? 'Binance + Nequi' :
-                                 selectedUser.payment_method.includes('binance') ? 'Binance' :
+                                 selectedUser.payment_method.includes('binance') ? 'Binance Pay' :
                                  selectedUser.payment_method.includes('nequi') ? 'Nequi' : 'N/A'}
                               </p>
                             </div>
@@ -470,7 +470,7 @@ export function AdminUsers() {
                             {/* Mostrar ID de Nequi solo si la plataforma incluye Nequi */}
                             {selectedUser.payment_method.includes('nequi') && (
                               <div>
-                                <p className="text-xs text-white font-inter">ID de Nequi:</p>
+                                <p className="text-xs text-white font-inter">Nequi:</p>
                                 <p className="font-medium text-slate-200">{selectedUser.nequi_phone || 'N/A'}</p>
                               </div>
                             )}
