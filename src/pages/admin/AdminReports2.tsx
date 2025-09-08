@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FileText, Download, Users, CheckCircle, XCircle, Eye, X, Trash2 } from 'lucide-react';
+import { FileText, Download, Users, CheckCircle, XCircle, Eye, X, Trash2, Search } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -41,6 +41,7 @@ export function AdminReports2() {
   const [loading, setLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState<Register150User | null>(null);
   const [showInvoiceModal, setShowInvoiceModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
 
   useEffect(() => {
@@ -163,10 +164,14 @@ export function AdminReports2() {
     }
   };
 
+  const filteredActions = actions.filter(action => 
+    action.user_name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const exportData = () => {
     const csvContent = [
       ['Nombre', 'Teléfono', 'País', 'Código Único', 'Acción', 'Administrador', 'Fecha'],
-      ...actions.map(action => [
+      ...filteredActions.map(action => [
         action.user_name,
         action.user_phone,
         action.user_country,
@@ -186,8 +191,8 @@ export function AdminReports2() {
     window.URL.revokeObjectURL(url);
   };
 
-  const approvedActions = actions.filter(a => a.action_type === 'approved');
-  const disapprovedActions = actions.filter(a => a.action_type === 'disapproved');
+  const approvedActions = filteredActions.filter(a => a.action_type === 'approved');
+  const disapprovedActions = filteredActions.filter(a => a.action_type === 'disapproved');
 
   return (
     <div className="space-y-6">
@@ -197,13 +202,25 @@ export function AdminReports2() {
           <h1 className="text-2xl font-bold text-white">Reportes2 (150 USD)</h1>
           <p className="text-slate-400">Historial de acciones administrativas para usuarios de 150 USD</p>
         </div>
-        <button
-          onClick={exportData}
-          className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition"
-        >
-          <Download className="w-4 h-4" />
-          Exportar CSV
-        </button>
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Buscar por nombre..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 pr-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+          <button
+            onClick={exportData}
+            className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition"
+          >
+            <Download className="w-4 h-4" />
+            Exportar CSV
+          </button>
+        </div>
       </div>
 
       {/* Stats */}
@@ -212,7 +229,7 @@ export function AdminReports2() {
           <div className="flex items-center gap-3">
             <Users className="w-8 h-8 text-blue-400" />
             <div>
-              <p className="text-2xl font-bold text-white">{actions.length}</p>
+              <p className="text-2xl font-bold text-white">{filteredActions.length}</p>
               <p className="text-slate-400 text-sm">Total Acciones</p>
             </div>
           </div>
@@ -243,6 +260,10 @@ export function AdminReports2() {
           <div className="flex items-center justify-center py-12">
             <div className="text-slate-400">Cargando reportes...</div>
           </div>
+        ) : filteredActions.length === 0 ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-slate-400">{searchTerm ? 'No se encontraron nombres que coincidan con la búsqueda' : 'No hay reportes disponibles'}</div>
+          </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -259,7 +280,7 @@ export function AdminReports2() {
                 </tr>
               </thead>
               <tbody>
-                {actions.map((action) => (
+                {filteredActions.map((action) => (
                   <tr key={action.id} className="border-b border-slate-700/30 hover:bg-gradient-to-r hover:from-slate-700/10 hover:to-slate-600/10 transition-all duration-200">
                     <td className="p-4">
                       <div className="flex items-center gap-3">

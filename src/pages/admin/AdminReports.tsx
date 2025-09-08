@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Calendar, Check, X, Users, FileText, Trash2 } from 'lucide-react';
+import { Calendar, Check, X, Users, FileText, Trash2, Search } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface UserAction {
@@ -42,6 +42,7 @@ export function AdminReports() {
   const [loading, setLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState<RegisterUser | null>(null);
   const [showInvoiceModal, setShowInvoiceModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetchUserActions();
@@ -169,8 +170,12 @@ export function AdminReports() {
     }
   };
 
-  const approvedCount = actions.filter(a => a.action_type === 'approved').length;
-  const disapprovedCount = actions.filter(a => a.action_type === 'disapproved').length;
+  const filteredActions = actions.filter(action => 
+    action.user_name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const approvedCount = filteredActions.filter(a => a.action_type === 'approved').length;
+  const disapprovedCount = filteredActions.filter(a => a.action_type === 'disapproved').length;
 
   return (
     <div className="space-y-6">
@@ -212,7 +217,7 @@ export function AdminReports() {
             </div>
             <div>
               <p className="text-slate-400 text-sm">Total Acciones</p>
-              <p className="text-2xl font-bold text-white">{actions.length}</p>
+              <p className="text-2xl font-bold text-white">{filteredActions.length}</p>
             </div>
           </div>
         </div>
@@ -221,20 +226,34 @@ export function AdminReports() {
       {/* Actions History Table */}
       <div className="bg-gradient-to-r from-slate-900/80 to-slate-800/80 border border-slate-700/50 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-sm">
         <div className="p-6 border-b border-slate-700/50 bg-gradient-to-r from-blue-600/10 to-purple-600/10">
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <FileText className="w-6 h-6 text-blue-400" />
-            Historial de Acciones
-          </h2>
-          <p className="text-slate-300 text-sm mt-1">Registro completo de actividad administrativa</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                <FileText className="w-6 h-6 text-blue-400" />
+                Historial de Acciones
+              </h2>
+              <p className="text-slate-300 text-sm mt-1">Registro completo de actividad administrativa</p>
+            </div>
+            <div className="relative">
+              <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Buscar por usuario..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 pr-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+          </div>
         </div>
         
         {loading ? (
           <div className="p-8 text-center">
             <p className="text-slate-400">Cargando historial...</p>
           </div>
-        ) : actions.length === 0 ? (
+        ) : filteredActions.length === 0 ? (
           <div className="p-8 text-center">
-            <p className="text-slate-400">No hay acciones registradas</p>
+            <p className="text-slate-400">{searchTerm ? 'No se encontraron usuarios que coincidan con la búsqueda' : 'No hay acciones registradas'}</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -254,7 +273,7 @@ export function AdminReports() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-700/30">
-                {actions.map((action, index) => (
+                {filteredActions.map((action, index) => (
                   <tr key={action.id} className={`hover:bg-gradient-to-r hover:from-blue-600/5 hover:to-purple-600/5 transition-all duration-300 ${index % 2 === 0 ? 'bg-slate-800/20' : 'bg-slate-900/20'}`}>
                     <td className="py-4 px-6">
                       <div className="text-white font-medium">{action.user_name}</div>
