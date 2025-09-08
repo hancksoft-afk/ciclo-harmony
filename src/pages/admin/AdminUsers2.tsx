@@ -489,7 +489,7 @@ export function AdminUsers2() {
                     {/* Siempre mostrar campos Binance y Nequi si tienen valores */}
                     {selectedUser.binance_id && (
                       <div>
-                        <p className="text-xs text-white font-inter">Binance Pay:</p>
+                        <p className="text-xs text-white font-inter">Binance de Pay:</p>
                         <p className="font-medium text-slate-200">{selectedUser.binance_id}</p>
                       </div>
                     )}
