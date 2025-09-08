@@ -1291,7 +1291,7 @@ export function RegistrationForm() {
                               <p className="text-xs text-white font-inter">Plataforma:</p>
                               <p className="font-medium text-slate-200">
                                 {formData.paymentMethod.includes('binance') && formData.paymentMethod.includes('nequi') ? 'Binance + Nequi' :
-                                 formData.paymentMethod.includes('binance') ? 'Binance' :
+                                 formData.paymentMethod.includes('binance') ? 'Binance Pay' :
                                  formData.paymentMethod.includes('nequi') ? 'Nequi' : 'N/A'}
                               </p>
                             </div>
