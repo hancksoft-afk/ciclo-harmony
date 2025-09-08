@@ -908,7 +908,7 @@ export function RegistrationForm150() {
                 </div>
 
                 <div className="rounded-xl bg-white/5 ring-1 ring-white/10 p-4 space-y-4 bg-cover bg-center" 
-                     style={{backgroundImage: "url('https://img.freepik.com/fotos-premium/cupula-vidrio-transparente-maqueta-cubierta-domo_46370-3637.jpg?w=2000')"}}>
+                     style={{backgroundImage: "url('https://img.freepik.com/vector-gratis/capas-papel-oscuro-papel-tapiz-detalles-dorados_23-2148403401.jpg')"}}>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground font-inter">Codigo ID</span>
                     <div className="flex items-center gap-2">
@@ -1016,7 +1016,7 @@ export function RegistrationForm150() {
                 </div>
 
                 <div className="rounded-xl bg-white/5 ring-1 ring-white/10 p-4 space-y-4 bg-cover bg-center"
-                     style={{backgroundImage: "url('https://img.freepik.com/fotos-premium/fondo-abstracto-simple-minimalista-hexagonal-ilustracion-bola-3d_531600-417.jpg?w=2000')"}}>
+                     style={{backgroundImage: "url('https://img.freepik.com/vector-premium/fondo-futurista-lujo-diseno-metal-gris-oscuro-geometrico-linea-sombra-negra-luz-roja-abstracta_33869-3507.jpg')"}}>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground font-inter">Codigo ID</span>
                     <div className="flex items-center gap-2">
