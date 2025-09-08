@@ -1296,7 +1296,7 @@ export function RegistrationForm() {
                               </p>
                             </div>
                             <div>
-                              <p className="text-xs text-white font-inter">Binance:</p>
+                              <p className="text-xs text-white font-inter">Binance de Pay:</p>
                               <p className="font-medium text-slate-200">{formData.binanceId || 'N/A'}</p>
                             </div>
                             <div>
