@@ -395,6 +395,16 @@ export function RegistrationForm() {
     navigator.clipboard.writeText(text);
   };
 
+  // Función para formatear precios COP con separadores de miles
+  const formatCOPPrice = (price: number | string): string => {
+    const numPrice = typeof price === 'string' ? parseFloat(price) : price;
+    if (isNaN(numPrice)) return '0';
+    return new Intl.NumberFormat('es-CO', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(numPrice);
+  };
+
   const openWhatsApp = () => {
     window.open('https://chat.whatsapp.com/LYLFjBIsoWs2S9LgmPR3sv?mode=ac_t', '_blank');
     setShowTicketModal(false);
@@ -837,7 +847,7 @@ export function RegistrationForm() {
               <div className={`flex items-center justify-between p-4 rounded-lg border-2 ${(selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')) === 'Binance' ? 'bg-yellow-400/10 border-yellow-400/30' : 'bg-purple-400/10 border-purple-400/30'}`}>
                 <div>
                     <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                      Pago por QR - {selectedPlatform === 'Binance' ? `${qrSettings?.price_usd || '25'} USD` : `${nequiQrSettings?.price_cop || '100000'} COP`} (Ciclo de vida) - {selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')}
+                      Pago por QR - {selectedPlatform === 'Binance' ? `${qrSettings?.price_usd || '25'} USD` : `${formatCOPPrice(nequiQrSettings?.price_cop || '100000')} COP`} (Ciclo de vida) - {selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')}
                     </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el código para continuar. Tiempo restante: <span className="text-foreground">{formatTime(timer1)}</span>
@@ -943,7 +953,7 @@ export function RegistrationForm() {
               <div className={`flex items-center justify-between p-4 rounded-lg border-2 ${(selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')) === 'Binance' ? 'bg-yellow-400/10 border-yellow-400/30' : 'bg-purple-400/10 border-purple-400/30'}`}>
                 <div>
                     <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                      Pago por QR - {selectedPlatform === 'Binance' ? `${adminQrSettings?.price_usd || '25'} USD` : `${adminNequiQrSettings?.price_cop || '100000'} COP`} (Admin) - {selectedPlatform === 'Binance' ? 'Binance' : 'Nequi'}
+                      Pago por QR - {selectedPlatform === 'Binance' ? `${adminQrSettings?.price_usd || '25'} USD` : `${formatCOPPrice(adminNequiQrSettings?.price_cop || '100000')} COP`} (Admin) - {selectedPlatform === 'Binance' ? 'Binance' : 'Nequi'}
                     </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el QR del administrador. Tiempo restante: <span className="text-foreground">{formatTime(timer2)}</span>
