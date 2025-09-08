@@ -537,7 +537,7 @@ export function RegistrationForm() {
 
               {/* Payment Platform Selection */}
               <div>
-                <label className="block text-sm text-muted-foreground mb-2 font-inter">Selecciona tu plataforma de pago</label>
+                <label className="block text-sm text-muted-foreground mb-2 font-inter">Selecciona tu método de pago preferido</label>
                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     {isBinanceEnabled && (
                       <button
@@ -813,7 +813,7 @@ export function RegistrationForm() {
               <div className={`flex items-center justify-between p-4 rounded-lg border-2 ${(selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')) === 'Binance' ? 'bg-yellow-400/10 border-yellow-400/30' : 'bg-purple-400/10 border-purple-400/30'}`}>
                 <div>
                     <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                      Pago por QR - {(selectedPlatform === 'Nequi' || formData.paymentMethod === 'nequi_pay') ? `${nequiQrSettings?.price_cop || '100000'} COP` : `${qrSettings?.price_usd || '25'} USD`} (Ciclo de vida) - {selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')}
+                      Pago por QR - USD Y NEQUI (Ciclo de vida) - {selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')}
                     </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el código para continuar. Tiempo restante: <span className="text-foreground">{formatTime(timer1)}</span>
@@ -919,7 +919,7 @@ export function RegistrationForm() {
               <div className={`flex items-center justify-between p-4 rounded-lg border-2 ${(selectedPlatform || (formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi')) === 'Binance' ? 'bg-yellow-400/10 border-yellow-400/30' : 'bg-purple-400/10 border-purple-400/30'}`}>
                 <div>
                     <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                      Pago por QR - {(selectedPlatform === 'Nequi' || formData.paymentMethod === 'nequi_pay') ? `${adminNequiQrSettings?.price_cop || '100000'} COP` : `${adminQrSettings?.price_usd || '25'} USD`} (Admin) - {(selectedPlatform === 'Nequi' || formData.paymentMethod === 'nequi_pay') ? 'Nequi' : 'Binance'}
+                      Pago por QR - USD Y NEQUI (Admin) - {(selectedPlatform === 'Nequi' || formData.paymentMethod === 'nequi_pay') ? 'Nequi' : 'Binance'}
                     </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el QR del administrador. Tiempo restante: <span className="text-foreground">{formatTime(timer2)}</span>
