@@ -1338,7 +1338,7 @@ export function RegistrationForm() {
                              <div>
                                <p className="text-xs text-white font-inter">
                                  {formData.paymentMethod === 'nequi' ? 'Nequi:' : 
-                                  formData.paymentMethod === 'binance_pay' ? 'Binance Pay:' : 
+                                  formData.paymentMethod === 'binance_pay' ? 'Binance de Pay:' : 
                                   'Método de pago:'}
                                </p>
                                <p className="font-medium text-slate-200">
