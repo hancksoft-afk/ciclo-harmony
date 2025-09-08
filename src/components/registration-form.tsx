@@ -205,6 +205,7 @@ export function RegistrationForm() {
 
   const fetchPlatformQrSettings = async (platform: string) => {
     try {
+      console.log('Fetching platform QR settings for:', platform);
       let mainType, adminType;
       
       if (platform === 'Binance') {
@@ -214,6 +215,8 @@ export function RegistrationForm() {
         mainType = 'register25_nequi';
         adminType = 'register25_admin_nequi';
       }
+      
+      console.log('Using types:', mainType, adminType);
       
       // Fetch platform-specific register25 settings
       const { data: platformData, error: platformError } = await supabase
@@ -227,10 +230,13 @@ export function RegistrationForm() {
       if (platformError) {
         console.error(`Error fetching ${mainType} settings:`, platformError);
       } else if (platformData) {
+        console.log('Platform QR settings found:', platformData);
         setPlatformQrSettings(platformData);
         if (platformData.code_id) {
           setOrderId1(platformData.code_id);
         }
+      } else {
+        console.log('No platform QR settings found for', mainType);
       }
 
       // Fetch platform-specific admin settings
@@ -245,10 +251,13 @@ export function RegistrationForm() {
       if (platformAdminError) {
         console.error(`Error fetching ${adminType} settings:`, platformAdminError);
       } else if (platformAdminData) {
+        console.log('Platform Admin QR settings found:', platformAdminData);
         setPlatformAdminQrSettings(platformAdminData);
         if (platformAdminData.code_id) {
           setOrderId2(platformAdminData.code_id);
         }
+      } else {
+        console.log('No platform admin QR settings found for', adminType);
       }
     } catch (error) {
       console.error('Error fetching platform-specific QR settings:', error);
