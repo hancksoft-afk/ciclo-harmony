@@ -52,6 +52,25 @@ export function AdminSettings() {
   const [imagePreviews, setImagePreviews] = useState<Record<string, string>>({});
   const [isUploading, setIsUploading] = useState(false);
   const [inputValues, setInputValues] = useState<{ [key: string]: { code_id: string; remaining_time: string; price_usd: string; price_cop: string } }>({});
+
+  // Función para formatear precios COP con separadores de miles
+  const formatCOPPrice = (value: string | number): string => {
+    if (!value) return '';
+    const numValue = typeof value === 'string' ? parseFloat(value.replace(/\./g, '')) : value;
+    if (isNaN(numValue)) return '';
+    return new Intl.NumberFormat('es-CO', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(numValue);
+  };
+
+  // Función para parsear precios COP (acepta tanto 100000 como 100.000)
+  const parseCOPPrice = (value: string): number => {
+    if (!value) return 0;
+    // Remover puntos y convertir a número
+    const cleanValue = value.replace(/\./g, '');
+    return parseFloat(cleanValue) || 0;
+  };
   const [systemSettings, setSystemSettings] = useState<{ [key: string]: boolean }>({});
   const { toast } = useToast();
 
@@ -68,7 +87,7 @@ export function AdminSettings() {
         code_id: setting.code_id || '',
         remaining_time: setting.remaining_time.toString() || '1440',
         price_usd: setting.price_usd?.toString() || '25.00',
-        price_cop: setting.price_cop?.toString() || '100000.00'
+        price_cop: setting.price_cop ? formatCOPPrice(setting.price_cop) : '100.000'
       };
     });
     // Solo actualizar si realmente hay cambios para evitar bucles infinitos
@@ -195,7 +214,7 @@ export function AdminSettings() {
       const codeId = formData.get('code_id') as string;
       const remainingTime = parseInt(formData.get('remaining_time') as string);
       const priceUsd = parseFloat(formData.get('price_usd') as string);
-      const priceCop = parseFloat(formData.get('price_cop') as string);
+      const priceCop = parseCOPPrice(formData.get('price_cop') as string);
 
       const existingSetting = qrSettings.find(setting => setting.type === type);
       let qrImageUrl = existingSetting?.qr_image_url || null;
@@ -269,7 +288,7 @@ export function AdminSettings() {
         const codeId = inputValues[type]?.code_id?.trim() || '';
         const remainingTime = parseInt(inputValues[type]?.remaining_time || '1440') || 1440;
         const priceUsd = parseFloat(inputValues[type]?.price_usd || '25.00') || 25.00;
-        const priceCop = parseFloat(inputValues[type]?.price_cop || '100000.00') || 100000.00;
+        const priceCop = parseCOPPrice(inputValues[type]?.price_cop || '100000') || 100000;
 
         console.log(`Type: ${type}, Code ID: "${codeId}", Remaining Time: ${remainingTime}`);
 
@@ -572,20 +591,33 @@ export function AdminSettings() {
                        {config.type.includes('nequi') ? (
                          <div>
                            <label className="block text-xs text-slate-400 mb-1">COP (Nequi)</label>
-                           <input
-                             name="price_cop"
-                             type="number"
-                             step="0.01"
-                             value={inputValues[config.type]?.price_cop || setting?.price_cop || '100000.00'}
-                              onChange={(e) => setInputValues(prev => ({
-                                ...prev,
-                                [config.type]: {
-                                  ...prev[config.type],
-                                  price_cop: e.target.value
+                            <input
+                              name="price_cop"
+                              type="text"
+                              value={inputValues[config.type]?.price_cop || (setting?.price_cop ? formatCOPPrice(setting.price_cop) : '100.000')}
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                // Permitir solo números y puntos
+                                const cleanValue = value.replace(/[^\d.]/g, '');
+                                // Formatear automáticamente mientras escribe
+                                let formattedValue = cleanValue;
+                                if (cleanValue && !cleanValue.includes('.')) {
+                                  // Si no hay puntos, formatear como número entero
+                                  const numValue = parseInt(cleanValue);
+                                  if (!isNaN(numValue)) {
+                                    formattedValue = formatCOPPrice(numValue);
+                                  }
                                 }
-                              }))}
-                             className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white text-sm placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
-                             placeholder="100000.00"
+                                setInputValues(prev => ({
+                                  ...prev,
+                                  [config.type]: {
+                                    ...prev[config.type],
+                                    price_cop: formattedValue
+                                  }
+                                }));
+                              }}
+                              className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white text-sm placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition"
+                              placeholder="100.000"
                            />
                          </div>
                        ) : (
