@@ -978,12 +978,14 @@ export function RegistrationForm150() {
                         <input
                           type="text"
                           placeholder={selectedPlatform === 'Binance' ? "Ingresa tu ID de Binance" : "Ingresa tu ID de Nequi"}
-                          value={formData.binanceIdStep2}
-                          onChange={(e) => setFormData({...formData, binanceIdStep2: e.target.value})}
+                          value={selectedPlatform === 'Binance' ? formData.binanceIdStep2 : formData.referenceIdStep2}
+                          onChange={(e) => setFormData(selectedPlatform === 'Binance' 
+                            ? {...formData, binanceIdStep2: e.target.value} 
+                            : {...formData, referenceIdStep2: e.target.value})}
                           className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
                         />
                       </div>
-                      {errors.binanceIdStep2 && (
+                      {(selectedPlatform === 'Binance' ? errors.binanceIdStep2 : errors.referenceIdStep2) && (
                          <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
                            <AlertTriangle className="w-3.5 h-3.5" />
                            <span><strong className="font-medium">{selectedPlatform === 'Binance' ? 'ID de Binance inválido' : 'ID de Nequi inválido'}</strong> — {selectedPlatform === 'Binance' ? 'Debe tener entre 10 y 19 dígitos numéricos.' : 'Debe tener entre 6 y 20 caracteres alfanuméricos.'}</span>
@@ -1090,12 +1092,14 @@ export function RegistrationForm150() {
                         <input
                           type="text"
                           placeholder={selectedPlatform === 'Binance' ? "Ingresa tu ID de Binance" : "Ingresa tu ID de Nequi"}
-                          value={formData.binanceIdStep3}
-                          onChange={(e) => setFormData({...formData, binanceIdStep3: e.target.value})}
+                          value={selectedPlatform === 'Binance' ? formData.binanceIdStep3 : formData.referenceIdStep3}
+                          onChange={(e) => setFormData(selectedPlatform === 'Binance' 
+                            ? {...formData, binanceIdStep3: e.target.value} 
+                            : {...formData, referenceIdStep3: e.target.value})}
                           className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
                         />
                       </div>
-                      {errors.binanceIdStep3 && (
+                      {(selectedPlatform === 'Binance' ? errors.binanceIdStep3 : errors.referenceIdStep3) && (
                          <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
                            <AlertTriangle className="w-3.5 h-3.5" />
                            <span><strong className="font-medium">{selectedPlatform === 'Binance' ? 'ID de Binance inválido' : 'ID de Nequi inválido'}</strong> — {selectedPlatform === 'Binance' ? 'Debe tener entre 10 y 19 dígitos numéricos.' : 'Debe tener entre 6 y 20 caracteres alfanuméricos.'}</span>
