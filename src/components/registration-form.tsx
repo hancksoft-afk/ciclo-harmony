@@ -367,7 +367,7 @@ export function RegistrationForm() {
 
   const handleNext = () => {
     if (currentStep === 1 && validateStep1()) {
-      setShowPlatformModal(true);
+      setCurrentStep(2);
     } else if (currentStep === 2 && validateStep2()) {
       setCurrentStep(3);
     } else if (currentStep === 3 && validateStep3()) {
@@ -1259,35 +1259,35 @@ export function RegistrationForm() {
                             <p className="text-xs text-white font-inter">Dinero:</p>
                             <p className="font-medium text-slate-200">{formData.hasMoney === 'yes' ? 'Sí' : 'No'}</p>
                           </div>
-                           <div>
-                             <p className="text-xs text-white font-inter">Plataforma:</p>
-                             <p className="font-medium text-slate-200">
-                               {formData.paymentMethod === 'binance_pay' ? 'Binance' : 
-                                formData.paymentMethod === 'nequi_pay' ? 'Nequi' : 
-                                formData.paymentMethod === 'binance_pay_nequi' ? 'Binance + Nequi' : 'N/A'}
-                             </p>
-                           </div>
-                           {formData.paymentMethod === 'binance_pay_nequi' ? (
-                             <>
-                               <div>
-                                 <p className="text-xs text-white font-inter">Binance Pay:</p>
-                                 <p className="font-medium text-slate-200">{formData.binanceId || 'N/A'}</p>
-                               </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">Plataforma:</p>
+                              <p className="font-medium text-slate-200">
+                                {formData.paymentMethod === 'binance_pay' ? 'Binance Pay' : 
+                                 formData.paymentMethod === 'nequi_pay' ? 'Nequi' : 
+                                 formData.paymentMethod === 'binance_pay_nequi' ? 'Binance + Nequi' : 'N/A'}
+                              </p>
+                            </div>
+                            {formData.paymentMethod === 'binance_pay_nequi' ? (
+                              <>
                                 <div>
-                                  <p className="text-xs text-white font-inter">Nequi:</p>
-                                  <p className="font-medium text-slate-200">{formData.nequiPhone || 'N/A'}</p>
+                                  <p className="text-xs text-white font-inter">ID de Binance:</p>
+                                  <p className="font-medium text-slate-200">{formData.binanceId || 'N/A'}</p>
                                 </div>
-                             </>
-                           ) : (
-                             <div>
-                                <p className="text-xs text-white font-inter">
-                                  ID de {formData.paymentMethod === 'binance_pay' ? 'Binance' : 'Nequi'}:
-                                </p>
-                                <p className="font-medium text-slate-200">
-                                  {formData.paymentMethod === 'binance_pay' ? formData.binanceId || 'N/A' : formData.nequiPhone || 'N/A'}
-                                </p>
-                             </div>
-                           )}
+                                 <div>
+                                   <p className="text-xs text-white font-inter">ID de Nequi:</p>
+                                   <p className="font-medium text-slate-200">{formData.nequiPhone || 'N/A'}</p>
+                                 </div>
+                              </>
+                            ) : (
+                              <div>
+                                 <p className="text-xs text-white font-inter">
+                                   {formData.paymentMethod === 'binance_pay' ? 'ID de Binance:' : 'ID de Nequi:'}
+                                 </p>
+                                 <p className="font-medium text-slate-200">
+                                   {formData.paymentMethod === 'binance_pay' ? formData.binanceId || 'N/A' : formData.nequiPhone || 'N/A'}
+                                 </p>
+                              </div>
+                            )}
                         </div>
 
                         <div className="mt-6 rounded-xl border border-amber-400/20 bg-neutral-900/40 p-3">
@@ -1349,66 +1349,6 @@ export function RegistrationForm() {
         </div>
       )}
 
-      {/* Platform Selection Modal */}
-      {showPlatformModal && (
-        <div className="fixed inset-0 z-50 overflow-auto bg-black/60">
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowPlatformModal(false)} />
-          <div className="relative mx-auto w-full max-w-md px-4 py-8 min-h-full flex items-center justify-center">
-            <div className="w-full rounded-2xl bg-[#0c111b] ring-1 ring-white/10 shadow-2xl overflow-hidden">
-              <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
-                <div className="flex items-center gap-2">
-                  <div className="h-8 w-8 grid place-items-center rounded-md bg-white/10 ring-1 ring-white/10">
-                    <Hash className="w-4 h-4 text-primary" />
-                  </div>
-                   <h3 className="text-lg font-semibold tracking-tight text-white font-inter">Selecciona tu plataforma</h3>
-                </div>
-                <button
-                  onClick={() => setShowPlatformModal(false)}
-                  className="rounded-md p-2 text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-
-              <div className="p-6">
-                <div className="space-y-4">
-                  <p className="text-sm text-muted-foreground font-inter">
-                    Confirma la plataforma para proceder con el pago:
-                  </p>
-                  
-                  <button
-                    onClick={() => handlePlatformSelect('Binance')}
-                    className="w-full group rounded-lg ring-1 ring-primary/50 bg-primary/5 hover:bg-primary/10 transition p-4 text-left"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Hash className="w-5 h-5 text-primary" />
-                       <div>
-                         <span className="text-base font-medium text-foreground font-inter">Binance - USD</span>
-                         <p className="text-sm text-muted-foreground mt-1 font-inter">Pago con Binance Pay</p>
-                       </div>
-                    </div>
-                  </button>
-                  
-                  {isNequiEnabled && (
-                    <button
-                      onClick={() => handlePlatformSelect('Nequi')}
-                      className="w-full group rounded-lg ring-1 ring-green-500/50 bg-green-500/5 hover:bg-green-500/10 transition p-4 text-left"
-                    >
-                      <div className="flex items-center gap-3">
-                        <Hash className="w-5 h-5 text-green-500" />
-                         <div>
-                           <span className="text-base font-medium text-foreground font-inter">Nequi - COP</span>
-                           <p className="text-sm text-muted-foreground mt-1 font-inter">Pago con Nequi</p>
-                         </div>
-                      </div>
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }
