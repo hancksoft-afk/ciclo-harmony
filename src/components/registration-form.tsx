@@ -1291,7 +1291,33 @@ export function RegistrationForm() {
                         </div>
 
                         <div className="mt-6 rounded-xl border border-amber-400/20 bg-neutral-900/40 p-3">
-                          <div className="h-16 w-full rounded-md bg-[repeating-linear-gradient(90deg,rgba(251,191,36,1)_0_8px,transparent_8px_16px)]" />
+                          {formData.paymentMethod === 'binance_pay_nequi' ? (
+                            <div className="space-y-3">
+                              <div className="grid grid-cols-2 gap-3">
+                                <div className="text-center">
+                                  <div className="h-12 w-full rounded-md bg-[repeating-linear-gradient(90deg,rgba(251,191,36,1)_0_4px,transparent_4px_8px)]" />
+                                  <p className="text-xs text-yellow-400 mt-1 font-inter">Binance Pay</p>
+                                </div>
+                                <div className="text-center">
+                                  <div className="h-12 w-full rounded-md bg-[repeating-linear-gradient(90deg,rgba(168,85,247,1)_0_4px,transparent_4px_8px)]" />
+                                  <p className="text-xs text-purple-400 mt-1 font-inter">Nequi</p>
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="text-center">
+                              <div className={`h-16 w-full rounded-md ${
+                                formData.paymentMethod === 'binance_pay' 
+                                  ? 'bg-[repeating-linear-gradient(90deg,rgba(251,191,36,1)_0_8px,transparent_8px_16px)]'
+                                  : 'bg-[repeating-linear-gradient(90deg,rgba(168,85,247,1)_0_8px,transparent_8px_16px)]'
+                              }`} />
+                              <p className={`text-xs mt-1 font-inter ${
+                                formData.paymentMethod === 'binance_pay' ? 'text-yellow-400' : 'text-purple-400'
+                              }`}>
+                                {formData.paymentMethod === 'binance_pay' ? 'Binance Pay' : 'Nequi'}
+                              </p>
+                            </div>
+                          )}
                         </div>
 
                         <div className="mt-3 flex items-center justify-between text-xs text-slate-400">
