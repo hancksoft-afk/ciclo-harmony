@@ -955,7 +955,9 @@ export function RegistrationForm() {
                   </div>
                   <div className="pt-2 space-y-4">
                     <div>
-                      <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID de Orden (10–19 dígitos)</label>
+                      <label className="block text-sm text-muted-foreground mb-1.5 font-inter">
+                        {selectedPlatform === 'Binance' ? 'ID de Orden (10–19 dígitos)' : 'ID de Referencia (6 a 20 dígitos numéricos. Ej: M17974073)'}
+                      </label>
                       <div className="relative">
                         <Hash className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                         <input
@@ -1085,7 +1087,9 @@ export function RegistrationForm() {
                   </div>
                   <div className="pt-2 space-y-4">
                     <div>
-                      <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID de Orden (10–19 dígitos)</label>
+                      <label className="block text-sm text-muted-foreground mb-1.5 font-inter">
+                        {selectedPlatform === 'Binance' ? 'ID de Orden (10–19 dígitos)' : 'ID de Referencia (6 a 20 dígitos numéricos. Ej: M17974073)'}
+                      </label>
                       <div className="relative">
                         <Hash className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                         <input
