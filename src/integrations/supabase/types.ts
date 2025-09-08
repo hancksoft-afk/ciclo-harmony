@@ -158,6 +158,7 @@ export type Database = {
           codigo_masked: string | null
           country: string
           created_at: string
+          email: string | null
           has_money: boolean
           id: string
           invitee: string
@@ -178,6 +179,7 @@ export type Database = {
           codigo_masked?: string | null
           country: string
           created_at?: string
+          email?: string | null
           has_money: boolean
           id?: string
           invitee: string
@@ -198,6 +200,7 @@ export type Database = {
           codigo_masked?: string | null
           country?: string
           created_at?: string
+          email?: string | null
           has_money?: boolean
           id?: string
           invitee?: string
