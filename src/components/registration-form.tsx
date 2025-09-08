@@ -22,8 +22,6 @@ interface FormData {
   nequiPhone: string;
   binanceIdStep2: string;
   binanceIdStep3: string;
-  orderIdStep3: string;
-  adminIdStep3: string;
 }
 
 const countries = ['México', 'España', 'Colombia', 'Argentina', 'Perú', 'Chile'];
@@ -44,9 +42,7 @@ export function RegistrationForm() {
     binanceId: '',
     nequiPhone: '',
     binanceIdStep2: '',
-    binanceIdStep3: '',
-    orderIdStep3: '',
-    adminIdStep3: ''
+    binanceIdStep3: ''
   });
   const [errors, setErrors] = useState<Record<string, boolean>>({});
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
@@ -60,13 +56,64 @@ export function RegistrationForm() {
   const [generatedCodes, setGeneratedCodes] = useState<{codigo: string, oculto: string, ticketId: string} | null>(null);
   const [qrSettings, setQrSettings] = useState<any>(null);
   const [adminQrSettings, setAdminQrSettings] = useState<any>(null);
-  const [nequiQrSettings, setNequiQrSettings] = useState<any>(null);
-  const [adminNequiQrSettings, setAdminNequiQrSettings] = useState<any>(null);
   const [platformQrSettings, setPlatformQrSettings] = useState<any>(null);
   const [platformAdminQrSettings, setPlatformAdminQrSettings] = useState<any>(null);
   const [paymentPreferences, setPaymentPreferences] = useState<any[]>([]);
   const [isNequiEnabled, setIsNequiEnabled] = useState(true);
   const [isBinanceEnabled, setIsBinanceEnabled] = useState(true);
+
+  // Load QR settings on mount
+  useEffect(() => {
+    fetchQrSettings();
+    fetchAdminQrSettings();
+    fetchPaymentPreferences();
+    fetchNequiSetting();
+    fetchBinanceSetting();
+  }, []);
+
+  const fetchNequiSetting = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('setting_value')
+        .eq('setting_key', 'nequi_25_enabled')
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error fetching nequi setting:', error);
+        return;
+      }
+
+      setIsNequiEnabled(data?.setting_value ?? true);
+    } catch (error) {
+      console.error('Error fetching nequi setting:', error);
+    }
+  };
+
+  const fetchBinanceSetting = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('setting_value')
+        .eq('setting_key', 'binance_enabled')
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error fetching binance setting:', error);
+        return;
+      }
+
+      setIsBinanceEnabled(data?.setting_value ?? true);
+    } catch (error) {
+      console.error('Error fetching binance setting:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (formData.country) {
+      fetchPaymentPreferences();
+    }
+  }, [formData.country]);
 
   const fetchPaymentPreferences = async () => {
     try {
@@ -151,108 +198,97 @@ export function RegistrationForm() {
     }
   };
 
-  const fetchNequiQrSettings = async () => {
+  const fetchPlatformQrSettings = async (platform: string) => {
     try {
-      const { data, error } = await supabase
+      let mainType, adminType;
+      
+      if (platform === 'Binance') {
+        mainType = 'register';
+        adminType = 'register_admin';
+      } else if (platform === 'Nequi') {
+        mainType = 'register_nequi';
+        adminType = 'register_admin_nequi';
+      }
+      
+      // Fetch platform-specific register settings
+      const { data: platformData, error: platformError } = await supabase
         .from('qr_settings')
         .select('*')
-        .eq('type', 'register_nequi')
+        .eq('type', mainType)
         .eq('is_active', true)
         .order('updated_at', { ascending: false })
         .maybeSingle();
-
-      if (error) {
-        console.error('Error fetching Nequi QR settings:', error);
-        return;
+      
+      if (platformError) {
+        console.error(`Error fetching ${mainType} settings:`, platformError);
+      } else if (platformData) {
+        setPlatformQrSettings(platformData);
+        if (platformData.code_id) {
+          setOrderId1(platformData.code_id);
+        }
       }
 
-      if (data) {
-        setNequiQrSettings(data);
-      }
-    } catch (error) {
-      console.error('Error fetching Nequi QR settings:', error);
-    }
-  };
-
-  const fetchAdminNequiQrSettings = async () => {
-    try {
-      const { data, error } = await supabase
+      // Fetch platform-specific admin settings
+      const { data: platformAdminData, error: platformAdminError } = await supabase
         .from('qr_settings')
         .select('*')
-        .eq('type', 'register_admin_nequi')
+        .eq('type', adminType)
         .eq('is_active', true)
         .order('updated_at', { ascending: false })
         .maybeSingle();
-
-      if (error) {
-        console.error('Error fetching Admin Nequi QR settings:', error);
-        return;
-      }
-
-      if (data) {
-        setAdminNequiQrSettings(data);
+      
+      if (platformAdminError) {
+        console.error(`Error fetching ${adminType} settings:`, platformAdminError);
+      } else if (platformAdminData) {
+        setPlatformAdminQrSettings(platformAdminData);
+        if (platformAdminData.code_id) {
+          setOrderId2(platformAdminData.code_id);
+        }
       }
     } catch (error) {
-      console.error('Error fetching Admin Nequi QR settings:', error);
+      console.error('Error fetching platform-specific QR settings:', error);
     }
   };
 
-  const fetchNequiSetting = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('system_settings')
-        .select('setting_value')
-        .eq('setting_key', 'nequi_25_enabled')
-        .single();
-
-      if (error && error.code !== 'PGRST116') {
-        console.error('Error fetching nequi setting:', error);
-        return;
-      }
-
-      setIsNequiEnabled(data?.setting_value ?? true);
-    } catch (error) {
-      console.error('Error fetching nequi setting:', error);
-    }
-  };
-
-  const fetchBinanceSetting = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('system_settings')
-        .select('setting_value')
-        .eq('setting_key', 'binance_enabled')
-        .single();
-
-      if (error && error.code !== 'PGRST116') {
-        console.error('Error fetching binance setting:', error);
-        return;
-      }
-
-      setIsBinanceEnabled(data?.setting_value ?? true);
-    } catch (error) {
-      console.error('Error fetching binance setting:', error);
-    }
-  };
-
-  // Load QR settings on mount
+  // Timer effects with improved handling
   useEffect(() => {
-    fetchQrSettings();
-    fetchAdminQrSettings();
-    fetchNequiQrSettings();
-    fetchAdminNequiQrSettings();
-    fetchPaymentPreferences();
-    fetchNequiSetting();
-    fetchBinanceSetting();
-  }, []);
+    if (currentStep === 2 && timer1 > 0) {
+      const interval = setInterval(() => {
+        setTimer1(prev => {
+          if (prev <= 1) {
+            // Timer expired, but don't reset form data
+            toast.error("Tiempo expirado para QR principal. Puedes continuar con el QR de administración.");
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [currentStep, timer1]);
 
   useEffect(() => {
-    if (formData.country) {
-      fetchPaymentPreferences();
+    if (currentStep === 3 && timer2 > 0) {
+      const interval = setInterval(() => {
+        setTimer2(prev => {
+          if (prev <= 1) {
+            // Timer expired, but don't reset form data
+            toast.error("Tiempo expirado para QR de administración. Por favor contacta al administrador.");
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => clearInterval(interval);
     }
-  }, [formData.country]);
+  }, [currentStep, timer2]);
 
-  // Validation functions
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
   const validateStep1 = () => {
     const newErrors: Record<string, boolean> = {};
     
@@ -266,17 +302,6 @@ export function RegistrationForm() {
       newErrors.invitee = true;
     }
     
-    if (!formData.country) {
-      newErrors.country = true;
-    }
-    
-    if (!formData.phone) {
-      newErrors.phone = true;
-    }
-    
-    if (!formData.email) {
-      newErrors.email = true;
-    }
     
     // Validate Binance ID for binance_pay and binance_nequi
     if ((formData.paymentMethod === 'binance_pay' || formData.paymentMethod === 'binance_nequi') && 
@@ -294,11 +319,37 @@ export function RegistrationForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Generate codes function
+  const validateStep2 = () => {
+    const newErrors: Record<string, boolean> = {};
+    
+    if (!formData.binanceIdStep2 || formData.binanceIdStep2.length < 10 || formData.binanceIdStep2.length > 19) {
+      newErrors.binanceIdStep2 = true;
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const validateStep3 = () => {
+    const newErrors: Record<string, boolean> = {};
+    
+    if (!formData.binanceIdStep3 || formData.binanceIdStep3.length < 10 || formData.binanceIdStep3.length > 19) {
+      newErrors.binanceIdStep3 = true;
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // Code generation functions
+  const generarCodigoNumero = () => {
+    return Array.from({ length: 16 }, () => Math.floor(Math.random() * 10)).join('');
+  };
+
   const generarCodigoNumeroYOculto = () => {
-    const codigo = Array.from({ length: 16 }, () => Math.floor(Math.random() * 10)).join('');
+    const codigo = generarCodigoNumero();
     const oculto = codigo.slice(0, 4) + 'x'.repeat(codigo.length - 4);
-    // Generate alphanumeric ticket ID
+    // Generate alphanumeric ticket ID like KBY0Z40CN
     const ticketId = Array.from({ length: 9 }, () => {
       const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
       return chars.charAt(Math.floor(Math.random() * chars.length));
@@ -306,9 +357,27 @@ export function RegistrationForm() {
     return { codigo, oculto, ticketId };
   };
 
-  // Save to Supabase function
   const saveToSupabase = async (codes: { codigo: string; oculto: string; ticketId: string }) => {
     try {
+      console.log('Trying to save to Supabase with data:', {
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        country: formData.country,
+        invitee: formData.invitee,
+        has_money: formData.hasMoney === 'yes',
+        payment_method: formData.paymentMethod,
+        binance_id: formData.binanceId || null,
+        binance_id_step2: formData.binanceIdStep2 || null,
+        binance_id_step3: formData.binanceIdStep3 || null,
+        nequi_phone: formData.nequiPhone || null,
+        order_id_1: orderId1,
+        order_id_2: orderId2,
+        ticket_id: codes.ticketId,
+        codigo_full: codes.codigo,
+        codigo_masked: codes.oculto,
+      });
+
       const { data, error } = await supabase
         .from('register')
         .insert({
@@ -333,26 +402,28 @@ export function RegistrationForm() {
 
       if (error) {
         console.error('Error saving registration:', error);
-        toast.error('Error al guardar el registro');
+        console.error('Error details:', JSON.stringify(error, null, 2));
       } else {
         console.log('Registration saved successfully:', data);
-        toast.success('Registro guardado exitosamente');
       }
     } catch (error) {
       console.error('Error saving to Supabase:', error);
-      toast.error('Error al conectar con la base de datos');
     }
   };
 
-  // Navigation functions
   const handleNext = () => {
     if (currentStep === 1 && validateStep1()) {
-      // Generate codes and save to database
+      setShowPlatformModal(true);
+    } else if (currentStep === 2 && validateStep2()) {
+      setCurrentStep(3);
+    } else if (currentStep === 3 && validateStep3()) {
+      // Generate codes only once when completing the form
       const codes = generarCodigoNumeroYOculto();
       setGeneratedCodes(codes);
+      setCurrentStep(4);
+      // Save to Supabase with the same codes used in UI
       saveToSupabase(codes);
-      setCurrentStep(2);
-      // Show completion modal
+      // Show modal automatically when reaching step 4
       setTimeout(() => {
         setShowTicketModal(true);
         // Trigger confetti when modal opens
@@ -374,7 +445,35 @@ export function RegistrationForm() {
     }
   };
 
-  // Utility functions
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+  };
+
+  // Función para formatear precios COP con separadores de miles
+  const formatCOPPrice = (price: number | string): string => {
+    const numPrice = typeof price === 'string' ? parseFloat(price) : price;
+    if (isNaN(numPrice)) return '0';
+    return new Intl.NumberFormat('es-CO', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(numPrice);
+  };
+
+  const openWhatsApp = () => {
+    window.open('https://chat.whatsapp.com/LYLFjBIsoWs2S9LgmPR3sv?mode=ac_t', '_blank');
+    setShowTicketModal(false);
+  };
+
+  const canProceedStep1 = formData.name && formData.invitee && formData.country && 
+                          formData.phone && formData.hasMoney && 
+                          formData.paymentMethod && 
+                          ((formData.paymentMethod === 'binance_pay' && formData.binanceId) || 
+                           (formData.paymentMethod === 'nequi' && formData.nequiPhone) ||
+                           (formData.paymentMethod === 'binance_nequi' && formData.binanceId && formData.nequiPhone));
+
+  const canProceedStep2 = formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19;
+  const canProceedStep3 = formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19;
+
   const isPaymentMethodPreferred = (method: string) => {
     if (!formData.country) return false;
     const preference = paymentPreferences.find(p => 
@@ -384,29 +483,13 @@ export function RegistrationForm() {
   };
 
   const handlePaymentMethodClick = (method: string) => {
+    // Forzar actualización inmediata del estado con callback
     setFormData(prevFormData => ({
       ...prevFormData, 
       paymentMethod: method, 
       nequiPhone: (method === 'binance_pay') ? '' : prevFormData.nequiPhone,
       binanceId: (method === 'nequi') ? '' : prevFormData.binanceId
     }));
-  };
-
-  const canProceedStep1 = formData.name && formData.invitee && formData.country && 
-                          formData.phone && formData.email && formData.hasMoney && 
-                          formData.paymentMethod && 
-                          ((formData.paymentMethod === 'binance_pay' && formData.binanceId) || 
-                           (formData.paymentMethod === 'nequi' && formData.nequiPhone) ||
-                           (formData.paymentMethod === 'binance_nequi' && formData.binanceId && formData.nequiPhone));
-
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    toast.success('Copiado al portapapeles');
-  };
-
-  const openWhatsApp = () => {
-    window.open('https://chat.whatsapp.com/LYLFjBIsoWs2S9LgmPR3sv?mode=ac_t', '_blank');
-    setShowTicketModal(false);
   };
 
   return (
@@ -718,8 +801,182 @@ export function RegistrationForm() {
             </div>
           )}
 
-          {/* Step 2: Registration Complete */}
-          {currentStep === 2 && generatedCodes && (
+          {/* Step 2: QR Payment */}
+          {currentStep === 2 && (
+            <div className="space-y-6">
+              <div className="text-center">
+                <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
+                  Realizar Pago - $25 USD
+                </h2>
+                <p className="text-sm text-muted-foreground mt-1 font-inter">
+                  Escanea el código QR y realiza el pago
+                </p>
+              </div>
+
+              {/* Timer */}
+              <div className="flex items-center justify-center space-x-2 text-orange-400">
+                <Timer className="h-5 w-5" />
+                <span className="text-lg font-mono">{formatTime(timer1)}</span>
+              </div>
+
+              {/* QR Code Display */}
+              <div className="text-center space-y-4">
+                {platformQrSettings && platformQrSettings.qr_image_url ? (
+                  <div className="inline-block p-4 bg-white rounded-lg">
+                    <img 
+                      src={platformQrSettings.qr_image_url} 
+                      alt="QR Code para pago" 
+                      className="w-64 h-64 mx-auto"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-64 h-64 mx-auto bg-gray-700 rounded-lg flex items-center justify-center">
+                    <p className="text-gray-400">Cargando QR...</p>
+                  </div>
+                )}
+
+                <div className="space-y-2">
+                  <p className="text-white font-medium">Monto a pagar:</p>
+                  <div className="text-3xl font-bold text-green-400">$25 USD</div>
+                  {platformQrSettings && platformQrSettings.price_cop && (
+                    <div className="text-lg text-gray-300">
+                      ${formatCOPPrice(platformQrSettings.price_cop)} COP
+                    </div>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <p className="text-white font-medium">ID de la orden:</p>
+                  <div className="flex items-center justify-center space-x-2">
+                    <code className="bg-gray-800 px-4 py-2 rounded text-blue-400 font-mono">
+                      {orderId1}
+                    </code>
+                    <button
+                      onClick={() => copyToClipboard(orderId1)}
+                      className="p-2 bg-blue-600 hover:bg-blue-700 rounded transition-colors"
+                    >
+                      <Copy className="h-4 w-4 text-white" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
+                  <p className="text-yellow-400 text-sm">
+                    <strong>Importante:</strong> Copia el ID de la orden y úsalo como concepto del pago. 
+                    Después de realizar el pago, agrega tu información en el siguiente paso.
+                  </p>
+                </div>
+              </div>
+
+              {/* Navigation Buttons */}
+              <div className="flex justify-between pt-6">
+                <button
+                  onClick={handlePrev}
+                  className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium transition-colors flex items-center space-x-2"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  <span>Anterior</span>
+                </button>
+                <button
+                  onClick={handleNext}
+                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex items-center space-x-2"
+                >
+                  <span>Ya pagué, continuar</span>
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Step 3: Admin Verification */}
+          {currentStep === 3 && (
+            <div className="space-y-6">
+              <div className="text-center">
+                <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
+                  Verificación de Administrador
+                </h2>
+                <p className="text-sm text-muted-foreground mt-1 font-inter">
+                  Ingresa tu ID de Binance para la verificación
+                </p>
+              </div>
+
+              {/* Timer */}
+              <div className="flex items-center justify-center space-x-2 text-orange-400">
+                <Timer className="h-5 w-5" />
+                <span className="text-lg font-mono">{formatTime(timer2)}</span>
+              </div>
+
+              <form className="space-y-4">
+                <div className="relative">
+                  <Fingerprint className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 z-10" />
+                  <input
+                    type="text"
+                    placeholder="ID de Binance para verificación (10-19 caracteres)"
+                    value={formData.binanceIdStep3}
+                    onChange={(e) => setFormData({ ...formData, binanceIdStep3: e.target.value })}
+                    className={`w-full pl-10 pr-4 py-3 bg-white/5 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
+                      errors.binanceIdStep3 ? 'border-red-500 focus:ring-red-500' : 'border-gray-600'
+                    }`}
+                    maxLength={19}
+                  />
+                  {errors.binanceIdStep3 && (
+                    <p className="text-red-500 text-xs mt-1 flex items-center">
+                      <AlertTriangle className="h-3 w-3 mr-1" />
+                      Debe tener entre 10 y 19 caracteres
+                    </p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <p className="text-white font-medium">ID de Orden Admin:</p>
+                  <div className="flex items-center justify-center space-x-2">
+                    <code className="bg-gray-800 px-4 py-2 rounded text-purple-400 font-mono">
+                      {orderId2}
+                    </code>
+                    <button
+                      type="button"
+                      onClick={() => copyToClipboard(orderId2)}
+                      className="p-2 bg-purple-600 hover:bg-purple-700 rounded transition-colors"
+                    >
+                      <Copy className="h-4 w-4 text-white" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+                  <p className="text-blue-400 text-sm">
+                    El administrador verificará tu pago y completará el proceso de registro.
+                  </p>
+                </div>
+              </form>
+
+              {/* Navigation Buttons */}
+              <div className="flex justify-between pt-6">
+                <button
+                  onClick={handlePrev}
+                  className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium transition-colors flex items-center space-x-2"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  <span>Anterior</span>
+                </button>
+                <button
+                  onClick={handleNext}
+                  disabled={!canProceedStep3}
+                  className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 ${
+                    canProceedStep3
+                      ? 'bg-green-600 hover:bg-green-700 text-white'
+                      : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                  }`}
+                >
+                  <span>Completar Registro</span>
+                  <CheckCircle2 className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Step 4: Registration Complete */}
+          {currentStep === 4 && generatedCodes && (
             <div className="space-y-6 text-center">
               <div className="text-center">
                 <CheckCircle2 className="h-16 w-16 text-green-500 mx-auto mb-4" />
@@ -727,7 +984,7 @@ export function RegistrationForm() {
                   ¡Registro Completado!
                 </h2>
                 <p className="text-sm text-muted-foreground mt-2 font-inter">
-                  Tu registro ha sido procesado exitosamente
+                  Tu registro de $25 USD ha sido procesado exitosamente
                 </p>
               </div>
 
@@ -767,18 +1024,63 @@ export function RegistrationForm() {
                 <p className="text-white">
                   Guarda estos códigos en un lugar seguro. Los necesitarás para acceder a tu cuenta.
                 </p>
-                <button
-                  onClick={() => setShowTicketModal(true)}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2"
-                >
-                  <Ticket className="h-5 w-5" />
-                  <span>Unirse al Grupo de WhatsApp</span>
-                </button>
               </div>
             </div>
           )}
         </div>
       </div>
+
+      {/* Platform Selection Modal */}
+      {showPlatformModal && (
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-gradient-to-b from-slate-900 to-indigo-900 rounded-2xl p-8 max-w-md w-full relative border border-white/10">
+            <button
+              onClick={() => setShowPlatformModal(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+            >
+              <X className="h-6 w-6" />
+            </button>
+
+            <div className="text-center space-y-6">
+              <h3 className="text-2xl font-bold text-white mb-4">
+                Selecciona la plataforma de pago
+              </h3>
+
+              <div className="space-y-3">
+                {isBinanceEnabled && (
+                  <button
+                    onClick={() => {
+                      setSelectedPlatform('Binance');
+                      fetchPlatformQrSettings('Binance');
+                      setCurrentStep(2);
+                      setShowPlatformModal(false);
+                    }}
+                    className="w-full p-4 bg-yellow-600/20 border border-yellow-500 rounded-lg text-yellow-100 hover:bg-yellow-600/30 transition-colors"
+                  >
+                    <div className="font-medium">Binance Pay</div>
+                    <div className="text-sm text-yellow-200">Pago con criptomonedas</div>
+                  </button>
+                )}
+
+                {isNequiEnabled && formData.country === 'Colombia' && (
+                  <button
+                    onClick={() => {
+                      setSelectedPlatform('Nequi');
+                      fetchPlatformQrSettings('Nequi');
+                      setCurrentStep(2);
+                      setShowPlatformModal(false);
+                    }}
+                    className="w-full p-4 bg-purple-600/20 border border-purple-500 rounded-lg text-purple-100 hover:bg-purple-600/30 transition-colors"
+                  >
+                    <div className="font-medium">Nequi</div>
+                    <div className="text-sm text-purple-200">Pago con Nequi</div>
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Ticket Modal */}
       {showTicketModal && generatedCodes && (
