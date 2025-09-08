@@ -289,11 +289,11 @@ export function RegistrationForm() {
       newErrors.paymentMethod = true;
     }
     
-    if ((formData.paymentMethod === 'binance_pay' || formData.paymentMethod === 'binance_pay_nequi') && (!formData.binanceId || !/^\d{9,10}$/.test(formData.binanceId))) {
+    if ((formData.paymentMethod === 'binance_pay' || formData.paymentMethod === 'binance_nequi') && (!formData.binanceId || !/^\d{9,10}$/.test(formData.binanceId))) {
       newErrors.binanceId = true;
     }
     
-    if ((formData.paymentMethod === 'nequi_pay' || formData.paymentMethod === 'binance_pay_nequi') && !formData.nequiPhone) {
+    if ((formData.paymentMethod === 'nequi' || formData.paymentMethod === 'binance_nequi') && !formData.nequiPhone) {
       newErrors.nequiPhone = true;
     }
 
@@ -398,7 +398,7 @@ export function RegistrationForm() {
     // Update payment method based on platform selection
     setFormData(prev => ({
       ...prev,
-      paymentMethod: platform === 'Binance' ? 'binance_pay' : 'nequi_pay'
+      paymentMethod: platform === 'Binance' ? 'binance_pay' : 'nequi'
     }));
     setShowPlatformModal(false);
     setCurrentStep(2);
@@ -434,7 +434,8 @@ export function RegistrationForm() {
                           formData.phone && formData.hasMoney && 
                           formData.paymentMethod && 
                           ((formData.paymentMethod === 'binance_pay' && formData.binanceId) || 
-                           (formData.paymentMethod === 'nequi_pay' && formData.nequiPhone));
+                           (formData.paymentMethod === 'nequi' && formData.nequiPhone) ||
+                           (formData.paymentMethod === 'binance_nequi' && formData.binanceId && formData.nequiPhone));
 
   const canProceedStep2 = formData.binanceIdStep2 && formData.binanceIdStep2.length >= 10 && formData.binanceIdStep2.length <= 19;
   const canProceedStep3 = formData.binanceIdStep3 && formData.binanceIdStep3.length >= 10 && formData.binanceIdStep3.length <= 19;
@@ -644,24 +645,24 @@ export function RegistrationForm() {
                     {isNequiEnabled && (
                       <button
                         type="button"
-                        onClick={() => setFormData(prevFormData => ({...prevFormData, paymentMethod: 'nequi_pay'}))}
+                        onClick={() => setFormData(prevFormData => ({...prevFormData, paymentMethod: 'nequi'}))}
                         className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
-                          formData.paymentMethod === 'nequi_pay' 
+                          formData.paymentMethod === 'nequi'
                             ? 'ring-primary bg-primary/10 border-primary shadow-lg shadow-primary/25' 
                             : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
                         }`}
                       >
-                        {formData.paymentMethod === 'nequi_pay' && (
+                        {formData.paymentMethod === 'nequi' && (
                           <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
                         )}
                         <div className="relative flex items-center gap-3">
                           <div className={`p-2 rounded-lg ${
-                            formData.paymentMethod === 'nequi_pay' 
+                            formData.paymentMethod === 'nequi'
                               ? 'bg-primary/20' 
                               : 'bg-white/10'
                           }`}>
                             <Hash className={`w-5 h-5 ${
-                              formData.paymentMethod === 'nequi_pay' 
+                              formData.paymentMethod === 'nequi'
                                 ? 'text-primary' 
                                 : 'text-muted-foreground'
                             }`} />
@@ -669,7 +670,7 @@ export function RegistrationForm() {
                           <div className="flex-1">
                             <div className="flex items-center gap-2">
                               <span className={`text-sm font-medium font-inter ${
-                                formData.paymentMethod === 'nequi_pay' 
+                                formData.paymentMethod === 'nequi'
                                   ? 'text-white' 
                                   : 'text-foreground'
                               }`}>
@@ -680,7 +681,7 @@ export function RegistrationForm() {
                               Pago móvil
                             </p>
                           </div>
-                          {formData.paymentMethod === 'nequi_pay' && (
+                          {formData.paymentMethod === 'nequi' && (
                             <div className="ml-auto">
                               <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
                                 <div className="w-2 h-2 bg-white rounded-full" />
@@ -694,24 +695,24 @@ export function RegistrationForm() {
                     {isBinanceEnabled && isNequiEnabled && (
                       <button
                         type="button"
-                        onClick={() => setFormData(prevFormData => ({...prevFormData, paymentMethod: 'binance_pay_nequi'}))}
+                        onClick={() => setFormData(prevFormData => ({...prevFormData, paymentMethod: 'binance_nequi'}))}
                         className={`group rounded-lg ring-2 transition p-4 text-left relative overflow-hidden cursor-pointer select-none ${
-                          formData.paymentMethod === 'binance_pay_nequi' 
+                          formData.paymentMethod === 'binance_nequi'
                             ? 'ring-primary bg-primary/10 border-primary shadow-lg shadow-primary/25' 
                             : 'ring-white/20 bg-white/5 hover:bg-white/10 hover:ring-white/30'
                         }`}
                       >
-                        {formData.paymentMethod === 'binance_pay_nequi' && (
+                        {formData.paymentMethod === 'binance_nequi' && (
                           <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
                         )}
                         <div className="relative flex items-center gap-3">
                           <div className={`p-2 rounded-lg ${
-                            formData.paymentMethod === 'binance_pay_nequi' 
+                            formData.paymentMethod === 'binance_nequi'
                               ? 'bg-primary/20' 
                               : 'bg-white/10'
                           }`}>
                             <Hash className={`w-5 h-5 ${
-                              formData.paymentMethod === 'binance_pay_nequi' 
+                              formData.paymentMethod === 'binance_nequi'
                                 ? 'text-primary' 
                                 : 'text-muted-foreground'
                             }`} />
@@ -719,7 +720,7 @@ export function RegistrationForm() {
                           <div className="flex-1">
                             <div className="flex items-center gap-2">
                               <span className={`text-sm font-medium font-inter ${
-                                formData.paymentMethod === 'binance_pay_nequi' 
+                                formData.paymentMethod === 'binance_nequi'
                                   ? 'text-white' 
                                   : 'text-foreground'
                               }`}>
@@ -730,7 +731,7 @@ export function RegistrationForm() {
                               Ambos métodos completos
                             </p>
                           </div>
-                          {formData.paymentMethod === 'binance_pay_nequi' && (
+                          {formData.paymentMethod === 'binance_nequi' && (
                             <div className="ml-auto">
                               <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
                                 <div className="w-2 h-2 bg-white rounded-full" />
@@ -769,7 +770,7 @@ export function RegistrationForm() {
               )}
 
               {/* Nequi ID */}
-              {isNequiEnabled && formData.paymentMethod === 'nequi_pay' && (
+              {isNequiEnabled && formData.paymentMethod === 'nequi' && (
                 <div>
                   <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID / Número de Nequi</label>
                   <div className="relative">
@@ -792,7 +793,7 @@ export function RegistrationForm() {
               )}
 
               {/* Binance Pay + Nequi Combined */}
-              {formData.paymentMethod === 'binance_pay_nequi' && (
+              {formData.paymentMethod === 'binance_nequi' && (
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID / Número de Binance Pay</label>
@@ -864,14 +865,14 @@ export function RegistrationForm() {
             <div className="space-y-6">
               <div className={`flex items-center justify-between p-4 rounded-lg border-2 ${
                 formData.paymentMethod === 'binance_pay' ? 'bg-yellow-400/10 border-yellow-400/30' : 
-                formData.paymentMethod === 'nequi_pay' ? 'bg-purple-400/10 border-purple-400/30' :
+                formData.paymentMethod === 'nequi' ? 'bg-purple-400/10 border-purple-400/30' :
                 'bg-gradient-to-r from-yellow-400/10 to-purple-400/10 border-yellow-400/30 border-r-purple-400/30'
               }`}>
                 <div>
                     <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
                       Pago por QR - {
                         formData.paymentMethod === 'binance_pay' ? `${qrSettings?.price_usd || '25'} USD (Ciclo de vida) - Binance Pay` :
-                        formData.paymentMethod === 'nequi_pay' ? `${formatCOPPrice(nequiQrSettings?.price_cop || '100000')} COP (Ciclo de vida) - Nequi` :
+                        formData.paymentMethod === 'nequi' ? `${formatCOPPrice(nequiQrSettings?.price_cop || '100000')} COP (Ciclo de vida) - Nequi` :
                         `${qrSettings?.price_usd || '25'} USD (Ciclo de vida) - Binance + Nequi`
                       }
                     </h2>
@@ -885,7 +886,7 @@ export function RegistrationForm() {
                 </div>
               </div>
 
-              {formData.paymentMethod === 'binance_pay_nequi' ? (
+              {formData.paymentMethod === 'binance_nequi' ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Binance QR */}
                   <div className="rounded-xl bg-[#0f1522] ring-1 ring-white/10 p-4 grid place-items-center">
@@ -1261,12 +1262,12 @@ export function RegistrationForm() {
                             <div>
                               <p className="text-xs text-white font-inter">Plataforma:</p>
                               <p className="font-medium text-slate-200">
-                                {formData.paymentMethod === 'binance_pay' ? 'Binance Pay' : 
-                                 formData.paymentMethod === 'nequi_pay' ? 'Nequi' : 
-                                 formData.paymentMethod === 'binance_pay_nequi' ? 'Binance + Nequi' : 'N/A'}
+                                 {formData.paymentMethod === 'binance_pay' ? 'Binance Pay' : 
+                                 formData.paymentMethod === 'nequi' ? 'Nequi' : 
+                                 formData.paymentMethod === 'binance_nequi' ? 'Binance + Nequi' : 'N/A'}
                               </p>
                             </div>
-                            {formData.paymentMethod === 'binance_pay_nequi' ? (
+                            {formData.paymentMethod === 'binance_nequi' ? (
                               <>
                                 <div>
                                   <p className="text-xs text-white font-inter">ID de Binance:</p>
@@ -1290,7 +1291,7 @@ export function RegistrationForm() {
                         </div>
 
                         <div className="mt-6 rounded-xl border border-amber-400/20 bg-neutral-900/40 p-3">
-                          {formData.paymentMethod === 'binance_pay_nequi' ? (
+                          {formData.paymentMethod === 'binance_nequi' ? (
                             <div className="space-y-3">
                               <div className="grid grid-cols-2 gap-3">
                                 <div className="text-center">
