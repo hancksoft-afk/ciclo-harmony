@@ -26,7 +26,7 @@ interface FormData {
 
 const countries = ['México', 'España', 'Colombia', 'Argentina', 'Perú', 'Chile'];
 
-export function RegistrationForm150() {
+export function RegistrationForm() {
   // Enable anti-cheat protection
   useAntiCheat();
   
@@ -136,7 +136,7 @@ export function RegistrationForm150() {
   const fetchQrSettings = async () => {
     try {
       const { data, error } = await supabase
-        .rpc('get_active_qr_setting', { qr_type: 'register150' });
+        .rpc('get_active_qr_setting', { qr_type: 'register25' });
 
       if (error) {
         console.error('Error fetching QR settings:', error);
@@ -155,22 +155,22 @@ export function RegistrationForm150() {
     try {
       console.log('Fetching QR settings for register150 and register150_admin...');
       
-      // Fetch register150 settings (for orderId1)
-      const { data: register150Data, error: register150Error } = await supabase
+      // Fetch register25 settings (for orderId1)
+      const { data: register25Data, error: register25Error } = await supabase
         .from('qr_settings')
         .select('*')
-        .eq('type', 'register150')
+        .eq('type', 'register25')
         .eq('is_active', true)
         .order('updated_at', { ascending: false })
         .maybeSingle();
       
-      if (register150Error) {
-        console.error('Error fetching register150 settings:', register150Error);
-      } else if (register150Data) {
-        console.log('Register150 settings result:', register150Data);
-        if (register150Data.code_id) {
-          console.log('Setting orderId1 to register150 code_id:', register150Data.code_id);
-          setOrderId1(register150Data.code_id);
+      if (register25Error) {
+        console.error('Error fetching register25 settings:', register25Error);
+      } else if (register25Data) {
+        console.log('Register25 settings result:', register25Data);
+        if (register25Data.code_id) {
+          console.log('Setting orderId1 to register25 code_id:', register25Data.code_id);
+          setOrderId1(register25Data.code_id);
         }
       }
 
@@ -178,7 +178,7 @@ export function RegistrationForm150() {
       const { data: adminData, error: adminError } = await supabase
         .from('qr_settings')
         .select('*')
-        .eq('type', 'register150_admin')
+        .eq('type', 'register25_admin')
         .eq('is_active', true)
         .order('updated_at', { ascending: false })
         .maybeSingle();
@@ -203,11 +203,11 @@ export function RegistrationForm150() {
       let mainType, adminType;
       
       if (platform === 'Binance') {
-        mainType = 'register150';
-        adminType = 'register150_admin';
+        mainType = 'register25';
+        adminType = 'register25_admin';
       } else if (platform === 'Nequi') {
-        mainType = 'register150_nequi';
-        adminType = 'register150_admin_nequi';
+        mainType = 'register25_nequi';
+        adminType = 'register25_admin_nequi';
       }
       
       // Fetch platform-specific register150 settings
@@ -378,7 +378,7 @@ export function RegistrationForm150() {
       });
 
       const { data, error } = await supabase
-        .from('register150')
+        .from('register')
         .insert({
           name: formData.name,
           phone: formData.phone,
