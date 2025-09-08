@@ -1368,62 +1368,61 @@ export function RegistrationForm() {
 
       {/* Platform Selection Modal */}
       {showPlatformModal && (
-        <div className="fixed inset-0 z-50 overflow-auto bg-black/60">
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowPlatformModal(false)} />
+        <div className="fixed inset-0 z-50 overflow-auto bg-black/60 ">
           <div className="relative mx-auto w-full max-w-md px-4 py-8 min-h-full flex items-center justify-center">
-            <div className="w-full rounded-2xl bg-[#0c111b] ring-1 ring-white/10 shadow-2xl overflow-hidden">
-              <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
-                <div className="flex items-center gap-2">
-                  <div className="h-8 w-8 grid place-items-center rounded-md bg-white/10 ring-1 ring-white/10">
-                    <Hash className="w-4 h-4 text-primary" />
-                  </div>
-                   <h3 className="text-lg font-semibold tracking-tight text-white font-inter">Selecciona tu plataforma</h3>
-                </div>
+            <div className="w-full rounded-2xl bg-[#0c111b] ring-1 ring-white/10 shadow-2xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-white">Selecciona plataforma de pago</h3>
                 <button
                   onClick={() => setShowPlatformModal(false)}
-                  className="rounded-md p-2 text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
+                  className="text-muted-foreground hover:text-white transition"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
-
-              <div className="p-6">
-                <div className="space-y-4">
-                  <p className="text-sm text-muted-foreground font-inter">
-                    Confirma la plataforma para proceder con el pago:
-                  </p>
-                  
-                  {isBinanceEnabled && (
-                    <button
-                      onClick={() => handlePlatformSelect('Binance')}
-                      className="w-full group rounded-lg ring-1 ring-primary/50 bg-primary/5 hover:bg-primary/10 transition p-4 text-left"
-                    >
-                      <div className="flex items-center gap-3">
-                        <Hash className="w-5 h-5 text-primary" />
-                         <div>
-                           <span className="text-base font-medium text-foreground font-inter">Binance</span>
-                           <p className="text-sm text-muted-foreground mt-1 font-inter">Pago con Binance</p>
-                         </div>
+              
+              <div className="space-y-3">
+                <button
+                  onClick={() => {
+                    setSelectedPlatform('Binance');
+                    // No cambiar paymentMethod si ya era binance_nequi
+                    // Don't change the original payment method to preserve original data
+                    fetchAdminQrSettings();
+                    setShowPlatformModal(false);
+                    setCurrentStep(2);
+                  }}
+                  className="w-full rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-4 text-left"
+                >
+                  <div className="flex items-center gap-3">
+                    <Hash className="w-5 h-5 text-yellow-400" />
+                    <div>
+                      <div className="text-sm font-medium text-white">Binance</div>
+                      <div className="text-xs text-muted-foreground">Plataforma de criptomonedas</div>
+                    </div>
+                  </div>
+                </button>
+                
+                {isNequiEnabled && (
+                  <button
+                    onClick={() => {
+                      setSelectedPlatform('Nequi');
+                      // No cambiar paymentMethod si ya era binance_nequi
+                      // Don't change the original payment method to preserve original data
+                      fetchAdminNequiQrSettings();
+                      setShowPlatformModal(false);
+                      setCurrentStep(2);
+                    }}
+                    className="w-full rounded-lg ring-1 ring-white/10 bg-white/5 hover:bg-white/10 transition p-4 text-left"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Hash className="w-5 h-5 text-green-400" />
+                      <div>
+                        <div className="text-sm font-medium text-white">Nequi</div>
+                        <div className="text-xs text-muted-foreground">Aplicación móvil de pagos</div>
                       </div>
-                    </button>
-                  )}
-                  
-                  {isNequiEnabled && (
-                    <button
-                      onClick={() => handlePlatformSelect('Nequi')}
-                      className="w-full group rounded-lg ring-1 ring-green-500/50 bg-green-500/5 hover:bg-green-500/10 transition p-4 text-left"
-                    >
-                      <div className="flex items-center gap-3">
-                        <Hash className="w-5 h-5 text-green-500" />
-                         <div>
-                           <span className="text-base font-medium text-foreground font-inter">Nequi</span>
-                           <p className="text-sm text-muted-foreground mt-1 font-inter">Pago con Nequi</p>
-                         </div>
-                      </div>
-                    </button>
-                  )}
-
-                </div>
+                    </div>
+                  </button>
+                )}
               </div>
             </div>
           </div>
