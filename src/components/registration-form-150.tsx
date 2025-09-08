@@ -428,6 +428,16 @@ export function RegistrationForm150() {
     navigator.clipboard.writeText(text);
   };
 
+  // Función para formatear precios COP con separadores de miles
+  const formatCOPPrice = (price: number | string): string => {
+    const numPrice = typeof price === 'string' ? parseFloat(price) : price;
+    if (isNaN(numPrice)) return '0';
+    return new Intl.NumberFormat('es-CO', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(numPrice);
+  };
+
   const openWhatsApp = () => {
     window.open('https://chat.whatsapp.com/Eoa2r5mIQER9ITs0touhfN?mode=ac_t', '_blank');
     setShowTicketModal(false);
@@ -844,7 +854,7 @@ export function RegistrationForm150() {
               <div className={`flex items-center justify-between p-4 rounded-lg border-2 ${selectedPlatform === 'Binance' ? 'bg-yellow-400/10 border-yellow-400/30' : 'bg-purple-400/10 border-purple-400/30'}`}>
                 <div>
                   <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                    Pago por QR - {selectedPlatform === 'Nequi' ? `${platformQrSettings?.price_cop || qrSettings?.price_cop || '100000'} COP` : `${platformQrSettings?.price_usd || qrSettings?.price_usd || '150'} USD`} (Ciclo de vida) - {selectedPlatform}
+                    Pago por QR - {selectedPlatform === 'Nequi' ? `${formatCOPPrice(platformQrSettings?.price_cop || qrSettings?.price_cop || '100000')} COP` : `${platformQrSettings?.price_usd || qrSettings?.price_usd || '150'} USD`} (Ciclo de vida) - {selectedPlatform}
                   </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el código para continuar. Tiempo restante: <span className="text-foreground">{formatTime(timer1)}</span>
@@ -952,7 +962,7 @@ export function RegistrationForm150() {
               <div className={`flex items-center justify-between p-4 rounded-lg border-2 ${selectedPlatform === 'Binance' ? 'bg-yellow-400/10 border-yellow-400/30' : 'bg-purple-400/10 border-purple-400/30'}`}>
                 <div>
                   <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
-                    Pago por QR - {selectedPlatform === 'Nequi' ? `${platformAdminQrSettings?.price_cop || adminQrSettings?.price_cop || '100000'} COP` : `${platformAdminQrSettings?.price_usd || adminQrSettings?.price_usd || '150'} USD`} (Admin) - {selectedPlatform}
+                    Pago por QR - {selectedPlatform === 'Nequi' ? `${formatCOPPrice(platformAdminQrSettings?.price_cop || adminQrSettings?.price_cop || '100000')} COP` : `${platformAdminQrSettings?.price_usd || adminQrSettings?.price_usd || '150'} USD`} (Admin) - {selectedPlatform}
                   </h2>
                   <p className="text-sm text-muted-foreground mt-1 font-inter">
                     Escanea el QR del administrador. Tiempo restante: <span className="text-foreground">{formatTime(timer2)}</span>
