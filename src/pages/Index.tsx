@@ -40,7 +40,7 @@ const Index = () => {
       <div 
         className="fixed top-0 w-full h-screen bg-cover bg-center -z-10"
         style={{
-          backgroundImage: "url('https://img.freepik.com/fotos-premium/primer-plano-monton-plantas-tropicales-luces-neon_1028860-104184.jpg')"
+          backgroundImage: "url('https://img.freepik.com/vector-gratis/fondo-hojas-tropicales-oscuras-realistas_52683-32885.jpg')"
         }}
       />
       
