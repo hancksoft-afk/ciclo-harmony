@@ -76,7 +76,7 @@ export function RegistrationForm() {
       const { data, error } = await supabase
         .from('system_settings')
         .select('setting_value')
-        .eq('setting_key', 'nequi_enabled')
+        .eq('setting_key', 'nequi_25_enabled')
         .single();
 
       if (error && error.code !== 'PGRST116') {
