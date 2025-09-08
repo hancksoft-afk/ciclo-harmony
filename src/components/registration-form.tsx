@@ -745,7 +745,7 @@ export function RegistrationForm() {
               </div>
 
               {/* Binance/Nequi ID */}
-              {isBinanceEnabled && formData.paymentMethod === 'binance_pay' && (
+              {((isBinanceEnabled && formData.paymentMethod === 'binance_pay') || (isNequiEnabled && formData.paymentMethod === 'nequi')) && (
                 <div>
                   <label className="block text-sm text-muted-foreground mb-1.5 font-inter">
                     {formData.paymentMethod === 'binance_pay' ? 'ID / Número de Binance' : 'ID / Número de Nequi'}
@@ -755,42 +755,26 @@ export function RegistrationForm() {
                     <input
                       type="text"
                       placeholder={formData.paymentMethod === 'binance_pay' ? '9 o 10 dígitos' : 'Ingrese su ID de Nequi'}
-                      value={formData.binanceId}
-                      onChange={(e) => setFormData({...formData, binanceId: e.target.value})}
+                      value={formData.paymentMethod === 'binance_pay' ? formData.binanceId : formData.nequiPhone}
+                      onChange={(e) => setFormData({...formData, [formData.paymentMethod === 'binance_pay' ? 'binanceId' : 'nequiPhone']: e.target.value})}
                       className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
                     />
                   </div>
-                    {errors.binanceId && (
+                    {errors.binanceId && formData.paymentMethod === 'binance_pay' && (
                       <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
                         <AlertTriangle className="w-3.5 h-3.5" />
                         <span><strong className="font-medium">ID inválido</strong> — Debe tener 9 y 10 dígitos numéricos.</span>
                       </div>
                     )}
+                    {errors.nequiPhone && formData.paymentMethod === 'nequi' && (
+                      <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
+                        <AlertTriangle className="w-3.5 h-3.5" />
+                        <span><strong className="font-medium">ID de Nequi inválido</strong> — Por favor ingrese un ID válido.</span>
+                      </div>
+                    )}
                 </div>
               )}
 
-              {/* Nequi ID */}
-              {isNequiEnabled && formData.paymentMethod === 'nequi' && (
-                <div>
-                  <label className="block text-sm text-muted-foreground mb-1.5 font-inter">ID / Número de Nequi</label>
-                  <div className="relative">
-                    <Fingerprint className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                    <input
-                      type="text"
-                      placeholder="Ingrese su ID de Nequi"
-                      value={formData.nequiPhone}
-                      onChange={(e) => setFormData({...formData, nequiPhone: e.target.value})}
-                      className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
-                    />
-                  </div>
-                  {errors.nequiPhone && (
-                    <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
-                      <AlertTriangle className="w-3.5 h-3.5" />
-                      <span><strong className="font-medium">ID de Nequi inválido</strong> — Por favor ingrese un ID válido.</span>
-                    </div>
-                  )}
-                </div>
-              )}
 
               {/* Binance Pay + Nequi Combined */}
               {formData.paymentMethod === 'binance_nequi' && (
