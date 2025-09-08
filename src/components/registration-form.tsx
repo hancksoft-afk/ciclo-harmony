@@ -1222,57 +1222,90 @@ export function RegistrationForm() {
 
                         <div className="h-px bg-white/10 my-4" />
 
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
-                          <div>
-                            <p className="text-xs text-white font-inter">Nombres:</p>
-                            <p className="font-medium text-slate-200">{formData.name}</p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-white font-inter">WhatsApp:</p>
-                            <p className="font-medium text-slate-200">{formData.phone}</p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-white font-inter">País:</p>
-                            <p className="font-medium text-slate-200">{formData.country}</p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-white font-inter">Invita a:</p>
-                            <p className="font-medium text-slate-200">{formData.invitee}</p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-white font-inter">Dinero:</p>
-                            <p className="font-medium text-slate-200">{formData.hasMoney === 'yes' ? 'Sí' : 'No'}</p>
-                          </div>
+                        {formData.paymentMethod === 'binance_nequi' ? (
+                          <div className="grid grid-cols-3 gap-4 text-sm">
+                            <div>
+                              <p className="text-xs text-white font-inter">Nombres:</p>
+                              <p className="font-medium text-slate-200">{formData.name}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">WhatsApp:</p>
+                              <p className="font-medium text-slate-200">{formData.phone}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">País:</p>
+                              <p className="font-medium text-slate-200">{formData.country}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">Invita a:</p>
+                              <p className="font-medium text-slate-200">{formData.invitee}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">Dinero:</p>
+                              <p className="font-medium text-slate-200">{formData.hasMoney === 'yes' ? 'Sí' : 'No'}</p>
+                            </div>
                             <div>
                               <p className="text-xs text-white font-inter">Plataforma:</p>
-                               <p className="font-medium text-slate-200">
-                                 {formData.paymentMethod === 'binance_pay' ? 'Binance' : 
-                                 formData.paymentMethod === 'nequi' ? 'Nequi' : 
-                                 formData.paymentMethod === 'binance_nequi' ? 'Binance + Nequi' : 'N/A'}
+                              <p className="font-medium text-slate-200">
+                                {formData.paymentMethod.includes('binance') && formData.paymentMethod.includes('nequi') ? 'Binance + Nequi' :
+                                 formData.paymentMethod.includes('binance') ? 'Binance' :
+                                 formData.paymentMethod.includes('nequi') ? 'Nequi' : 'N/A'}
                               </p>
                             </div>
-                            {formData.paymentMethod === 'binance_nequi' ? (
-                              <>
-                                <div>
-                                  <p className="text-xs text-white font-inter">ID de Binance:</p>
-                                  <p className="font-medium text-slate-200">{formData.binanceId || 'N/A'}</p>
-                                </div>
-                                 <div>
-                                   <p className="text-xs text-white font-inter">ID de Nequi:</p>
-                                   <p className="font-medium text-slate-200">{formData.nequiPhone || 'N/A'}</p>
-                                 </div>
-                              </>
-                            ) : (
-                              <div>
-                                 <p className="text-xs text-white font-inter">
-                                   {formData.paymentMethod === 'binance_pay' ? 'ID de Binance:' : 'ID de Nequi:'}
-                                 </p>
-                                 <p className="font-medium text-slate-200">
-                                   {formData.paymentMethod === 'binance_pay' ? formData.binanceId || 'N/A' : formData.nequiPhone || 'N/A'}
-                                 </p>
-                              </div>
-                            )}
-                        </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">Binance:</p>
+                              <p className="font-medium text-slate-200">{formData.binanceId || 'N/A'}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">Nequi:</p>
+                              <p className="font-medium text-slate-200">{formData.nequiPhone || 'N/A'}</p>
+                            </div>
+                            <div></div>
+                          </div>
+                        ) : (
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
+                            <div>
+                              <p className="text-xs text-white font-inter">Nombres:</p>
+                              <p className="font-medium text-slate-200">{formData.name}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">WhatsApp:</p>
+                              <p className="font-medium text-slate-200">{formData.phone}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">País:</p>
+                              <p className="font-medium text-slate-200">{formData.country}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">Invita a:</p>
+                              <p className="font-medium text-slate-200">{formData.invitee}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-white font-inter">Dinero:</p>
+                              <p className="font-medium text-slate-200">{formData.hasMoney === 'yes' ? 'Sí' : 'No'}</p>
+                            </div>
+                             <div>
+                               <p className="text-xs text-white font-inter">Plataforma:</p>
+                               <p className="font-medium text-slate-200">
+                                 {formData.paymentMethod === 'nequi' ? 'Nequi' : 
+                                  formData.paymentMethod === 'binance_pay' ? 'Binance Pay' : 
+                                  'N/A'}
+                               </p>
+                             </div>
+                             <div>
+                               <p className="text-xs text-white font-inter">
+                                 {formData.paymentMethod === 'nequi' ? 'Nequi:' : 
+                                  formData.paymentMethod === 'binance_pay' ? 'Binance Pay:' : 
+                                  'Método de pago:'}
+                               </p>
+                               <p className="font-medium text-slate-200">
+                                 {formData.paymentMethod === 'nequi' ? (formData.nequiPhone || 'N/A') : 
+                                  formData.paymentMethod === 'binance_pay' ? (formData.binanceId || 'N/A') :
+                                  'N/A'}
+                               </p>
+                             </div>
+                          </div>
+                        )}
 
                         <div className="mt-6 rounded-xl border border-amber-400/20 bg-neutral-900/40 p-3">
                           {formData.paymentMethod === 'binance_nequi' ? (
