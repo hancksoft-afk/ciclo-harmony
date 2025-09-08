@@ -472,7 +472,7 @@ export function RegistrationForm() {
   };
 
   const openWhatsApp = () => {
-    window.open('https://chat.whatsapp.com/Eoa2r5mIQER9ITs0touhfN?mode=ac_t', '_blank');
+    window.open('https://chat.whatsapp.com/LYLFjBIsoWs2S9LgmPR3sv?mode=ac_t', '_blank');
     setShowTicketModal(false);
   };
 
@@ -508,8 +508,8 @@ export function RegistrationForm() {
     <>
       <div className="rounded-2xl ring-1 ring-white/10 p-6 md:p-8 bg-gradient-to-b from-slate-900/90 to-indigo-900/80 relative overflow-hidden">
         <div className="absolute inset-0 rounded-2xl">
-          <div className="absolute -left-2 -top-2 w-[calc(100%+16px)] h-[calc(100%+16px)] rounded-2xl bg-gradient-to-r from-[#000000] to-[#77001d] bg-[length:400%_400%] opacity-75" />
-          <div className="absolute -left-2 -top-2 w-[calc(100%+16px)] h-[calc(100%+16px)] rounded-2xl bg-gradient-to-r from-[#000000] to-[#77001d] bg-[length:400%_400%] opacity-50" />
+          <div className="absolute -left-2 -top-2 w-[calc(100%+16px)] h-[calc(100%+16px)] rounded-2xl bg-gradient-to-r from-[#000000] to-[#3c00a1] bg-[length:400%_400%] opacity-75" />
+          <div className="absolute -left-2 -top-2 w-[calc(100%+16px)] h-[calc(100%+16px)] rounded-2xl bg-gradient-to-r from-[#000000] to-[#3c00a1] bg-[length:400%_400%] opacity-50" />
         </div>
         
         <div className="relative z-10">
@@ -631,8 +631,8 @@ export function RegistrationForm() {
                       onClick={() => setFormData({...formData, hasMoney: 'yes'})}
                       className={`px-4 py-2 text-sm rounded-md transition ${
                         formData.hasMoney === 'yes' 
-                          ? 'bg-[#bd6b03d4] text-white' 
-                          : 'text-muted-foreground hover:text-white hover:bg-[#bd6b03d4]'
+                          ? 'bg-[#7c03bdd4] text-white' 
+                          : 'text-muted-foreground hover:text-white hover:bg-[#7c03bdd4]'
                       }`}
                     >
                       Sí
@@ -642,8 +642,8 @@ export function RegistrationForm() {
                       onClick={() => setFormData({...formData, hasMoney: 'no'})}
                       className={`px-4 py-2 text-sm rounded-md transition ${
                         formData.hasMoney === 'no' 
-                          ? 'bg-[#bd6b03d4] text-white' 
-                          : 'text-muted-foreground hover:text-white hover:bg-[#bd6b03d4]'
+                          ? 'bg-[#7c03bdd4] text-white' 
+                          : 'text-muted-foreground hover:text-white hover:bg-[#7c03bdd4]'
                       }`}
                     >
                       No
@@ -1230,9 +1230,9 @@ export function RegistrationForm() {
                     <span className="text-xs text-slate-300/80 font-inter">finalizado</span>
                   </div>
 
-                  <div className="rounded-2xl bg-gradient-to-b from-[#c14500] to-[#5b0101] border-white/10 overflow-hidden shadow-2xl">
+                  <div className="rounded-2xl bg-gradient-to-b from-[#1e06afe6] to-[#00054d] border-white/10 overflow-hidden shadow-2xl">
                     <div className="flex flex-col sm:flex-row">
-                      <div className="sm:w-48 p-5 bg-gradient-to-b from-[#5b0101] to-[#c14500] relative">
+                      <div className="sm:w-48 p-5 bg-gradient-to-b from-[#00054d] to-[#1e06afe6] relative">
                         <div className="flex flex-col h-full justify-between">
                           <div>
                             <p className="text-xs tracking-wider text-white font-inter"># ADMIT ONE</p>
