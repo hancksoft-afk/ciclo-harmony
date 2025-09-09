@@ -916,7 +916,7 @@ export function RegistrationForm150() {
                   <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
                     Pago por QR - {selectedPlatform === 'Nequi' ? `${formatCOPPrice(platformQrSettings?.price_cop || qrSettings?.price_cop || '100000')} COP` : `${platformQrSettings?.price_usd || qrSettings?.price_usd || '150'} USD`} (Ciclo de vida) - {selectedPlatform}
                   </h2>
-                  <p className="text-sm text-muted-foreground mt-1 font-inter">
+                  <p className="text-sm text-white mt-1 font-inter">
                     Escanea el código para continuar. Tiempo restante: <span className="text-foreground">{formatTime(timer1)}</span>
                   </p>
                 </div>
@@ -947,12 +947,12 @@ export function RegistrationForm150() {
                 <div className="rounded-xl bg-white/5 ring-1 ring-white/10 p-4 space-y-4 bg-cover bg-center" 
                      style={{backgroundImage: "url('https://img.freepik.com/vector-gratis/capas-papel-oscuro-papel-tapiz-detalles-dorados_23-2148403401.jpg')"}}>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground font-inter">Codigo ID</span>
+                    <span className="text-sm text-white font-inter">Codigo ID</span>
                     <div className="flex items-center gap-2">
-                      <code className="text-sm text-foreground font-mono">{orderId1}</code>
+                      <code className="text-sm text-white font-mono">{orderId1}</code>
                       <button
                         onClick={() => copyToClipboard(orderId1)}
-                        className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
+                        className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-white hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
                       >
                         <Copy className="w-3.5 h-3.5" />
                         Copiar
@@ -972,7 +972,7 @@ export function RegistrationForm150() {
                   </div>
                   <div className="pt-2 space-y-4">
                     <div>
-                      <label className="block text-sm text-muted-foreground mb-1.5 font-inter">
+                      <label className="block text-sm text-white mb-1.5 font-inter">
                         {selectedPlatform === 'Binance' ? 'ID de Orden (10–19 dígitos)' : 'ID de Referencia (6 a 20 dígitos numéricos. Ej: M17974073)'}
                       </label>
                       <div className="relative">
@@ -1030,7 +1030,7 @@ export function RegistrationForm150() {
                   <h2 className="text-xl font-semibold tracking-tight text-white font-inter">
                     Pago por QR - {selectedPlatform === 'Nequi' ? `${formatCOPPrice(platformAdminQrSettings?.price_cop || adminQrSettings?.price_cop || '100000')} COP` : `${platformAdminQrSettings?.price_usd || adminQrSettings?.price_usd || '150'} USD`} (Admin) - {selectedPlatform}
                   </h2>
-                  <p className="text-sm text-muted-foreground mt-1 font-inter">
+                  <p className="text-sm text-white mt-1 font-inter">
                     Escanea el QR del administrador. Tiempo restante: <span className="text-foreground">{formatTime(timer2)}</span>
                   </p>
                 </div>
@@ -1061,12 +1061,12 @@ export function RegistrationForm150() {
                 <div className="rounded-xl bg-white/5 ring-1 ring-white/10 p-4 space-y-4 bg-cover bg-center"
                      style={{backgroundImage: "url('https://img.freepik.com/vector-premium/fondo-futurista-lujo-diseno-metal-gris-oscuro-geometrico-linea-sombra-negra-luz-roja-abstracta_33869-3507.jpg')"}}>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground font-inter">Codigo ID</span>
+                    <span className="text-sm text-white font-inter">Codigo ID</span>
                     <div className="flex items-center gap-2">
-                      <code className="text-sm text-foreground font-mono">{orderId2}</code>
+                      <code className="text-sm text-white font-mono">{orderId2}</code>
                       <button
                         onClick={() => copyToClipboard(orderId2)}
-                        className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
+                        className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-white hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
                       >
                         <Copy className="w-3.5 h-3.5" />
                         Copiar
@@ -1086,7 +1086,7 @@ export function RegistrationForm150() {
                   </div>
                   <div className="pt-2 space-y-4">
                     <div>
-                      <label className="block text-sm text-muted-foreground mb-1.5 font-inter">
+                      <label className="block text-sm text-white mb-1.5 font-inter">
                         {selectedPlatform === 'Binance' ? 'ID de Orden (10–19 dígitos)' : 'ID de Referencia (6 a 20 dígitos numéricos. Ej: M17974073)'}
                       </label>
                       <div className="relative">
