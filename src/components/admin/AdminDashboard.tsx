@@ -70,13 +70,6 @@ export function AdminDashboard() {
         title: "Configuración actualizada",
         description: `${getSettingLabel(key)} ${newValue ? 'activado' : 'desactivado'}`,
       });
-
-      // Navigate to corresponding page after toggle
-      if (key === 'register_25_visible') {
-        setTimeout(() => navigate('/register'), 500);
-      } else if (key === 'register_150_visible') {
-        setTimeout(() => navigate('/register150'), 500);
-      }
     } catch (error) {
       console.error('Error updating setting:', error);
       toast({
