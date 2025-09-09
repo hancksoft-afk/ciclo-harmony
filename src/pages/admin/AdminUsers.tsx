@@ -17,6 +17,8 @@ interface RegisterUser {
   binance_id_step2: string | null;
   binance_id_step3: string | null;
   nequi_phone: string | null;
+  nequi_id_step2: string | null;
+  nequi_id_step3: string | null;
   ticket_id: string | null;
   created_at: string;
   payment_method: string;
@@ -404,12 +406,26 @@ export function AdminUsers() {
                               <p className="text-sm font-medium text-slate-200">{selectedUser.ticket_id || 'N/A'}</p>
                             </div>
                             <div>
-                              <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Orden</p>
-                              <p className="text-sm font-medium text-amber-300">{selectedUser.binance_id_step2 || 'N/A'}</p>
+                              <p className="text-xs uppercase tracking-wider text-white font-inter">
+                                {selectedUser.payment_method.includes('binance') ? 'ID DE ORDEN' : 'ID DE REFERENCIA'}
+                              </p>
+                              <p className="text-sm font-medium text-amber-300">
+                                {selectedUser.payment_method.includes('binance') 
+                                  ? (selectedUser.binance_id_step2 || 'N/A')
+                                  : (selectedUser.nequi_id_step2 || 'N/A')
+                                }
+                              </p>
                             </div>
                             <div>
-                              <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Administrador</p>
-                              <p className="text-sm font-medium text-amber-300">{selectedUser.binance_id_step3 || 'N/A'}</p>
+                              <p className="text-xs uppercase tracking-wider text-white font-inter">
+                                {selectedUser.payment_method.includes('binance') ? 'ADMINISTRADOR' : 'ID DE ADMINISTRADOR'}
+                              </p>
+                              <p className="text-sm font-medium text-amber-300">
+                                {selectedUser.payment_method.includes('binance') 
+                                  ? (selectedUser.binance_id_step3 || 'N/A')
+                                  : (selectedUser.nequi_id_step3 || 'N/A')
+                                }
+                              </p>
                             </div>
                           </div>
                         </div>
