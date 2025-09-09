@@ -15,7 +15,7 @@ const Register150 = () => {
         const { data, error } = await supabase
           .from('system_settings')
           .select('setting_value')
-          .eq('setting_key', 'registro_150')
+          .eq('setting_key', 'register_150_visible')
           .single();
         
         if (error) {
