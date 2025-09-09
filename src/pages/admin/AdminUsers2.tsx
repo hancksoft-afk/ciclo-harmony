@@ -436,12 +436,26 @@ export function AdminUsers2() {
                       <p className="text-sm font-medium text-slate-200 font-mono">{selectedUser.ticket_id || 'N/A'}</p>
                     </div>
                     <div className="space-y-1">
-                      <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Orden</p>
-                      <p className="text-sm font-medium text-amber-300 font-mono">{selectedUser.binance_id_step2 || 'N/A'}</p>
+                      <p className="text-xs uppercase tracking-wider text-white font-inter">
+                        {selectedUser.payment_method === 'binance' ? 'ID DE ORDEN' : 'ID DE REFERENCIA'}
+                      </p>
+                      <p className="text-sm font-medium text-amber-300 font-mono">
+                        {selectedUser.payment_method === 'binance' 
+                          ? (selectedUser.binance_id_step2 || 'N/A')
+                          : (selectedUser.nequi_id_step2 || 'N/A')
+                        }
+                      </p>
                     </div>
                     <div>
-                      <p className="text-xs uppercase tracking-wider text-white font-inter">ID de Administrador</p>
-                      <p className="text-sm font-medium text-amber-300 font-mono">{selectedUser.binance_id_step3 || 'N/A'}</p>
+                      <p className="text-xs uppercase tracking-wider text-white font-inter">
+                        {selectedUser.payment_method === 'binance' ? 'ADMINISTRADOR' : 'ID DE ADMINISTRADOR'}
+                      </p>
+                      <p className="text-sm font-medium text-amber-300 font-mono">
+                        {selectedUser.payment_method === 'binance' 
+                          ? (selectedUser.binance_id_step3 || 'N/A')
+                          : (selectedUser.nequi_id_step3 || 'N/A')
+                        }
+                      </p>
                     </div>
                   </div>
                 </div>
