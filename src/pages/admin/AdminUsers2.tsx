@@ -16,6 +16,8 @@ interface Register150User {
   binance_id: string | null;
   binance_id_step2: string | null;
   binance_id_step3: string | null;
+  nequi_id_step2: string | null;
+  nequi_id_step3: string | null;
   order_id_1: string | null;
   order_id_2: string | null;
   ticket_id: string | null;
@@ -272,8 +274,8 @@ export function AdminUsers2() {
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Código</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Dinero</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Plataforma</th>
-                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">ID Orden</th>
-                  <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">ID Admin</th>
+                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">ID Ref/Orden</th>
+                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">ID Admin</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Fecha</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Acción</th>
                   <th className="text-left p-4 text-blue-300 font-semibold text-sm uppercase tracking-wider">Eliminar</th>
@@ -328,8 +330,18 @@ export function AdminUsers2() {
                           user.payment_method === 'Binance de Pay' ? 'Binance Pay' : 'N/A'}
                        </span>
                      </td>
-                    <td className="p-4 text-slate-300">{user.binance_id_step2 || 'N/A'}</td>
-                    <td className="p-4 text-slate-300">{user.binance_id_step3 || 'N/A'}</td>
+                     <td className="p-4 text-slate-300">
+                       {user.payment_method.includes('binance') 
+                         ? (user.binance_id_step2 || 'N/A')
+                         : (user.nequi_id_step2 || 'N/A')
+                       }
+                     </td>
+                     <td className="p-4 text-slate-300">
+                       {user.payment_method.includes('binance') 
+                         ? (user.binance_id_step3 || 'N/A')
+                         : (user.nequi_id_step3 || 'N/A')
+                       }
+                     </td>
                     <td className="p-4">
                       <div className="flex items-center gap-2 text-slate-300">
                         <Calendar className="w-4 h-4" />
