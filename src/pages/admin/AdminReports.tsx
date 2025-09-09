@@ -377,9 +377,9 @@ export function AdminReports() {
               </button>
             </div>
             
-            <div className="rounded-2xl bg-gradient-to-b from-[#1e06afe6] to-[#00054d] border-white/10 overflow-hidden shadow-2xl">
+            <div className="rounded-2xl bg-gradient-to-b from-[#5c009b] to-[#03001e] border-white/10 overflow-hidden shadow-2xl">
               <div className="flex flex-col sm:flex-row">
-                <div className="sm:w-48 p-5 bg-gradient-to-b from-[#00054d] to-[#1e06afe6] relative">
+                <div className="sm:w-48 p-5 bg-gradient-to-b from-[#03001e] to-[#5c009b] relative">
                   <div className="flex flex-col h-full justify-between">
                     <div>
                       <p className="text-xs tracking-wider text-white font-inter"># ADMIT ONE</p>
