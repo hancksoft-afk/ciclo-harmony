@@ -1065,7 +1065,7 @@ export function RegistrationForm() {
                       <code className="text-sm text-white font-mono">{orderId2}</code>
                       <button
                         onClick={() => copyToClipboard(orderId2)}
-                        className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
+                        className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-white hover:text-white hover:bg-white/5 ring-1 ring-white/10 transition"
                       >
                         <Copy className="w-3.5 h-3.5" />
                         Copiar
