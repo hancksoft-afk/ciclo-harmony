@@ -11,17 +11,23 @@ const Register = () => {
   useEffect(() => {
     const checkRegistrationStatus = async () => {
       try {
+        console.log('Checking registration status for register_25_visible');
         const { data, error } = await supabase
           .from('system_settings')
           .select('setting_value')
           .eq('setting_key', 'register_25_visible')
-          .single();
+          .maybeSingle();
+        
+        console.log('Registration status data:', data);
+        console.log('Registration status error:', error);
         
         if (error) {
           console.error('Error fetching registration status:', error);
           setIsRegistrationOpen(false);
         } else {
-          setIsRegistrationOpen(data?.setting_value || false);
+          const isOpen = data?.setting_value || false;
+          console.log('Setting registration open to:', isOpen);
+          setIsRegistrationOpen(isOpen);
         }
       } catch (error) {
         console.error('Error:', error);
