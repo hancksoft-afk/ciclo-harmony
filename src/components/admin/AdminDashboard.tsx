@@ -85,17 +85,15 @@ export function AdminDashboard() {
       case 'register_25_visible': return 'Registro 25 USD';
       case 'register_150_visible': return 'Registro 150 USD';
       case 'eduplatform_visible': return 'EduPlatform';
-      case 'register_closed_message': return 'Mensaje Cerrado';
       default: return key;
     }
   };
 
   const getSettingDescription = (key: string) => {
     switch (key) {
-      case 'register_25_visible': return 'Permite el registro con plan de 25 USD';
+      case 'register_25_visible': return 'Controla la card y mensaje cerrado de 25 USD';
       case 'register_150_visible': return 'Permite el registro con plan de 150 USD';
       case 'eduplatform_visible': return 'Activa la plataforma educativa';
-      case 'register_closed_message': return 'Muestra mensaje de registro cerrado';
       default: return 'Configuración del sistema';
     }
   };
@@ -156,7 +154,7 @@ export function AdminDashboard() {
       </div>
 
       {/* Ciclo de Vida Toggle Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Registro 25 USD */}
         <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
           <div className="flex flex-col items-center text-center space-y-4">
@@ -171,7 +169,7 @@ export function AdminDashboard() {
             </div>
             <div>
               <h3 className="text-white font-semibold text-lg">Registro 25 USD</h3>
-              <p className="text-slate-400 text-sm mt-1">Control de visibilidad</p>
+              <p className="text-slate-400 text-sm mt-1">Controla card y página cerrada</p>
             </div>
             <button
               onClick={() => toggleSetting('register_25_visible')}
@@ -263,43 +261,6 @@ export function AdminDashboard() {
               <div className={`w-2 h-2 rounded-full ${settings['eduplatform_visible'] ? 'bg-green-400' : 'bg-red-400'}`}></div>
               <span className={`text-sm font-medium ${settings['eduplatform_visible'] ? 'text-green-400' : 'text-red-400'}`}>
                 {settings['eduplatform_visible'] ? 'Abierto' : 'Cerrado'}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Mensaje Registro Cerrado */}
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
-          <div className="flex flex-col items-center text-center space-y-4">
-            <div className={`w-16 h-16 rounded-xl flex items-center justify-center ${
-              settings['register_closed_message'] ? 'bg-gradient-to-br from-red-500 to-red-600' : 'bg-gradient-to-br from-green-500 to-emerald-600'
-            }`}>
-              {settings['register_closed_message'] ? (
-                <EyeOff className="w-8 h-8 text-white" />
-              ) : (
-                <Eye className="w-8 h-8 text-white" />
-              )}
-            </div>
-            <div>
-              <h3 className="text-white font-semibold text-lg">Mensaje Cerrado</h3>
-              <p className="text-slate-400 text-sm mt-1">Control mensaje "Registro Cerrado"</p>
-            </div>
-            <button
-              onClick={() => toggleSetting('register_closed_message')}
-              className={`relative inline-flex h-8 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 ${
-                settings['register_closed_message'] ? 'bg-red-600' : 'bg-green-600'
-              }`}
-            >
-              <span
-                className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform shadow-lg ${
-                  settings['register_closed_message'] ? 'translate-x-7' : 'translate-x-1'
-                }`}
-              />
-            </button>
-            <div className="flex items-center gap-2">
-              <div className={`w-2 h-2 rounded-full ${settings['register_closed_message'] ? 'bg-red-400' : 'bg-green-400'}`}></div>
-              <span className={`text-sm font-medium ${settings['register_closed_message'] ? 'text-red-400' : 'text-green-400'}`}>
-                {settings['register_closed_message'] ? 'Cerrado' : 'Abierto'}
               </span>
             </div>
           </div>
