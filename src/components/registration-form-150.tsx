@@ -571,11 +571,18 @@ export function RegistrationForm150() {
                       <AlertTriangle className="w-3.5 h-3.5" />
                       <span><strong className="font-medium">Nombre inválido</strong> — Debe tener entre 3 y 4 palabras.</span>
                     </div>
-                  ) : formData.name && formData.name.trim().split(/\s+/).filter(word => word.length > 0).length >= 3 && formData.name.trim().split(/\s+/).filter(word => word.length > 0).length <= 4 ? (
-                    <div className="mt-1.5 text-xs text-green-400 flex items-center gap-1.5">
-                      <Check className="w-3.5 h-3.5" />
-                      <span><strong className="font-medium">Nombre válido</strong> — Perfecto.</span>
-                    </div>
+                  ) : formData.name && formData.name.trim() ? (
+                    formData.name.trim().split(/\s+/).filter(word => word.length > 0).length >= 3 && formData.name.trim().split(/\s+/).filter(word => word.length > 0).length <= 4 ? (
+                      <div className="mt-1.5 text-xs text-green-400 flex items-center gap-1.5">
+                        <Check className="w-3.5 h-3.5" />
+                        <span><strong className="font-medium">Nombre válido</strong> — Perfecto.</span>
+                      </div>
+                    ) : (
+                      <div className="mt-1.5 text-xs text-red-400 flex items-center gap-1.5">
+                        <X className="w-3.5 h-3.5" />
+                        <span><strong className="font-medium">Nombre inválido</strong> — Prohibido, debe tener entre 3 y 4 palabras.</span>
+                      </div>
+                    )
                   ) : null}
                 </div>
 
@@ -597,11 +604,18 @@ export function RegistrationForm150() {
                       <AlertTriangle className="w-3.5 h-3.5" />
                       <span><strong className="font-medium">Invitando a inválida</strong> — Debe tener entre 3 y 4 palabras.</span>
                     </div>
-                  ) : formData.invitee && formData.invitee.trim().split(/\s+/).filter(word => word.length > 0).length >= 3 && formData.invitee.trim().split(/\s+/).filter(word => word.length > 0).length <= 4 ? (
-                    <div className="mt-1.5 text-xs text-green-400 flex items-center gap-1.5">
-                      <Check className="w-3.5 h-3.5" />
-                      <span><strong className="font-medium">Nombre válido</strong> — Perfecto.</span>
-                    </div>
+                  ) : formData.invitee && formData.invitee.trim() ? (
+                    formData.invitee.trim().split(/\s+/).filter(word => word.length > 0).length >= 3 && formData.invitee.trim().split(/\s+/).filter(word => word.length > 0).length <= 4 ? (
+                      <div className="mt-1.5 text-xs text-green-400 flex items-center gap-1.5">
+                        <Check className="w-3.5 h-3.5" />
+                        <span><strong className="font-medium">Nombre válido</strong> — Perfecto.</span>
+                      </div>
+                    ) : (
+                      <div className="mt-1.5 text-xs text-red-400 flex items-center gap-1.5">
+                        <X className="w-3.5 h-3.5" />
+                        <span><strong className="font-medium">Nombre inválido</strong> — Prohibido, debe tener entre 3 y 4 palabras.</span>
+                      </div>
+                    )
                   ) : null}
                 </div>
 
@@ -862,12 +876,17 @@ export function RegistrationForm150() {
                       className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
                     />
                   </div>
-                  {errors.binanceId && (
+                  {errors.binanceId ? (
                     <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
                       <AlertTriangle className="w-3.5 h-3.5" />
                       <span><strong className="font-medium">ID de Binance inválido</strong> — Debe tener 9 Y 10 numéricos.</span>
                     </div>
-                  )}
+                  ) : formData.binanceId && /^\d{9,10}$/.test(formData.binanceId) ? (
+                    <div className="mt-1.5 text-xs text-green-400 flex items-center gap-1.5">
+                      <Check className="w-3.5 h-3.5" />
+                      <span><strong className="font-medium">ID de Binance válido</strong> — Perfecto.</span>
+                    </div>
+                  ) : null}
                 </div>
               )}
 
@@ -885,12 +904,17 @@ export function RegistrationForm150() {
                       className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
                     />
                   </div>
-                  {errors.nequiPhone && (
+                  {errors.nequiPhone ? (
                     <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
                       <AlertTriangle className="w-3.5 h-3.5" />
                       <span><strong className="font-medium">Número de Nequi inválido</strong> — Debe ser un número de teléfono válido.</span>
                     </div>
-                  )}
+                  ) : formData.nequiPhone && /^3\d{9}$/.test(formData.nequiPhone) ? (
+                    <div className="mt-1.5 text-xs text-green-400 flex items-center gap-1.5">
+                      <Check className="w-3.5 h-3.5" />
+                      <span><strong className="font-medium">Número de teléfono válido</strong> — Perfecto.</span>
+                    </div>
+                  ) : null}
                 </div>
               )}
 
