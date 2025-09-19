@@ -66,7 +66,7 @@ export function RegistrationForm() {
   const [platformAdminQrSettings, setPlatformAdminQrSettings] = useState<any>(null);
   const [paymentPreferences, setPaymentPreferences] = useState<any[]>([]);
   const [isNequiEnabled, setIsNequiEnabled] = useState(true);
-  const [isBinanceEnabled, setIsBinanceEnabled] = useState(true);
+  const [isBinanceEnabled, setIsBinanceEnabled] = useState(false);
 
   // Load QR settings on mount
   useEffect(() => {
@@ -101,7 +101,7 @@ export function RegistrationForm() {
       const { data, error } = await supabase
         .from('system_settings')
         .select('setting_value')
-        .eq('setting_key', 'binance_enabled')
+        .eq('setting_key', 'binance_25_enabled')
         .single();
 
       if (error && error.code !== 'PGRST116') {
@@ -109,7 +109,7 @@ export function RegistrationForm() {
         return;
       }
 
-      setIsBinanceEnabled(data?.setting_value ?? true);
+      setIsBinanceEnabled(data?.setting_value ?? false);
     } catch (error) {
       console.error('Error fetching binance setting:', error);
     }

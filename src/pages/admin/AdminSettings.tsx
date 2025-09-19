@@ -124,7 +124,7 @@ export function AdminSettings() {
       const { data, error } = await supabase
         .from('system_settings')
         .select('*')
-        .in('setting_key', ['binance_enabled', 'nequi_25_enabled', 'nequi_150_enabled']);
+        .in('setting_key', ['binance_25_enabled', 'binance_150_enabled', 'nequi_25_enabled', 'nequi_150_enabled']);
 
       if (error) throw error;
       
@@ -794,8 +794,8 @@ export function AdminSettings() {
                 <p className="text-sm text-slate-400">Habilitar/deshabilitar pagos con Binance</p>
               </div>
               <Switch
-                checked={systemSettings.binance_enabled ?? true}
-                onCheckedChange={(checked) => handleToggleSystem('binance_enabled', checked)}
+                checked={systemSettings.binance_25_enabled ?? false}
+                onCheckedChange={(checked) => handleToggleSystem('binance_25_enabled', checked)}
                 className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
               />
             </div>
@@ -883,8 +883,8 @@ export function AdminSettings() {
                 <p className="text-sm text-slate-400">Habilitar/deshabilitar pagos con Binance</p>
               </div>
               <Switch
-                checked={systemSettings.binance_enabled ?? true}
-                onCheckedChange={(checked) => handleToggleSystem('binance_enabled', checked)}
+                checked={systemSettings.binance_150_enabled ?? true}
+                onCheckedChange={(checked) => handleToggleSystem('binance_150_enabled', checked)}
                 className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
               />
             </div>

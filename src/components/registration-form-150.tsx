@@ -101,7 +101,7 @@ export function RegistrationForm150() {
       const { data, error } = await supabase
         .from('system_settings')
         .select('setting_value')
-        .eq('setting_key', 'binance_enabled')
+        .eq('setting_key', 'binance_150_enabled')
         .single();
 
       if (error && error.code !== 'PGRST116') {
