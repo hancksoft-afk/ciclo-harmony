@@ -446,30 +446,30 @@ export function AdminUsers2() {
                     </div>
                     <div className="space-y-1">
                       <p className="text-xs uppercase tracking-wider text-white font-inter">
-                        {(selectedUser.payment_method && (
-                          selectedUser.payment_method.toLowerCase().includes('binance') || 
-                          selectedUser.payment_method === 'binance_pay'
-                        )) ? 'ID DE ORDEN' : 'ID DE REFERENCIA'}
+                        {(selectedUser.payment_method && selectedUser.payment_method.toLowerCase().includes('nequi'))
+                          ? 'ID DE REFERENCIA'
+                          : ((selectedUser.payment_method && (selectedUser.payment_method.toLowerCase().includes('binance') || selectedUser.payment_method === 'binance_pay'))
+                            ? 'ID DE ORDEN'
+                            : (selectedUser.nequi_id_step2 ? 'ID DE REFERENCIA' : 'ID DE ORDEN'))
+                        }
                       </p>
                       <p className="text-sm font-medium text-amber-300 font-mono">
-                        {(selectedUser.payment_method && (
-                          selectedUser.payment_method.toLowerCase().includes('binance') || 
-                          selectedUser.payment_method === 'binance_pay'
-                        ))
-                          ? (selectedUser.binance_id_step2 || 'N/A')
-                          : (selectedUser.nequi_id_step2 || 'N/A')
+                        {(selectedUser.payment_method && selectedUser.payment_method.toLowerCase().includes('nequi'))
+                          ? (selectedUser.nequi_id_step2 || 'N/A')
+                          : ((selectedUser.payment_method && (selectedUser.payment_method.toLowerCase().includes('binance') || selectedUser.payment_method === 'binance_pay'))
+                            ? (selectedUser.binance_id_step2 || 'N/A')
+                            : (selectedUser.nequi_id_step2 || selectedUser.binance_id_step2 || 'N/A'))
                         }
                       </p>
                     </div>
                     <div>
                       <p className="text-xs uppercase tracking-wider text-white font-inter">ID DE ADMINISTRADOR</p>
                       <p className="text-sm font-medium text-amber-300 font-mono">
-                        {(selectedUser.payment_method && (
-                          selectedUser.payment_method.toLowerCase().includes('binance') || 
-                          selectedUser.payment_method === 'binance_pay'
-                        ))
-                          ? (selectedUser.binance_id_step3 || 'N/A')
-                          : (selectedUser.nequi_id_step3 || 'N/A')
+                        {(selectedUser.payment_method && selectedUser.payment_method.toLowerCase().includes('nequi'))
+                          ? (selectedUser.nequi_id_step3 || 'N/A')
+                          : ((selectedUser.payment_method && (selectedUser.payment_method.toLowerCase().includes('binance') || selectedUser.payment_method === 'binance_pay'))
+                            ? (selectedUser.binance_id_step3 || 'N/A')
+                            : (selectedUser.nequi_id_step3 || selectedUser.binance_id_step3 || 'N/A'))
                         }
                       </p>
                     </div>
