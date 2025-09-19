@@ -4,7 +4,7 @@ import {
   User, UserPlus, Globe, Phone, Mail, Fingerprint, 
   ChevronDown, AlertTriangle, ArrowLeft, ArrowRight,
   CircleX, Timer, Copy, Hash, CheckCircle2, Ticket,
-  TicketCheck, X
+  TicketCheck, X, Check
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -566,12 +566,17 @@ export function RegistrationForm150() {
                       className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
                     />
                   </div>
-                  {errors.name && (
+                  {errors.name ? (
                     <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
                       <AlertTriangle className="w-3.5 h-3.5" />
                       <span><strong className="font-medium">Nombre inválido</strong> — Debe tener entre 3 y 4 palabras.</span>
                     </div>
-                  )}
+                  ) : formData.name && formData.name.trim().split(/\s+/).filter(word => word.length > 0).length >= 3 && formData.name.trim().split(/\s+/).filter(word => word.length > 0).length <= 4 ? (
+                    <div className="mt-1.5 text-xs text-green-400 flex items-center gap-1.5">
+                      <Check className="w-3.5 h-3.5" />
+                      <span><strong className="font-medium">Nombre válido</strong> — Perfecto.</span>
+                    </div>
+                  ) : null}
                 </div>
 
                 {/* Invitee */}
@@ -587,12 +592,17 @@ export function RegistrationForm150() {
                       className="w-full rounded-md bg-white/5 ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 outline-none px-9 py-2.5 text-sm placeholder:text-muted-foreground text-foreground transition font-inter"
                     />
                   </div>
-                  {errors.invitee && (
+                  {errors.invitee ? (
                     <div className="mt-1.5 text-xs text-amber-300 flex items-center gap-1.5">
                       <AlertTriangle className="w-3.5 h-3.5" />
                       <span><strong className="font-medium">Invitando a inválida</strong> — Debe tener entre 3 y 4 palabras.</span>
                     </div>
-                  )}
+                  ) : formData.invitee && formData.invitee.trim().split(/\s+/).filter(word => word.length > 0).length >= 3 && formData.invitee.trim().split(/\s+/).filter(word => word.length > 0).length <= 4 ? (
+                    <div className="mt-1.5 text-xs text-green-400 flex items-center gap-1.5">
+                      <Check className="w-3.5 h-3.5" />
+                      <span><strong className="font-medium">Nombre válido</strong> — Perfecto.</span>
+                    </div>
+                  ) : null}
                 </div>
 
                 {/* Country */}
