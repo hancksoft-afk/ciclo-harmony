@@ -376,6 +376,15 @@ export function AdminUsers2() {
                         </button>
                         <button
                           onClick={() => {
+                            console.log('Invoice modal open for user:', {
+                              id: user.id,
+                              payment_method: user.payment_method,
+                              binance_id: user.binance_id,
+                              binance_id_step2: user.binance_id_step2,
+                              binance_id_step3: user.binance_id_step3,
+                              nequi_id_step2: user.nequi_id_step2,
+                              nequi_id_step3: user.nequi_id_step3,
+                            });
                             setSelectedUser(user);
                             setShowInvoiceModal(true);
                           }}
