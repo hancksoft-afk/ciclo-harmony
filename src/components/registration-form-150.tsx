@@ -881,11 +881,18 @@ export function RegistrationForm150() {
                       <AlertTriangle className="w-3.5 h-3.5" />
                       <span><strong className="font-medium">ID de Binance inválido</strong> — Debe tener 9 Y 10 numéricos.</span>
                     </div>
-                  ) : formData.binanceId && /^\d{9,10}$/.test(formData.binanceId) ? (
-                    <div className="mt-1.5 text-xs text-green-400 flex items-center gap-1.5">
-                      <Check className="w-3.5 h-3.5" />
-                      <span><strong className="font-medium">ID de Binance válido</strong> — Perfecto.</span>
-                    </div>
+                  ) : formData.binanceId && formData.binanceId.trim() ? (
+                    /^\d{9,10}$/.test(formData.binanceId) ? (
+                      <div className="mt-1.5 text-xs text-green-400 flex items-center gap-1.5">
+                        <Check className="w-3.5 h-3.5" />
+                        <span><strong className="font-medium">ID de Binance válido</strong> — Perfecto.</span>
+                      </div>
+                    ) : (
+                      <div className="mt-1.5 text-xs text-red-400 flex items-center gap-1.5">
+                        <X className="w-3.5 h-3.5" />
+                        <span><strong className="font-medium">ID de Binance inválido</strong> — Prohibido, debe tener 9 o 10 dígitos numéricos.</span>
+                      </div>
+                    )
                   ) : null}
                 </div>
               )}
@@ -909,11 +916,18 @@ export function RegistrationForm150() {
                       <AlertTriangle className="w-3.5 h-3.5" />
                       <span><strong className="font-medium">Número de Nequi inválido</strong> — Debe ser un número de teléfono válido.</span>
                     </div>
-                  ) : formData.nequiPhone && /^3\d{9}$/.test(formData.nequiPhone) ? (
-                    <div className="mt-1.5 text-xs text-green-400 flex items-center gap-1.5">
-                      <Check className="w-3.5 h-3.5" />
-                      <span><strong className="font-medium">Número de teléfono válido</strong> — Perfecto.</span>
-                    </div>
+                  ) : formData.nequiPhone && formData.nequiPhone.trim() ? (
+                    /^3\d{9}$/.test(formData.nequiPhone) ? (
+                      <div className="mt-1.5 text-xs text-green-400 flex items-center gap-1.5">
+                        <Check className="w-3.5 h-3.5" />
+                        <span><strong className="font-medium">Número de teléfono válido</strong> — Perfecto.</span>
+                      </div>
+                    ) : (
+                      <div className="mt-1.5 text-xs text-red-400 flex items-center gap-1.5">
+                        <X className="w-3.5 h-3.5" />
+                        <span><strong className="font-medium">Número de teléfono inválido</strong> — Prohibido, debe empezar con 3 y tener 10 dígitos.</span>
+                      </div>
+                    )
                   ) : null}
                 </div>
               )}
