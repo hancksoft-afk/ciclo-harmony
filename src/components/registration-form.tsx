@@ -447,12 +447,7 @@ export function RegistrationForm() {
 
   const handleNext = () => {
     if (currentStep === 1 && validateStep1()) {
-      // If Binance is disabled, skip platform selection and go directly to step 2
-      if (!isBinanceEnabled) {
-        setCurrentStep(2);
-      } else {
-        setShowPlatformModal(true);
-      }
+      setShowPlatformModal(true);
     } else if (currentStep === 2 && validateStep2()) {
       setCurrentStep(3);
     } else if (currentStep === 3 && validateStep3()) {
