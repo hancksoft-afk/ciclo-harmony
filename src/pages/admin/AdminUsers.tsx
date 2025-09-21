@@ -407,23 +407,42 @@ export function AdminUsers() {
                             </div>
                             <div>
                               <p className="text-xs uppercase tracking-wider text-white font-inter">
-                                {selectedUser.payment_method.includes('binance') ? 'ID DE ORDEN' : 'ID DE REFERENCIA'}
+                                {((selectedUser.nequi_id_step2 || selectedUser.nequi_id_step3) && !(selectedUser.binance_id_step2 || selectedUser.binance_id_step3))
+                                  ? 'ID DE REFERENCIA'
+                                  : ((selectedUser.binance_id_step2 || selectedUser.binance_id_step3) && !(selectedUser.nequi_id_step2 || selectedUser.nequi_id_step3))
+                                    ? 'ID DE ORDEN'
+                                    : ((selectedUser.payment_method && selectedUser.payment_method.toLowerCase().includes('nequi'))
+                                      ? 'ID DE REFERENCIA'
+                                      : ((selectedUser.payment_method && (selectedUser.payment_method.toLowerCase().includes('binance') || selectedUser.payment_method.toLowerCase().includes('pay')))
+                                        ? 'ID DE ORDEN'
+                                        : (selectedUser.nequi_id_step2 ? 'ID DE REFERENCIA' : 'ID DE ORDEN')))
+                                }
                               </p>
-                              <p className="text-sm font-medium text-amber-300">
-                                {selectedUser.payment_method.includes('binance') 
-                                  ? (selectedUser.binance_id_step2 || 'N/A')
-                                  : (selectedUser.nequi_id_step2 || 'N/A')
+                              <p className="text-sm font-medium text-amber-300 font-mono">
+                                {((selectedUser.nequi_id_step2 || selectedUser.nequi_id_step3) && !(selectedUser.binance_id_step2 || selectedUser.binance_id_step3))
+                                  ? (selectedUser.nequi_id_step2 || 'N/A')
+                                  : ((selectedUser.binance_id_step2 || selectedUser.binance_id_step3) && !(selectedUser.nequi_id_step2 || selectedUser.nequi_id_step3))
+                                    ? (selectedUser.binance_id_step2 || 'N/A')
+                                    : ((selectedUser.payment_method && selectedUser.payment_method.toLowerCase().includes('nequi'))
+                                      ? (selectedUser.nequi_id_step2 || 'N/A')
+                                      : ((selectedUser.payment_method && (selectedUser.payment_method.toLowerCase().includes('binance') || selectedUser.payment_method.toLowerCase().includes('pay')))
+                                        ? (selectedUser.binance_id_step2 || 'N/A')
+                                        : (selectedUser.nequi_id_step2 || selectedUser.binance_id_step2 || 'N/A')))
                                 }
                               </p>
                             </div>
                             <div>
-                              <p className="text-xs uppercase tracking-wider text-white font-inter">
-                                {selectedUser.payment_method.includes('binance') ? 'ADMINISTRADOR' : 'ID DE ADMINISTRADOR'}
-                              </p>
-                              <p className="text-sm font-medium text-amber-300">
-                                {selectedUser.payment_method.includes('binance') 
-                                  ? (selectedUser.binance_id_step3 || 'N/A')
-                                  : (selectedUser.nequi_id_step3 || 'N/A')
+                              <p className="text-xs uppercase tracking-wider text-white font-inter">ID DE ADMINISTRADOR</p>
+                              <p className="text-sm font-medium text-amber-300 font-mono">
+                                {((selectedUser.nequi_id_step3 || selectedUser.nequi_id_step2) && !(selectedUser.binance_id_step3 || selectedUser.binance_id_step2))
+                                  ? (selectedUser.nequi_id_step3 || 'N/A')
+                                  : ((selectedUser.binance_id_step3 || selectedUser.binance_id_step2) && !(selectedUser.nequi_id_step3 || selectedUser.nequi_id_step2))
+                                    ? (selectedUser.binance_id_step3 || 'N/A')
+                                    : ((selectedUser.payment_method && selectedUser.payment_method.toLowerCase().includes('nequi'))
+                                      ? (selectedUser.nequi_id_step3 || 'N/A')
+                                      : ((selectedUser.payment_method && (selectedUser.payment_method.toLowerCase().includes('binance') || selectedUser.payment_method.toLowerCase().includes('pay')))
+                                        ? (selectedUser.binance_id_step3 || 'N/A')
+                                        : (selectedUser.nequi_id_step3 || selectedUser.binance_id_step3 || 'N/A')))
                                 }
                               </p>
                             </div>
