@@ -372,24 +372,31 @@ export function AdminReports2() {
                     </div>
                      <div className="space-y-1">
                        <p className="text-xs uppercase tracking-wider text-white font-inter">
-                         {selectedUser.payment_method.includes('binance') ? 'ID DE ORDEN' : 'ID DE REFERENCIA'}
+                         {(() => {
+                           const normalizedPayment = selectedUser.payment_method.toLowerCase();
+                           return normalizedPayment.includes('nequi') ? 'ID DE REFERENCIA' : 'ID DE ORDEN';
+                         })()}
                        </p>
                        <p className="text-sm font-medium text-amber-300 font-mono">
-                         {selectedUser.payment_method.includes('binance') 
-                           ? (selectedUser.binance_id_step2 || 'N/A')
-                           : (selectedUser.nequi_id_step2 || 'N/A')
-                         }
+                         {(() => {
+                           const normalizedPayment = selectedUser.payment_method.toLowerCase();
+                           if (normalizedPayment.includes('nequi')) {
+                             return selectedUser.nequi_id_step2 || selectedUser.binance_id_step2 || 'N/A';
+                           }
+                           return selectedUser.binance_id_step2 || selectedUser.nequi_id_step2 || 'N/A';
+                         })()}
                        </p>
                      </div>
                      <div>
-                       <p className="text-xs uppercase tracking-wider text-white font-inter">
-                         {selectedUser.payment_method.includes('binance') ? 'ADMINISTRADOR' : 'ID DE ADMINISTRADOR'}
-                       </p>
+                       <p className="text-xs uppercase tracking-wider text-white font-inter">ID DE ADMINISTRADOR</p>
                        <p className="text-sm font-medium text-amber-300 font-mono">
-                         {selectedUser.payment_method.includes('binance') 
-                           ? (selectedUser.binance_id_step3 || 'N/A')
-                           : (selectedUser.nequi_id_step3 || 'N/A')
-                         }
+                         {(() => {
+                           const normalizedPayment = selectedUser.payment_method.toLowerCase();
+                           if (normalizedPayment.includes('nequi')) {
+                             return selectedUser.nequi_id_step3 || selectedUser.binance_id_step3 || 'N/A';
+                           }
+                           return selectedUser.binance_id_step3 || selectedUser.nequi_id_step3 || 'N/A';
+                         })()}
                        </p>
                      </div>
                   </div>
