@@ -74,7 +74,7 @@ const Index = () => {
                 linkText="Continue ritual"
                 linkHref="/register"
                 variant="emerald"
-                videoSrc="/lovable-uploads/A camera moves smoothly around the 50% OFF banner with glowing light and dynamic motion..mp4"
+                videoSrc="/lovable-uploads/promocion300k.mp4"
                 videoPoster="/lovable-uploads/300k.png"
                 icon={<Sunrise className="w-full h-full" strokeWidth={1.5} />}
                 delay={0}
