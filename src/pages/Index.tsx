@@ -40,7 +40,7 @@ const Index = () => {
       <div 
         className="fixed top-0 w-full h-screen bg-cover bg-center -z-10"
         style={{
-          backgroundImage: "url('/lovable-uploads/fondver.jpg')"
+          backgroundImage: "url('/lovable-uploads/generative-ai-stock.jpg')"
         }}
       />
       
@@ -49,7 +49,7 @@ const Index = () => {
           {/* Header */}
           <header className="flex pt-8 items-center justify-center gap-4">
             <img 
-              src="/lovable-uploads/28d885bc-fc01-4fa6-804c-fe9a1a8094f6.png" 
+              src="/lovable-uploads/ciclotangi.png" 
               alt="Ciclo" 
               className="w-20 h-20 object-contain"
             />
