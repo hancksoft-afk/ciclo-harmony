@@ -69,13 +69,13 @@ const Index = () => {
               <RitualCard
                 title="Registardo 25 USD"
                 subtitle="Bienvenido"
-                description="Vamos a inscribirnos con un registro de 25 USD de energía."
+                description="Vamos a inscribirnos con un registro de 300k de energía."
                 status="Nuevo Registardo"
                 linkText="Continue ritual"
                 linkHref="/register"
                 variant="emerald"
-                videoSrc="/lovable-uploads/moneda24usd.mp4"
-                videoPoster="/lovable-uploads/fondo25usd.jpg"
+                videoSrc="/lovable-uploads/A camera moves smoothly around the 50% OFF banner with glowing light and dynamic motion..mp4"
+                videoPoster="/lovable-uploads/300k.png"
                 icon={<Sunrise className="w-full h-full" strokeWidth={1.5} />}
                 delay={0}
               />
